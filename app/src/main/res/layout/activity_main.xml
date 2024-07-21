@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 其他首页内容，例如标题栏等 -->
+
+    <!-- 添加 studyPlan 组件 -->
+    <include
+        layout="@layout/studyPlan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <!-- 其他首页内容，例如其他模块的布局 -->
+
+</RelativeLayout>
