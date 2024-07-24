@@ -1,18 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
-    <!-- 其他首页内容，例如标题栏等 -->
-
-    <!-- 添加 studyPlan 组件 -->
-    <include
-        layout="@layout/studyPlan"
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:id="@+id/TableLayout2"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"/>
+        android:layout_alignParentRight="true">
+        <LinearLayout>
+            <include
+                layout="@layout/main_c_study_plan"
+                android:layout_width="132dp"
+                android:layout_height="132dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
 
-    <!-- 其他首页内容，例如其他模块的布局 -->
+            <include
+                layout="@layout/main_c_data_analyze"
+                android:layout_width="132dp"
+                android:layout_height="132dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
+        </LinearLayout>
+        <LinearLayout>
+            <include
+                layout="@layout/main_c_study_route"
+                android:layout_width="286dp"
+                android:layout_height="132dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
+        </LinearLayout>
+        <LinearLayout>
+            <TableLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="132dp"
+                android:layout_height="155dp">
+                <LinearLayout>
+                    <include
+                        layout="@layout/main_c_news"
+                        android:layout_width="50dp"
+                        android:layout_height="73dp"
+                        android:layout_marginStart="12dp"/>
+                    <include
+                        layout="@layout/main_c_pay"
+                        android:layout_width="50dp"
+                        android:layout_height="73dp"
+                        android:layout_marginStart="20dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="9dp">
+                    <include
+                        layout="@layout/main_c_star"
+                        android:layout_width="50dp"
+                        android:layout_height="73dp"
+                        android:layout_marginStart="12dp"/>
+                    <include
+                        layout="@layout/main_c_customer"
+                        android:layout_width="50dp"
+                        android:layout_height="73dp"
+                        android:layout_marginStart="20dp"/>
+                </LinearLayout>
+            </TableLayout>
+            <include
+                layout="@layout/main_c_employ_plan"
+                android:layout_width="132dp"
+                android:layout_height="132dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="16dp"/>
+        </LinearLayout>
+    </TableLayout>
 
 </RelativeLayout>

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">subject-analyze</string>
+    <string name="icon">icon</string>
+    <string name="study">学习</string>
+    <string name="plan">计划</string>
+    <string name="data">数据</string>
+    <string name="analyze">分析</string>
 </resources>
