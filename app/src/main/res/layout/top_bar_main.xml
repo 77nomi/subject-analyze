@@ -63,7 +63,7 @@
             android:layout_height="32dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="14dp"
-            android:src="@drawable/baseline_settings_24"/>
+            android:src="@drawable/icon_main_setting"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

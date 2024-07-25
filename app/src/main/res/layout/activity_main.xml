@@ -83,14 +83,14 @@
                                         android:layout_height="73dp"
                                         android:layout_marginStart="12dp"/>
                                     <include
-                                        layout="@layout/main_c_customer"
+                                        layout="@layout/main_c_custom"
                                         android:layout_width="50dp"
                                         android:layout_height="73dp"
                                         android:layout_marginStart="20dp"/>
                                 </LinearLayout>
                             </TableLayout>
                             <include
-                                layout="@layout/main_c_employ_plan"
+                                layout="@layout/main_c_work_plan"
                                 android:layout_width="132dp"
                                 android:layout_height="132dp"
                                 android:layout_marginTop="16dp"
@@ -98,18 +98,13 @@
                                 android:layout_marginBottom="16dp"/>
                         </LinearLayout>
                     </TableLayout>
+                    <!--下半部分新闻部分-->
                     <LinearLayout
                         android:layout_height="wrap_content"
                         android:layout_width="360dp"
                         android:layout_gravity="end"
                         android:layout_marginEnd="20dp"
                         android:orientation="vertical">
-                        <include
-                            layout="@layout/main_c_newsInfo"
-                            android:layout_width="360dp"
-                            android:layout_height="110dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="16dp"/>
                         <include
                             layout="@layout/main_c_newsInfo"
                             android:layout_width="360dp"
