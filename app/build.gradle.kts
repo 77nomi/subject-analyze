@@ -77,4 +77,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //androidx项目
+    implementation("com.github.xuexiangjys:XUI:1.2.1")
+    implementation("androidx.appcompat:appcompat:1.3.1")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("com.google.android.material:material:1.4.0")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
 }
