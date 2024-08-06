@@ -13,11 +13,14 @@ export default {
 </script>
 
 <style lang="scss">
-@import './static/iconfont.css';
-/*每个页面公共css */
-@import 'uview-plus/index.scss';
-/* ，每个页面的背景色 */
-page {
-	background-color: #f5f7fa;
-}
+	@import './static/iconfont.css';
+	/*每个页面公共css */
+	@import 'uview-plus/index.scss';
+	/* ，每个页面的背景色 */
+	page {
+		background-color: #AAC9D7;
+	}
+	.font-red{
+		color: #AC0404;
+	}
 </style>

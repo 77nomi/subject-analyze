@@ -1,4 +1,4 @@
-// ../../../wansu/front-end/node_modules/pinia-plugin-persistedstate/dist/index.mjs
+// ../../../subject-analyze/node_modules/pinia-plugin-persistedstate/dist/index.mjs
 function isObject(v) {
   return typeof v === "object" && v !== null;
 }
