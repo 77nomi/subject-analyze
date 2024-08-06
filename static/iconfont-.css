@@ -1,0 +1,49 @@
+@font-face {
+	font-family: "custom-icon";
+	/* Project id 4612445 */
+	src:
+		url('data:application/x-font-woff2;charset=utf-8;base64,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') format('woff2');
+}
+
+.custom-icon {
+	font-family: "custom-icon" !important;
+	font-size: 16px;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* 案件 */
+.custom-icon-anjian:before {
+	content: "\e604";
+}
+
+/* 律师 */
+.custom-icon-lvshi:before {
+	content: "\e618";
+}
+
+/* 税务管理 */
+.custom-icon-shuiwuguanli:before {
+	content: "\e651";
+}
+
+/* 社区 */
+.custom-icon-shequ:before {
+	content: "\e632";
+}
+
+/* 借贷纠纷 */
+.custom-icon-jiedaijiufen:before {
+	content: "\e6bb";
+}
+
+/* 握手和解 */
+.custom-icon-woshou-mianxing:before {
+	content: "\e700";
+}
+
+/* 仲裁 */
+.custom-icon-zhongcai:before {
+	content: "\e748";
+}

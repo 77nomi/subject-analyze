@@ -1,0 +1,21 @@
+{
+  "hash": "1106a520",
+  "configHash": "89c6a600",
+  "lockfileHash": "961f08e3",
+  "browserHash": "9d48afad",
+  "optimized": {
+    "pinia-plugin-persistedstate": {
+      "src": "../../../../../node_modules/pinia-plugin-persistedstate/dist/index.mjs",
+      "file": "pinia-plugin-persistedstate.js",
+      "fileHash": "caa5dd92",
+      "needsInterop": false
+    },
+    "uview-plus": {
+      "src": "../../../../../node_modules/uview-plus/index.js",
+      "file": "uview-plus.js",
+      "fileHash": "683e4a21",
+      "needsInterop": false
+    }
+  },
+  "chunks": {}
+}
