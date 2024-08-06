@@ -21,6 +21,6 @@ export default {
 		background-color: #AAC9D7;
 	}
 	.font-red{
-		color: #AC0404;
+		color: #AC0404 !important;
 	}
 </style>
