@@ -17,7 +17,7 @@
 			<up-form
 				:model="loginForm"
 				ref="form"
-				labelWidth="120rpx"
+				labelWidth="140rpx"
 			>
 				<up-form-item
 					label="用户名"
