@@ -9,27 +9,21 @@
 	},
 	"pages": [
 		{
-			"path": "pages/Home/index",
+			"path": "pages/home/index",
 			"style": {
 				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path": "pages/My/index",
+			"path": "pages/user/register/index",
 			"style": {
-				"navigationBarTitleText": "我的"
+				"navigationStyle": "custom"
 			}
 		},
 		{
-			"path": "pages/Find/index",
+			"path": "pages/user/login/index",
 			"style": {
-				"navigationBarTitleText": "发现"
-			}
-		},
-		{
-			"path": "pages/Community/index",
-			"style": {
-				"navigationBarTitleText": "社区"
+				"navigationStyle": "custom"
 			}
 		}
 	],
