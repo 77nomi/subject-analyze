@@ -116,7 +116,7 @@
 						NEWS {{item.date}}
 					</view>
 					<view class="content font-red">
-						2024年大学生就业情况新鲜出炉
+						{{item.intro}}
 					</view>
 				</view>
 			</view>
@@ -254,7 +254,12 @@
 						font-size: 10rpx;
 					}
 					.content{
-						font-size: 26rpx;
+						width: 380rpx;
+						font-size: 24rpx;
+						display: -webkit-box;//对象作为弹性伸缩盒子模型显示
+						overflow: hidden;//溢出隐藏
+						-webkit-box-orient: vertical;//设置伸缩盒子对象的子元素的排列方式
+						-webkit-line-clamp: 1;//设置 块元素包含的文本行数
 					}
 				}
 			}
