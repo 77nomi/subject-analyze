@@ -255,8 +255,11 @@
 						url:'/pages/home/index'
 					})
 				}else{
-					console.log(res.message)
-					uni.$u.toast('注册失败')
+					console.log(res.error)
+					if(res.error==="Username already exists")
+						uni.$u.toast('用户名已存在')
+					else
+						uni.$u.toast('注册失败')
 				}
 			})
 			.catch((err)=>{

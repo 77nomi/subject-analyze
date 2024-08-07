@@ -122,7 +122,12 @@
 							url:'/pages/home/index'
 						})
 					}else{
-						uni.$u.toast(res.error)
+						if(res.error==="Username does not exist")
+							uni.$u.toast('用户名不存在')
+						else if(res.error==="Username and password do not match")
+							uni.$u.toast('密码错误')
+						else
+							uni.$u.toast('登录失败')
 					}
 				})
 				.catch((err)=>{
