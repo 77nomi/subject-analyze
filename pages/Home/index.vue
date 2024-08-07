@@ -212,23 +212,24 @@
 			.new-box{
 				margin-top: 20rpx;
 				width: 650rpx;
+				height: 200rpx;
 				box-shadow: 0 6rpx 6rpx #a8a8a8;
 				background-color: white;
 				border-radius: 20rpx;
 				display: flex;
-			}
-			.new-right{
-				margin-left: 10rpx;
-				margin-top: 10rpx;
-				.title{
-					font-weight: 600;
-				}
-				.date{
-					margin: 5rpx 0;
-					font-size: 10rpx;
-				}
-				.content{
-					font-size: 26rpx;
+				.new-right{
+					margin-left: 10rpx;
+					margin-top: 10rpx;
+					.title{
+						font-weight: 600;
+					}
+					.date{
+						margin: 5rpx 0;
+						font-size: 10rpx;
+					}
+					.content{
+						font-size: 26rpx;
+					}
 				}
 			}
 		}

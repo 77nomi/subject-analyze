@@ -15,16 +15,17 @@
 		</view>
 		<view class="form">
 			<up-form
-				:model="registerForm"
-				ref="form"
+				:model="formData"
+				ref="formData"
 				labelWidth="140rpx"
+				:rules="rules"
 			>
 				<up-form-item
 					label="邮箱"
 					prop="email"
 				>
 					<up-input
-						v-model="registerForm.email"
+						v-model="formData.email"
 					></up-input>
 				</up-form-item>
 				<up-form-item
@@ -32,7 +33,7 @@
 					prop="username"
 				>
 					<up-input
-						v-model="registerForm.username"
+						v-model="formData.username"
 					></up-input>
 				</up-form-item>
 				<up-form-item
@@ -40,48 +41,234 @@
 					prop="password"
 				>
 					<up-input
-						v-model="registerForm.password"
-					></up-input>
+						v-model="formData.password"
+						:password="showPSW"
+					>
+						<template #suffix>
+							<up-icon size="16" @click="showPWS(1)" :name="showPSW?'eye-off':'eye-fill'"></up-icon>
+						</template>
+					</up-input>
 				</up-form-item>
 				<up-form-item
 					label="确认密码"
 					prop="confirmPSW"
 				>
 					<up-input
-						v-model="registerForm.confirmPSW"
-					></up-input>
+						v-model="formData.confirmPSW"
+						:password="showComfirmPSW"
+					>
+						<template #suffix>
+							<up-icon size="16" @click="showPWS(2)" :name="showComfirmPSW?'eye-off':'eye-fill'"></up-icon>
+						</template>
+					</up-input>
 				</up-form-item>
 				<up-form-item
 					label="验证码"
-					prop="confirmPSW"
-					class="codeBox"
+					prop="value"
 				>
 					<up-input 
-						v-model="registerForm.confirmPSW"
-						
+						v-model="formData.value"
+						class="codeBox"
 					>
 						<template #suffix>
-							<up-image class="codeImg" src="/assets/icon/icon_register_reload.png" height="32rpx" width="32rpx"></up-image>
+							<up-image @click="updateCode" src="/assets/icon/icon_register_reload.png" height="32rpx" width="32rpx"></up-image>
 						</template>
 					</up-input>
-					<up-image class="codeImg" src="/assets/icon_register_auth.png" height="66rpx" width="120rpx"></up-image>
+					<up-image class="codeImg" :src="codeImgSrc" height="66rpx" width="150rpx" mode="aspectFit"></up-image>
 				</up-form-item>
 			</up-form>
-			<up-button class="btn font-red" shape="circle" text="注册"></up-button>
+			<up-button @click="submit" class="btn font-red" shape="circle" text="注册"></up-button>
 		</view>
 	</view>
 </template>
 
 <script setup>
-	import { ref} from 'vue'
+	import { ref, reactive, onMounted } from 'vue'
+	import { getCodeIdAPI, getCodeImgAPI, registerAPI } from '@/api/user.js'
+
+	onMounted( async () => {
+		await updateCode()
+	})
 	
-	const registerForm = ref({
+	const codeImgSrc = ref('')
+	const formData = ref({
 		email: '',
 		username: '',
 		password: '',
 		confirmPSW: '',
-		code: ''
+		value: '',
+		captchaId: ''
 	})
+	
+	const showPSW = ref(true)
+	const showComfirmPSW = ref(true)
+	
+	const rules = {  
+		'email': [
+			{  
+				type: 'string',  
+				required: true,  
+				message: '请输入邮箱',  
+				trigger: ['blur', 'change'],  
+			},  
+			{
+				pattern:/^([a-zA-Z0-9]+[-_\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/,
+				message: '请输入正确的邮箱格式',  
+				trigger: ['blur', 'change'],  
+			}
+		],
+		'username': [
+			{  
+				type: 'string',  
+				required: true,  
+				message: '请输入用户名',  
+				trigger: ['blur', 'change'],  
+			},
+			{
+				pattern: /^[0-9a-zA-Z]*$/g,
+				transform(value) {
+					return String(value);
+				},
+				message: '只能包含字母或数字',
+				trigger: ['blur', 'change']
+			},
+		],
+		'password': [
+			{
+				type: 'string',
+				required: true,
+				message: '请输入密码',
+				trigger: ['blur', 'change'], 
+			},
+			{
+				pattern:/^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$)([^\u4e00-\u9fa5\s]){6,20}$/,
+				transform(value) {
+					return String(value);
+				},
+				message: '6-20位英文字母、数字或者符号（除空格），且字母、数字和标点符号至少包含两种',
+				trigger: ['blur', 'change'], 
+			},
+		],
+		'confirmPSW': [
+			{
+				type: 'string',
+				required: true,
+				message: '请再次输入密码',
+				trigger: ['blur', 'change'], 
+			},
+			{
+				pattern:/^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$)([^\u4e00-\u9fa5\s]){6,20}$/,
+				transform(value) {
+					return String(value);
+				},
+				message: '6-20位英文字母、数字或者符号（除空格），且字母、数字和标点符号至少包含两种',
+				trigger: ['blur', 'change'], 
+			},
+			{
+				validator:  (rule, value, callback) => {
+					console.log(formData.value.password)
+					console.log(value)
+				  if (value !== formData.value.password) {
+					 callback(new Error())
+				  } else {
+					 callback()
+				  }
+				},
+				message: '两次输入的密码不一致',
+				trigger: ['blur', 'change'], 
+			},
+		],
+		'value': {
+			type: 'string',
+			required: true,
+			len: 6,
+			message: '请输入6位验证码',
+			trigger: ['blur', 'change'], 
+		},
+	}
+	
+	/**
+	 * 获取验证码
+	 */
+	const updateCode = async()=>{
+		/**
+		 * 获取验证码id
+		 */
+		const getCodeID = async ()=>{
+			await getCodeIdAPI()
+			.then((res)=>{
+				formData.value.captchaId = res.captchaId
+			})
+			.catch((err)=>{
+				console.log(err)
+			})
+		}
+		/**
+		 * 获取验证码图片
+		 */
+		const getCodeImg = async ()=>{
+			await getCodeImgAPI(formData.value.captchaId)
+			.then((res)=>{
+				const arrayBuffer = new Uint8Array(res)
+				const base64 = "data:image/png;base64," + uni.arrayBufferToBase64(arrayBuffer) //这里需要添加前缀
+				codeImgSrc.value = base64 || ''
+			})
+			.catch((err)=>{
+				console.log(err)
+			})
+		}
+		
+		await getCodeID()
+		await getCodeImg()
+	}
+	
+	/**
+	 * 控制密码是否显示
+	 */
+	const showPWS = (type)=>{
+		if(type===1){
+			showPSW.value = !showPSW.value
+		} else {
+			showComfirmPSW.value = !showComfirmPSW.value
+		}
+	}
+	
+	/**
+	 * 提交注册
+	 */
+	const submit = ()=>{  
+	  formData.value.validate()
+	  .then(async (valid) => {  
+	    if (valid) {  
+			const params = {
+				email: formData.value.email,
+				username: formData.value.username,
+				password: formData.value.password,
+				value: formData.value.value,
+				captchaId: formData.value.captchaId
+			}
+			console.log(params)
+			await registerAPI(params)
+			.then((res)=>{
+				if(res.session_token){
+					uni.setStorageSync('token', res.session_token);
+					uni.reLaunch({
+						url:'/pages/home/index'
+					})
+				}else{
+					console.log(res.message)
+					uni.$u.toast('注册失败')
+				}
+			})
+			.catch((err)=>{
+				console.log(err)
+				uni.$u.toast('注册失败')
+			})
+	    }
+	  })
+	  .catch(() => {
+	  });  
+	} 
 </script>
 
 <style lang="scss">
@@ -115,6 +302,10 @@
 				.u-input--square{
 					border-radius: 0rpx;
 				}
+			}
+			.codeImg{
+				background-color: #FFFFFF;
+				margin-left: 10rpx;
 			}
 			.btn{
 				margin-top: 20rpx;

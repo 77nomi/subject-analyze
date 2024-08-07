@@ -2,7 +2,7 @@
   "hash": "07c000ef",
   "configHash": "fe6808cd",
   "lockfileHash": "03b16005",
-  "browserHash": "0665a936",
+  "browserHash": "e825db8a",
   "optimized": {
     "pinia-plugin-persistedstate": {
       "src": "../../../../../node_modules/pinia-plugin-persistedstate/dist/index.mjs",
@@ -14,6 +14,12 @@
       "src": "../../../../../node_modules/uview-plus/index.js",
       "file": "uview-plus.js",
       "fileHash": "87e46b28",
+      "needsInterop": false
+    },
+    "luch-request": {
+      "src": "../../../../../node_modules/luch-request/src/lib/luch-request.js",
+      "file": "luch-request.js",
+      "fileHash": "7030a02f",
       "needsInterop": false
     }
   },

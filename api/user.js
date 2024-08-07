@@ -4,22 +4,50 @@ import {
 } from '@/utils/http.js'
 
 /**
- * @return 用户表单登录
+ * 获取验证码id
+ * @return 验证码id
  */
-export const postLoginAPI = (data) => {
+export const getCodeIdAPI = () => {
 	return http.request({
-		url: '/user/user/login',
-		method: 'POST',
-		data
+		url: '/captcha',
+		method: 'GET'
 	})
 }
 
 /**
- * @param id 用户id
- * @return 返回用户信息
+ * 获取验证码图片
+ * @param id codeId
+ * @return 验证码图片
  */
-export const getUserInfoAPI = (id) => {
+export const getCodeImgAPI = (id) => {
 	return http.request({
-		url: `/user/user/${id}`
+		url: `/captcha/${id}`,
+		responseType: 'arraybuffer'
+	})
+}
+
+/**
+ * 注册
+ * @param
+ * @return session_token
+ */
+export const registerAPI = (params) => {
+	return http.request({
+		url: `/signup`,
+		method: 'POST',
+		data: params
+	})
+}
+
+/**
+ * 登录
+ * @param
+ * @return session_token
+ */
+export const registerAPI = (params) => {
+	return http.request({
+		url: `/login`,
+		method: 'POST',
+		data: params
 	})
 }

@@ -2,7 +2,7 @@ import Request from 'luch-request'
 
 // 创建实例
 const http = new Request({
-	baseURL: '', // 基地址
+	baseURL: 'http://175.178.24.103:8231', // 基地址
 	timeout: 1500 // 超时时间
 })
 
@@ -47,4 +47,6 @@ http.interceptors.response.use((response) => {
 	return Promise.reject(response)
 })
 
-export default {http}
+export  {
+	http
+}
