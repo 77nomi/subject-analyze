@@ -54,10 +54,17 @@
 				<up-form-item
 					label="验证码"
 					prop="confirmPSW"
-					labelPosition="top"
+					class="codeBox"
 				>
-					<up-input style="width: 120rpx !important;" v-model="registerForm.confirmPSW" ></up-input>
-					<up-image src="/assets/icon_register_auth.png" height="60rpx" width="100rpx"></up-image>
+					<up-input 
+						v-model="registerForm.confirmPSW"
+						
+					>
+						<template #suffix>
+							<up-image class="codeImg" src="/assets/icon/icon_register_reload.png" height="32rpx" width="32rpx"></up-image>
+						</template>
+					</up-input>
+					<up-image class="codeImg" src="/assets/icon_register_auth.png" height="66rpx" width="120rpx"></up-image>
 				</up-form-item>
 			</up-form>
 			<up-button class="btn font-red" shape="circle" text="注册"></up-button>
@@ -94,7 +101,7 @@
 			letter-spacing: 20rpx;
 		}
 		.form{
-			position: relative;
+			width: 75%;
 			margin-top: 50rpx;
 			.u-input--square{
 				background-color: #ffffff;
@@ -103,11 +110,15 @@
 			.u-input--radius{
 				border-radius: 30rpx;
 			}
+			.codeBox{
+				align-items: left;
+				.u-input--square{
+					border-radius: 0rpx;
+				}
+			}
 			.btn{
-				position: absolute;
-				right: 0;
+				margin-top: 20rpx;
 				width: 200rpx;
-				top: 550rpx;
 			}
 		}
 	}
