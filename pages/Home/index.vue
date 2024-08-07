@@ -104,16 +104,16 @@
 			</up-row>
 		</view>
 		<view class="news-container">
-			<view class="new-box">
+			<view v-for="(item,index) in newsList" :key="index" class="new-box">
 				<view class="img">
-					<up-image radius="20rpx" :show-loading="true" src="/assets/news_img.png" width="260rpx" height="200rpx"></up-image>
+					<up-image radius="20rpx" :show-loading="true" :src="item.icon_url" width="260rpx" height="180rpx" mode="scaleToFill"></up-image>
 				</view>
 				<view class="new-right">
 					<view class="title">
-						2024年就业形势解读
+						{{item.title}}
 					</view>
 					<view class="date font-red">
-						NEWS 2024-6-15
+						NEWS {{item.date}}
 					</view>
 					<view class="content font-red">
 						2024年大学生就业情况新鲜出炉
@@ -124,10 +124,35 @@
 	</view>
 </template>
 
-<script>
-	import {ref} from 'vue'
+<script setup>
+	import { ref, onMounted } from 'vue'
+	import { getNewsListAPI } from '@/api/home.js'
+	import { timestampToTime } from '@/utils/time.js'
 	
 	const search = ref('')
+	const newsList = ref([])
+	
+	onMounted( async () => {
+		await getNewsList()
+	})
+	
+	/**
+	 * 获取新闻列表
+	 */
+	const getNewsList = async ()=>{
+		await getNewsListAPI()
+		.then((res)=>{
+			newsList.value = res
+			newsList.value.forEach((item)=>{
+				item.date = timestampToTime(Number(item.date))
+			})
+			console.log(newsList.value)
+		})
+		.catch((err)=>{
+			console.log(err)
+		})
+	}
+	
 </script>
 
 <style lang="scss">
@@ -212,7 +237,7 @@
 			.new-box{
 				margin-top: 20rpx;
 				width: 650rpx;
-				height: 200rpx;
+				height: 180rpx;
 				box-shadow: 0 6rpx 6rpx #a8a8a8;
 				background-color: white;
 				border-radius: 20rpx;
@@ -221,6 +246,7 @@
 					margin-left: 10rpx;
 					margin-top: 10rpx;
 					.title{
+						font-size: 30rpx;
 						font-weight: 600;
 					}
 					.date{
