@@ -15,16 +15,17 @@
 		</view>
 		<view class="form">
 			<up-form
-				:model="loginForm"
-				ref="form"
+				:model="formData"
+				ref="formData"
 				labelWidth="140rpx"
+				:rules="rules"
 			>
 				<up-form-item
 					label="用户名"
 					prop="username"
 				>
 					<up-input
-						v-model="loginForm.username"
+						v-model="formData.username"
 					></up-input>
 				</up-form-item>
 				<up-form-item
@@ -32,27 +33,107 @@
 					prop="password"
 				>
 					<up-input
-						v-model="loginForm.password"
-					></up-input>
+						v-model="formData.password"
+						:password="showPSW"
+					>
+						<template #suffix>
+							<up-icon size="16" @click="showPSWBtn()" :name="showPSW?'eye-off':'eye-fill'"></up-icon>
+						</template>
+					</up-input>
 				</up-form-item>
 			</up-form>
 			<view class="tips">
 				没有账号？
 				<span style="color: #6a6b6b;">注册</span>
-				<span class="forget" style="color: #6a6b6b;">忘记密码</span>
+				<!-- <span class="forget" style="color: #6a6b6b;">忘记密码</span> -->
 			</view>
-			<up-button class="btn font-red" shape="circle" text="登录"></up-button>
+			<up-button @click="submit" class="btn font-red" shape="circle" text="登录"></up-button>
 		</view>
 	</view>
 </template>
 
 <script setup>
-	import { ref} from 'vue'
+	import { ref } from 'vue'
+	import { loginAPI } from '@/api/user.js'
 	
-	const loginForm = ref({
+	const formData = ref({
 		username: '',
 		password: ''
 	})
+	const rules = {
+		'username': [
+			{  
+				type: 'string',  
+				required: true,  
+				message: '请输入用户名',  
+				trigger: ['blur', 'change'],  
+			},
+			{
+				pattern: /^[0-9a-zA-Z]*$/g,
+				transform(value) {
+					return String(value);
+				},
+				message: '只能包含字母或数字',
+				trigger: ['blur', 'change']
+			},
+		],
+		'password': [
+			{
+				type: 'string',
+				required: true,
+				message: '请输入密码',
+				trigger: ['blur', 'change'], 
+			},
+			{
+				pattern:/^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$)([^\u4e00-\u9fa5\s]){6,20}$/,
+				transform(value) {
+					return String(value);
+				},
+				message: '6-20位英文字母、数字或者符号（除空格），且字母、数字和标点符号至少包含两种',
+				trigger: ['blur', 'change'], 
+			},
+		]
+	}
+	
+	const showPSW = ref(true)
+	/**
+	 * 控制密码是否显示
+	 */
+	const showPSWBtn = ()=>{
+		showPSW.value = !showPSW.value
+	}
+	
+	/**
+	 * 提交登录
+	 */
+	const submit = ()=>{  
+		formData.value.validate()
+		.then(async (valid) => {  
+			if (valid) {
+				const params = {
+					username: formData.value.username,
+					password: formData.value.password
+				}
+				await loginAPI(params)
+				.then((res)=>{
+					if(res.session_token){
+						uni.setStorageSync('token', res.session_token);
+						uni.reLaunch({
+							url:'/pages/home/index'
+						})
+					}else{
+						uni.$u.toast(res.error)
+					}
+				})
+				.catch((err)=>{
+					console.log(err)
+					uni.$u.toast('登录失败')
+				})
+			}
+		})
+		.catch(() => {
+		});  
+		} 
 </script>
 
 <style lang="scss">
@@ -65,6 +146,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		justify-content: center;
 		.title{
 			margin-top: 250rpx;
 			font-size: 48rpx;
@@ -72,7 +154,7 @@
 			letter-spacing: 20rpx;
 		}
 		.form{
-			position: relative;
+			width: 75%;
 			margin-top: 50rpx;
 			.u-input--square{
 				background-color: #ffffff;
@@ -82,18 +164,12 @@
 				border-radius: 30rpx;
 			}
 			.tips{
-				position: absolute;
-				right: 0;
+				margin-top: 20rpx;
 				font-size: 16rpx;
-				.forget{
-					margin-left: 110rpx;
-				}
 			}
 			.btn{
-				position: absolute;
-				right: 0;
+				margin-top: 20rpx;
 				width: 200rpx;
-				top: 300rpx;
 			}
 		}
 	}

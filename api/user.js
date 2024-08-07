@@ -44,7 +44,7 @@ export const registerAPI = (params) => {
  * @param
  * @return session_token
  */
-export const registerAPI = (params) => {
+export const loginAPI = (params) => {
 	return http.request({
 		url: `/login`,
 		method: 'POST',

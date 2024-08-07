@@ -45,7 +45,7 @@
 						:password="showPSW"
 					>
 						<template #suffix>
-							<up-icon size="16" @click="showPWS(1)" :name="showPSW?'eye-off':'eye-fill'"></up-icon>
+							<up-icon size="16" @click="showPSWBtn(1)" :name="showPSW?'eye-off':'eye-fill'"></up-icon>
 						</template>
 					</up-input>
 				</up-form-item>
@@ -58,7 +58,7 @@
 						:password="showComfirmPSW"
 					>
 						<template #suffix>
-							<up-icon size="16" @click="showPWS(2)" :name="showComfirmPSW?'eye-off':'eye-fill'"></up-icon>
+							<up-icon size="16" @click="showPSWBtn(2)" :name="showComfirmPSW?'eye-off':'eye-fill'"></up-icon>
 						</template>
 					</up-input>
 				</up-form-item>
@@ -225,7 +225,7 @@
 	/**
 	 * 控制密码是否显示
 	 */
-	const showPWS = (type)=>{
+	const showPSWBtn = (type)=>{
 		if(type===1){
 			showPSW.value = !showPSW.value
 		} else {
@@ -247,7 +247,6 @@
 				value: formData.value.value,
 				captchaId: formData.value.captchaId
 			}
-			console.log(params)
 			await registerAPI(params)
 			.then((res)=>{
 				if(res.session_token){
