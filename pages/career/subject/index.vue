@@ -2,7 +2,7 @@
 	<view class="header">
 		<up-navbar height="80rpx" title="就业规划-学科分类" :placeholder="true" >
 			<template #left>
-				<up-image src="/assets/icon/icon_top_bar_back.png" width="50rpx" height="50rpx"></up-image>	
+				<up-image @click="toBack" src="/assets/icon/icon_top_bar_back.png" width="50rpx" height="50rpx"></up-image>	
 			</template>
 			<template #right>
 				<up-image src="/assets/icon/icon_top_bar_list.png" width="50rpx" height="50rpx"></up-image>	
@@ -48,7 +48,6 @@
 					majorMap[item.major_type] = [{'major_id':item.major_id, 'major_name': item.major_name}]
 				}
 			})
-			console.log(majorMap)
 			for(const item in majorMap) {
 				allMajorList.value.push({'major_type':item, 'majorList': majorMap[item]})
 			}
@@ -61,6 +60,10 @@
 		.catch((err)=>{
 			console.log(err)
 		})
+	}
+	
+	const toBack = ()=>{
+		uni.navigateBack()
 	}
 	
 </script>

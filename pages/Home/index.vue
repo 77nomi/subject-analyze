@@ -51,7 +51,7 @@
 			</up-row>
 			<up-row justify="space-between" gutter="10" >
 				<up-col span="8">
-					<view class="grid-layout big-grid-layout">
+					<view @click="toCareer" class="grid-layout big-grid-layout">
 						<up-image :show-loading="true" src="/assets/icon/icon_main_work_plan.png" width="28px" height="25px"></up-image>
 						<view>
 							行业介绍<br><span class="font-red">就业规划</span>
@@ -148,6 +148,12 @@
 				})
 			}
 			console.log(err)
+		})
+	}
+	
+	const toCareer = ()=>{
+		uni.navigateTo({
+			url: '/pages/career/subject/index'
 		})
 	}
 	
