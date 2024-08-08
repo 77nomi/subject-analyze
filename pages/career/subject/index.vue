@@ -27,146 +27,42 @@
 
 <script setup>
 	import { ref, onMounted } from 'vue'
-	import { getCodeIdAPI, getCodeImgAPI, registerAPI } from '@/api/user.js'
+	import { getMajorListAPI } from '@/api/career.js'
 
 	onMounted( async () => {
-		await updateCode()
+		await getMajorList()
 	})
 	
-	const allMajorList = ref([
-		{
-			major_type: '工程类',
-			majorList: [
-				{
-					major_id: 1,
-					major_name: '通信工程'
-				},
-				{
-					major_id: 2,
-					major_name: '电子信息工程'
-				},
-				{
-					major_id: 1,
-					major_name: '通信工程'
-				},
-				{
-					major_id: 2,
-					major_name: '电子信息工程'
-				},
-			]
-		},
-		{
-			major_type: '信息类',
-			majorList: [
-				{
-					major_id: 3,
-					major_name: '计算机科学与技术'
-				},
-				{
-					major_id: 4,
-					major_name: '软件工程'
-				},
-			]
-		},
-	])
-	
-	const codeImgSrc = ref('')
-	const formData = ref({
-		email: '',
-		username: '',
-		password: '',
-		confirmPSW: '',
-		value: '',
-		captchaId: ''
-	})
-	
-	const showPSW = ref(true)
-	const showComfirmPSW = ref(true)
+	const allMajorList = ref([])
 	
 	/**
-	 * 获取验证码
+	 * 获取学科列表
 	 */
-	const updateCode = async()=>{
-		/**
-		 * 获取验证码id
-		 */
-		const getCodeID = async ()=>{
-			await getCodeIdAPI()
-			.then((res)=>{
-				formData.value.captchaId = res.captchaId
-			})
-			.catch((err)=>{
-				console.log(err)
-			})
-		}
-		/**
-		 * 获取验证码图片
-		 */
-		const getCodeImg = async ()=>{
-			await getCodeImgAPI(formData.value.captchaId)
-			.then((res)=>{
-				const arrayBuffer = new Uint8Array(res)
-				const base64 = "data:image/png;base64," + uni.arrayBufferToBase64(arrayBuffer) //这里需要添加前缀
-				codeImgSrc.value = base64 || ''
-			})
-			.catch((err)=>{
-				console.log(err)
-			})
-		}
-		
-		await getCodeID()
-		await getCodeImg()
-	}
-	
-	/**
-	 * 控制密码是否显示
-	 */
-	const showPSWBtn = (type)=>{
-		if(type===1){
-			showPSW.value = !showPSW.value
-		} else {
-			showComfirmPSW.value = !showComfirmPSW.value
-		}
-	}
-	
-	/**
-	 * 提交注册
-	 */
-	const submit = ()=>{  
-	  formData.value.validate()
-	  .then(async (valid) => {  
-	    if (valid) {  
-			const params = {
-				email: formData.value.email,
-				username: formData.value.username,
-				password: formData.value.password,
-				value: formData.value.value,
-				captchaId: formData.value.captchaId
-			}
-			await registerAPI(params)
-			.then((res)=>{
-				if(res.session_token){
-					uni.setStorageSync('token', res.session_token);
-					uni.reLaunch({
-						url:'/pages/home/index'
-					})
+	const getMajorList = async()=>{
+		let majorMap = {}
+		const buildTree = (dataList)=>{
+			dataList.forEach((item)=>{
+				if(item.major_type in majorMap){
+					majorMap[item.major_type].push({'major_id':item.major_id, 'major_name': item.major_name})
 				}else{
-					console.log(res.error)
-					if(res.error==="Username already exists")
-						uni.$u.toast('用户名已存在')
-					else
-						uni.$u.toast('注册失败')
+					majorMap[item.major_type] = [{'major_id':item.major_id, 'major_name': item.major_name}]
 				}
 			})
-			.catch((err)=>{
-				console.log(err)
-				uni.$u.toast('注册失败')
-			})
-	    }
-	  })
-	  .catch(() => {
-	  });  
-	} 
+			console.log(majorMap)
+			for(const item in majorMap) {
+				allMajorList.value.push({'major_type':item, 'majorList': majorMap[item]})
+			}
+		}
+		
+		await getMajorListAPI()
+		.then((res)=>{
+			buildTree(res)
+		})
+		.catch((err)=>{
+			console.log(err)
+		})
+	}
+	
 </script>
 
 <style lang="scss">
