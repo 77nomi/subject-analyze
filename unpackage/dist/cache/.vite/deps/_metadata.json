@@ -1,25 +1,25 @@
 {
-  "hash": "07c000ef",
-  "configHash": "fe6808cd",
+  "hash": "72e5df77",
+  "configHash": "8fc59f7f",
   "lockfileHash": "03b16005",
-  "browserHash": "e825db8a",
+  "browserHash": "9ddd5ab9",
   "optimized": {
     "pinia-plugin-persistedstate": {
       "src": "../../../../../node_modules/pinia-plugin-persistedstate/dist/index.mjs",
       "file": "pinia-plugin-persistedstate.js",
-      "fileHash": "609f7aa3",
+      "fileHash": "79574f9a",
       "needsInterop": false
     },
     "uview-plus": {
       "src": "../../../../../node_modules/uview-plus/index.js",
       "file": "uview-plus.js",
-      "fileHash": "87e46b28",
+      "fileHash": "40ea4e3b",
       "needsInterop": false
     },
     "luch-request": {
       "src": "../../../../../node_modules/luch-request/src/lib/luch-request.js",
       "file": "luch-request.js",
-      "fileHash": "7030a02f",
+      "fileHash": "f54c430f",
       "needsInterop": false
     }
   },

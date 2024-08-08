@@ -32,12 +32,29 @@
 	<view class="container">
 		<view class="top-grid">
 			<up-row justify="space-between" gutter="10" >
-				<up-col span="4"></up-col>
 				<up-col span="4">
 					<view class="grid-layout">
 						<up-image :show-loading="true" src="/assets/icon/icon_main_study_plan.png" width="25px" height="25px"></up-image>
 						<view>
 							学习<br><span class="font-red">计划</span>
+						</view>
+					</view>
+				</up-col>
+				<up-col span="8">
+					<view class="grid-layout big-grid-layout">
+						<up-image :show-loading="true" src="/assets/icon/icon_main_study_route.png" width="25px" height="25px"></up-image>
+						<view>
+							学习路线<br><span class="font-red">技能树</span>
+						</view>
+					</view>
+				</up-col>
+			</up-row>
+			<up-row justify="space-between" gutter="10" >
+				<up-col span="8">
+					<view class="grid-layout big-grid-layout">
+						<up-image :show-loading="true" src="/assets/icon/icon_main_work_plan.png" width="28px" height="25px"></up-image>
+						<view>
+							行业介绍<br><span class="font-red">就业规划</span>
 						</view>
 					</view>
 				</up-col>
@@ -50,60 +67,36 @@
 					</view>
 				</up-col>
 			</up-row>
-			<up-row justify="space-between" gutter="10" >
-				<up-col span="4"></up-col>
-				<up-col span="8">
-					<view class="grid-layout big-grid-layout">
-						<up-image :show-loading="true" src="/assets/icon/icon_main_study_route.png" width="25px" height="25px"></up-image>
-						<view>
-							课程学习路线<br><span class="font-red">技能树</span>
-						</view>
+			<view class="line-box">
+				<view class="line-content">
+					<view class="line-item-top">
+						<up-image :show-loading="true" src="/assets/icon/icon_main_news.png" width="46rpx" height="40rpx"></up-image>
 					</view>
-				</up-col>
-			</up-row>
-			<up-row justify="space-between" gutter="10" >
-				<up-col span="4"></up-col>
-				<up-col span="4">
-					<view class="small-grid-layout">
-						<up-grid :border="false" col="2" >
-						<up-grid-item>
-							<view class="grid-item-top">
-								<up-image :show-loading="true" src="/assets/icon/icon_main_news.png" width="46rpx" height="40rpx"></up-image>
-							</view>
-							<span>新闻</span>
-						</up-grid-item>
-						<up-grid-item>
-							<view class="grid-item-top">
-								<up-image :show-loading="true" src="/assets/icon/icon_main_pay.png" width="40rpx" height="44rpx"></up-image>
-							</view>
-							<span>薪资</span>
-						</up-grid-item>
-						<up-grid-item>
-							<view class="grid-item-top">
-								<up-image :show-loading="true" src="/assets/icon/icon_main_star.png" width="46rpx" height="40rpx"></up-image>
-							</view>
-							<span>收藏</span>
-						</up-grid-item>
-						<up-grid-item>
-							<view class="grid-item-top">
-								<up-image :show-loading="true" src="/assets/icon/icon_main_custom.png" width="44rpx" height="44rpx"></up-image>
-							</view>
-							<span>客服</span>
-						</up-grid-item>
-					</up-grid>
+					<span>新闻</span>
+				</view>
+				<view class="line-content">
+					<view class="line-item-top">
+						<up-image :show-loading="true" src="/assets/icon/icon_main_pay.png" width="40rpx" height="44rpx"></up-image>
 					</view>
-				</up-col>
-				<up-col span="4">
-					<view class="grid-layout">
-						<up-image :show-loading="true" src="/assets/icon/icon_main_work_plan.png" width="28px" height="25px"></up-image>
-						<view>
-							就业<br><span class="font-red">规划</span>
-						</view>
+					<span>薪资</span>
+				</view>
+				<view class="line-content">
+					<view class="line-item-top">
+						<up-image :show-loading="true" src="/assets/icon/icon_main_star.png" width="46rpx" height="40rpx"></up-image>
 					</view>
-				</up-col>
-			</up-row>
+					<span>收藏</span>
+				</view>
+				<view class="line-content">
+					<view class="line-item-top">
+						<up-image :show-loading="true" src="/assets/icon/icon_main_custom.png" width="44rpx" height="44rpx"></up-image>
+					</view>
+					<span>客服</span>
+				</view>
+			</view>
 		</view>
 		<view class="news-container">
+			<span class="title">最新消息
+			</span>
 			<view v-for="(item,index) in newsList" :key="index" class="new-box">
 				<view class="img">
 					<up-image radius="20rpx" :show-loading="true" :src="item.icon_url" width="260rpx" height="180rpx" mode="scaleToFill"></up-image>
@@ -149,6 +142,11 @@
 			console.log(newsList.value)
 		})
 		.catch((err)=>{
+			if(err.statusCode===401){
+				uni.reLaunch({
+					url: '/pages/user/login/index'
+				})
+			}
 			console.log(err)
 		})
 	}
@@ -189,12 +187,14 @@
 	}
 
 	.container{
+		width: 100%;
 		margin-top: 100rpx;
 		.top-grid{
 			.u-row{
 				margin-top: 20rpx;
 			}
 			.grid-layout{
+				margin-left: 15rpx;
 				background-color: white;
 				border-radius: 20rpx;
 				width: 200rpx;
@@ -209,31 +209,44 @@
 			}
 			.big-grid-layout{
 				width: 460rpx;
-			}
-			.small-grid-layout{
-				height: 200rpx;
-				font-size: 18rpx;
-				.grid-item-top{
-					width: 80rpx;
-					height: 80rpx;
-					box-shadow: 0 4rpx 4rpx #a8a8a8;
-					background-color: white;
-					border-radius: 20rpx;
-					display: flex;
-					align-items: center;
-					justify-content: center;
+				display: flex;
+				align-items: flex-start;
+				justify-content: left;
+				view{
+					margin-left: 20rpx;
 				}
-				span{
-					margin-top: 3rpx;
-					margin-bottom: 2rpx;
+			}
+			.line-box{
+				display: flex;
+				justify-content: space-between;
+				padding: 0 20rpx;
+				margin: 20rpx 0;
+				font-size: 28rpx;
+				.line-content{
+					text-align: center;
+					.line-item-top{
+						width: 100rpx;
+						height: 100rpx;
+						box-shadow: 0 4rpx 4rpx #a8a8a8;
+						background-color: white;
+						border-radius: 20rpx;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						margin-bottom: 5rpx;
+					}
 				}
 			}
 		}
 		.news-container{
-			margin-top: 50rpx;
+			margin-top: 30rpx;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			.title{
+				font-weight: 600;
+				font-size: 40rpx;
+			}
 			.new-box{
 				margin-top: 20rpx;
 				width: 650rpx;
@@ -254,7 +267,7 @@
 						font-size: 10rpx;
 					}
 					.content{
-						width: 380rpx;
+						width: 370rpx;
 						font-size: 24rpx;
 						display: -webkit-box;//对象作为弹性伸缩盒子模型显示
 						overflow: hidden;//溢出隐藏
