@@ -1,7 +1,7 @@
 <template>
 	<view class="next-tree">
-		<view class="next-tree-mask" :class="{'show':showTree}" @tap="_cancel"></view>
-		<view class="next-tree-cnt" :style="'top:'+top" :class="{'show':showTree, 'next-tree-cnt-page': uiMode === 'page'}">
+		<!-- <view class="next-tree-mask" :class="{'show':showTree}" @tap="_cancel"></view> -->
+		<view class="next-tree-cnt" :class="{'show':showTree, 'next-tree-cnt-page': uiMode === 'page'}">
 			<view v-if="_showTreeBar" class="next-tree-bar">
 				<view class="next-tree-bar-cancel" :style="{'color':cancelColor}" hover-class="hover-c" @tap="_cancel">取消</view>
 				<view class="next-tree-bar-title" :style="{'color':titleColor}">{{customTitle}}</view>
@@ -15,7 +15,7 @@
 			<view class="next-tree-view" :style="'top:'+(_showTreeBar?'72rpx':'0rpx')">
 				<next-search-more v-if="ifSearch" @search="onSearch" mode="center" placeholder="请输入关键字" :isFixedSearchBtn="false" />
 				<slot name="topBar"></slot>
-				<scroll-view class="next-tree-view-sc" :scroll-y="true">
+				<view class="next-tree-view-sc">
 					<view v-if="_treeList.length">	
 						<block v-for="(item, index) in _treeList" :key="index">
 							<view class="next-tree-item-block" v-if="item.show">
@@ -82,7 +82,7 @@
 					</view>
 					<view v-if="ifSearch" style="height: 80rpx"></view>
 					<slot name="bottomBar"></slot>	
-				</scroll-view>
+				</view>
 			</view>
 		</view>
 		<view class="fixed-bottom-bar"><slot name="fixedBottomBar"></slot></view>

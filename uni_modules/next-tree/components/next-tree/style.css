@@ -6,7 +6,6 @@
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
 }
-
 .iconfont {
 	font-family: iconfont;
 	font-style: normal;
@@ -24,7 +23,7 @@
   bottom: 0rpx;
   left: 0rpx;
   z-index: 997;
-  background-color: rgba(0, 0, 0, 0.6);
+  /* background-color: rgba(0, 0, 0, 0.6); */
   opacity: 0;
   transition: all 0.3s ease;
   visibility: hidden;
@@ -34,13 +33,16 @@
   opacity: 1;
 }
 .next-tree-cnt {
-  position: fixed;
-  top: 0rpx;
+	width: 95%;
+	margin: 20rpx auto;
+	border-radius: 20rpx;
+  /* height: 100rpx; */
+  /* position: fixed;
+  top: 200rpx;
   right: 0rpx;
   bottom: 0rpx;
   left: 0rpx;
-  z-index: 997;
-  top: 360rpx;
+  z-index: 997; */
   transition: all 0.3s ease;
   transform: translateY(100%);
 }
@@ -81,21 +83,22 @@
   color: #f9ae3d;
 }
 .next-tree-view {
-  position: absolute;
+  /* position: absolute;
   top: 0rpx;
   right: 0rpx;
   bottom: 0rpx;
   left: 0rpx;
-  top: 72rpx;
+  top: 72rpx; */
   background-color: #fff;
+	border-radius: 20rpx;
   padding-top: 20rpx;
   padding-right: 20rpx;
   padding-bottom: 20rpx;
   padding-left: 20rpx;
+  /* height: 100rpx; */
 }
 .next-tree-view-sc {
   height: 100%;
-  overflow: hidden;
 }
 .next-tree-view-sc .empty {
 	text-align: center;
@@ -125,14 +128,14 @@
 .next-tree-item .left-line {
 	position: relative;
 	width: 1rpx;
-	height: 100%;
+	height: auto;
 	box-sizing: border-box;
 }
 .next-tree-item .left-line::before {
 	position: absolute;
 	content: "";
 	width: 1rpx;
-	height: 100%;
+	height: auto;
 	background-color: rgba(204,204,204,0.9);
 	box-sizing: border-box;
 	
@@ -140,7 +143,7 @@
 }
 .next-tree-item .parent-horizontal-line {
 	width: 1rpx;
-	height: 100%;
+	height: auto;
 	position: absolute;
 	top: 0;
 	left: 0rpx;
@@ -183,7 +186,7 @@
   flex: 1;
   display: flex;
   align-items: center;
-  height: 100%;
+	height: auto;
   line-height: 1.2;
 }
 .next-tree-label .label-input {

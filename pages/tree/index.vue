@@ -48,37 +48,43 @@
 	const isAll = ref(false)
 	const skillTree = ref([{
 		id: 1,
-		label: '计算机',
+		label: 'root',
 		children:[
 			{
 				id: 2,
-				label: '前端',
+				label: 'father1',
 				children: [
 					{
 						id: 3,
-						label: 'html',
+						label: 'leaf1',
 						children: []
 					},
 					{
 						id: 4,
-						label: 'css',
+						label: 'leaf2',
 						children: []
 					},
 				]
 			},
 			{
 				id: 5,
-				label: '后端',
+				label: 'father2',
 				children: [
 					{
 						id: 6,
-						label: 'java',
+						label: 'leaf3',
 						children: []
 					},
 					{
 						id: 7,
-						label: 'c',
-						children: []
+						label: 'father3',
+						children: [
+							{
+								id: 8,
+								label: 'leaf4',
+								children: []
+							},
+						]
 					},
 				]
 			},
@@ -133,6 +139,7 @@
 	.container{
 		width: 100%;
 		.top{
+			height: 80rpx;
 			width: 95%;
 			margin: 20rpx auto;
 			display: flex;
