@@ -37,6 +37,12 @@
 			"style": {
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/plan/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
 		}
 	],
 
