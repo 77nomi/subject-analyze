@@ -24,7 +24,7 @@ export const addPlanAPI = (params) => {
  */
 export const getPlanAPI = (params) => {
 	return http.request({
-		url: '/study/add-plan',
+		url: '/study/get-data',
 		method: 'GET',
 		header: {
 			Authorization: uni.getStorageSync('token')

@@ -59,10 +59,10 @@
 					</view>
 				</view>
 				<view class="time font-red">
-					5.00小时
+					{{averageTime}}小时
 				</view>
 				<view class="num">
-					共4个学科
+					共{{subjectNum}}个学科
 				</view>
 				<view class="content">
 					<UniChart :option="option" />
@@ -78,7 +78,7 @@
 	import UniChart from '@/node_modules/uniapp-echarts/components/uni-chart/uni-chart';
 
 	onMounted( async () => {
-		// getPlan()
+		getPlan()
 	})
 	
 	const timeOption = ref([
@@ -92,9 +92,9 @@
 		},
 	])
 	const timeChoose = ref('本周')
-	
+	const averageTime = ref(0)
+	const subjectNum = ref(0)
 	const option = ref({
-		color: ["#003366", "#006699", "#4cabce", "#e5323e"],
 		dataset: {
 			source: [
 				["type", "2012", "2013", "2014", "2015", "2016"],
@@ -127,7 +127,7 @@
 			type: "line",
 			seriesLayoutBy: "row"
 		}]
-		})
+	})
 	
 	const allMajorList = ref([])
 	
@@ -135,9 +135,52 @@
 	 * 获取学习记录
 	 */
 	const getPlan = async()=>{
+		const formatData = (data)=>{
+			averageTime.value=data.average_time
+			subjectNum.value=data.subjects_info.length
+			let optionData = {
+				dataset: {
+					source: []
+				},
+				legend: {
+					bottom: 0
+				},
+				xAxis: {
+					type: "category",
+					axisTick: {
+						show: false
+					}
+				},
+				yAxis: {},
+				series: []
+			}
+			let typeList = ["type"]
+			data.xAxis.forEach((item) =>{
+				typeList.push(item)
+			})
+			optionData.dataset.source.push(typeList)
+			
+			data.subjects_info.forEach((item)=>{
+				let dataList = []
+				dataList.push(item.subject_name)
+				item.data.forEach((itemData)=>{
+					dataList.push(itemData)
+				})
+				optionData.dataset.source.push(dataList)
+				optionData.series.push({
+					type: "line",
+					seriesLayoutBy: "row"
+				})
+			})
+			option.value = optionData
+			console.log(option)
+		}
+		
+		
 		await getPlanAPI()
 		.then((res)=>{
 			console.log(res)
+			formatData(res)
 		})
 		.catch((err)=>{
 			console.log(err)
