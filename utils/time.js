@@ -19,9 +19,8 @@ const timestampToTime = (timestamp) => {
  * 时间转换为时间戳
  */
 const timeToTimestamp = (time)=>{
-	const timestamp = Date.parse(new Date(time).toString());
-	timestamp = timestamp / 1000; //时间戳为10位需除1000，时间戳为13位的话不需除1000
-	console.log(time + "的时间戳为：" + timestamp);
+	const date = new Date(time + 'T00:00:00Z'); // 加上时间部分和时区
+	const timestamp = Math.floor(date.getTime() / 1000); // 转换为秒
 	return timestamp;
 }
 

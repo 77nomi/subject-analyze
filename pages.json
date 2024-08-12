@@ -43,6 +43,12 @@
 			"style": {
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/plan/addPlan",
+			"style": {
+				"navigationStyle": "custom"
+			}
 		}
 	],
 
