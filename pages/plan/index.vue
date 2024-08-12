@@ -1,6 +1,6 @@
 <template>
 	<view class="header">
-		<up-navbar height="80rpx" title="学习计划" :placeholder="true" >
+		<up-navbar height="80rpx" title="学习记录" :placeholder="true" >
 			<template #left>
 				<up-image @click="toBack" src="/assets/icon/icon_top_bar_back.png" width="50rpx" height="50rpx"></up-image>	
 			</template>
@@ -10,8 +10,40 @@
 		</up-navbar>
 	</view>
 	<view class="container">
-		<view class="planList">
-			<!-- haha -->
+		<view class="planData">
+			<view class="title">今日学习记录</view>
+			<view class="planList">
+				<view class="planBox">
+					<up-avatar
+						text="呃"
+						fontSize="14"
+						randomBgColor
+						size="30"
+					></up-avatar>
+					<span class="plan-title">2024-08-12 C语言 1小时</span>
+					<up-icon name="edit-pen" color="black" size="25"></up-icon>
+				</view>
+				<view class="planBox">
+					<up-avatar
+						text="呃"
+						fontSize="14"
+						randomBgColor
+						size="30"
+					></up-avatar>
+					<span class="plan-title">2024-08-12 C语言11111111 1小时</span>
+					<up-icon name="edit-pen" color="black" size="25"></up-icon>
+				</view>
+				<view class="checkMore">
+					<span>查看更多</span>
+					<up-icon name="arrow-right" color="black" size="14"></up-icon>
+				</view>
+			</view>
+			<view class="add">
+				<span>添加记录</span>
+				<view @click="addPlan" class="addBtn">
+					<up-image src="/assets/icon/icon_plan_add.png" width="40rpx" height="40rpx"></up-image>	
+				</view>
+			</view>
 		</view>
 		<view class="studyData">
 			<view class="title">
@@ -42,10 +74,11 @@
 
 <script setup>
 	import { ref, onMounted } from 'vue'
-	import { getMajorListAPI } from '@/api/career.js'
+	import { getPlanAPI } from '@/api/plan.js'
 	import UniChart from '@/node_modules/uniapp-echarts/components/uni-chart/uni-chart';
 
 	onMounted( async () => {
+		// getPlan()
 	})
 	
 	const timeOption = ref([
@@ -99,29 +132,21 @@
 	const allMajorList = ref([])
 	
 	/**
-	 * 获取学科列表
+	 * 获取学习记录
 	 */
-	const getMajorList = async()=>{
-		let majorMap = {}
-		const buildTree = (dataList)=>{
-			dataList.forEach((item)=>{
-				if(item.major_type in majorMap){
-					majorMap[item.major_type].push({'major_id':item.major_id, 'major_name': item.major_name})
-				}else{
-					majorMap[item.major_type] = [{'major_id':item.major_id, 'major_name': item.major_name}]
-				}
-			})
-			for(const item in majorMap) {
-				allMajorList.value.push({'major_type':item, 'majorList': majorMap[item]})
-			}
-		}
-		
-		await getMajorListAPI()
+	const getPlan = async()=>{
+		await getPlanAPI()
 		.then((res)=>{
-			buildTree(res)
+			console.log(res)
 		})
 		.catch((err)=>{
 			console.log(err)
+		})
+	}
+	
+	const addPlan = ()=>{
+		uni.navigateTo({
+			url: '/pages/plan/addPlan'
 		})
 	}
 	
@@ -139,13 +164,65 @@
 	}
 	.container{
 		width: 100%;
+		.title{
+			font-size: 44rpx;
+			font-weight: 600;
+		}
+		.planData{
+			width: 94%;
+			margin: 20rpx auto 0;
+			.planList{
+				width: 96%;
+				margin: 10rpx auto 0;
+				background-color: white;
+				border-radius: 10rpx;
+				padding-top: 10rpx;
+				.planBox{
+					width: 90%;
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					margin: 10rpx auto 0;
+					padding: 10rpx 5rpx;
+					.plan-title{
+						width: 70%;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						text-align: center;
+					}
+				}
+				.checkMore{
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					padding: 10rpx;
+					font-size: 16rpx;
+				}
+			}
+			.add{
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+				padding: 10rpx 20rpx;
+				font-size: 28rpx;
+				span{
+					margin-right: 20rpx;
+				}
+				.addBtn{
+					background-color: #fff;
+					height: 60rpx;
+					width: 60rpx;
+					border-radius: 10rpx;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+			}
+		}
 		.studyData{
 			width: 94%;
 			margin: 20rpx auto;
-			.title{
-				font-size: 44rpx;
-				font-weight: 600;
-			}
 			.dataChartBox{
 				margin: 10rpx auto;
 				padding: 20rpx;
@@ -160,7 +237,7 @@
 					.choose{
 						width: 150rpx;
 						.u-dropdown__content__mask{
-							background-color: rgba(0,0,0,0);
+							background-color: rgba(0,0,0,0) !important;
 						}
 						.u-cell__title-text{
 							text-align: center;

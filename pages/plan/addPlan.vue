@@ -1,8 +1,8 @@
 <template>
 	<view class="header">
-		<up-navbar height="80rpx" title="添加计划" :placeholder="true" >
+		<up-navbar height="80rpx" title="添加记录" :placeholder="true" >
 			<template #left>
-				<up-image src="/assets/icon/icon_top_bar_back.png" width="50rpx" height="50rpx"></up-image>	
+				<up-image @click="toBack" src="/assets/icon/icon_top_bar_back.png" width="50rpx" height="50rpx"></up-image>	
 			</template>
 			<template #right>
 				<up-image src="/assets/icon/icon_top_bar_list.png" width="50rpx" height="50rpx"></up-image>	
@@ -301,6 +301,10 @@
 	  .catch(() => {
 	  });  
 	} 
+	
+	const toBack = ()=>{
+		uni.navigateBack()
+	}
 </script>
 
 <style lang="scss">

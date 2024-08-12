@@ -36,7 +36,7 @@
 					<view @click="toPlan" class="grid-layout">
 						<up-image :show-loading="true" src="/assets/icon/icon_main_study_plan.png" width="25px" height="25px"></up-image>
 						<view>
-							学习<br><span class="font-red">计划</span>
+							学习<br><span class="font-red">记录</span>
 						</view>
 					</view>
 				</up-col>

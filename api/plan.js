@@ -17,3 +17,17 @@ export const addPlanAPI = (params) => {
 		data: params
 	})
 }
+
+/**
+ * 获取记录
+ * @return
+ */
+export const getPlanAPI = (params) => {
+	return http.request({
+		url: '/study/add-plan',
+		method: 'GET',
+		header: {
+			Authorization: uni.getStorageSync('token')
+		}
+	})
+}
