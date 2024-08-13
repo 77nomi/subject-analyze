@@ -1,6 +1,6 @@
 <template>
 	<view class="header">
-		<up-navbar height="80rpx" title="添加记录" :placeholder="true" >
+		<up-navbar height="80rpx" :title="plan_id===0?'添加记录':'编辑记录'" :placeholder="true" >
 			<template #left>
 				<up-image @click="toBack" src="/assets/icon/icon_top_bar_back.png" width="50rpx" height="50rpx"></up-image>	
 			</template>
@@ -99,14 +99,17 @@
 </template>
 
 <script setup>
-	import { ref, reactive, onMounted } from 'vue'
+	import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
 	import { addPlanAPI } from '@/api/plan.js'
 	import { timeToTimestamp } from '/utils/time.js'
 
 	onMounted( async () => {
+		// const options = getCurrentInstance()
+		// plan_id.value = options.attrs.plan_id
 		setTimeLimit()
+		initForm()
 	})
-	
+	const plan_id = ref(0)
 	const formData = ref({
 		plan_name: '',
 		subject_id: '',
@@ -264,6 +267,15 @@
 		console.log(e.value[0].label)
 		formData.value.subject_id = e.value[0].label
 		picker.value.show=false
+	}
+
+	/**
+	 * 编辑时候的初始化表单
+	 */
+	const initForm = async()=>{
+		if(plan_id!==0){
+			// 获取plan
+		}
 	}
 	
 	

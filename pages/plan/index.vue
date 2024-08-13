@@ -15,23 +15,21 @@
 			<view class="planList">
 				<view class="planBox">
 					<up-avatar
-						text="呃"
-						fontSize="14"
+						text=" "
 						randomBgColor
-						size="30"
+						size="10"
 					></up-avatar>
-					<span class="plan-title">2024-08-12 C语言 1小时</span>
-					<up-icon name="edit-pen" color="black" size="25"></up-icon>
+					<span class="plan-title">JAVA</span>
+					<span class="plan-time">1小时</span>
 				</view>
 				<view class="planBox">
 					<up-avatar
-						text="呃"
-						fontSize="14"
+						text=" "
 						randomBgColor
-						size="30"
+						size="10"
 					></up-avatar>
-					<span class="plan-title">2024-08-12 C语言11111111 1小时</span>
-					<up-icon name="edit-pen" color="black" size="25"></up-icon>
+					<span class="plan-title">python</span>
+					<span class="plan-time">1.5小时</span>
 				</view>
 				<view class="checkMore">
 					<span>查看更多</span>
@@ -40,7 +38,7 @@
 			</view>
 			<view class="add">
 				<span>添加记录</span>
-				<view @click="addPlan" class="addBtn">
+				<view @click="addPlan(0)" class="addBtn">
 					<up-image src="/assets/icon/icon_plan_add.png" width="40rpx" height="40rpx"></up-image>	
 				</view>
 			</view>
@@ -151,9 +149,9 @@
 		})
 	}
 	
-	const addPlan = ()=>{
+	const addPlan = (plan_id)=>{
 		uni.navigateTo({
-			url: '/pages/plan/addPlan'
+			url: '/pages/plan/addPlan?plan_id=' + plan_id
 		})
 	}
 	
@@ -196,7 +194,12 @@
 						white-space: nowrap;
 						overflow: hidden;
 						text-overflow: ellipsis;
-						text-align: center;
+						text-align: left;
+					}
+					.plan-time{
+						width: 20%;
+						text-align: right;
+						font-size: 26rpx;
 					}
 				}
 				.checkMore{
