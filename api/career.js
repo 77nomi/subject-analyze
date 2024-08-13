@@ -16,3 +16,17 @@ export const getMajorListAPI = () => {
 		}
 	})
 }
+
+/**
+ * 获取详细专业信息
+ * @return list
+ */
+export const getMajorDetailAPI = (query) => {
+	return http.request({
+		url: '/major/get-detail?' + query,
+		method: 'GET',
+		header: {
+			Authorization: uni.getStorageSync('token')
+		}
+	})
+}

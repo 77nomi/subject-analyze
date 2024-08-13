@@ -284,6 +284,7 @@
 				add_time: Math.floor(Date.now() / 1000)
 			}
 			console.log(params)
+			console.log(typeof(params.spend_time))
 			await addPlanAPI(params)
 			.then((res)=>{
 				if(res.msg === "success"){

@@ -33,7 +33,13 @@
 			}
 		},
 		{
-			"path": "pages/career/subject/index",
+			"path": "pages/career/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/career/detail",
 			"style": {
 				"navigationStyle": "custom"
 			}

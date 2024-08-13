@@ -16,7 +16,7 @@
 					{{type.major_type}}
 				</view>
 				<view class="major-box">
-					<view class="major" v-for="(major, index) in type.majorList" :key="index">
+					<view class="major" v-for="(major, index) in type.majorList" :key="index" @click="toDetail(major.major_id)">
 						<span class="text">{{major.major_name}}</span>
 					</view>
 				</view>
@@ -59,6 +59,12 @@
 		})
 		.catch((err)=>{
 			console.log(err)
+		})
+	}
+	
+	const toDetail = (major_id)=>{
+		uni.navigateTo({
+			url: '/pages/career/detail?major_id=' + major_id
 		})
 	}
 	
