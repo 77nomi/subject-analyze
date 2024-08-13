@@ -67,8 +67,6 @@
 	const major_info = ref({})
 	const comment_list = ref({})
 	
-	
-	
 	/**
 	 * 获取详细信息以及评论
 	 */
@@ -86,43 +84,6 @@
 			console.log(err)
 		})
 	}
-	
-	
-	/**
-	 * 提交表单
-	 */
-	const submit = ()=>{  
-	  formData.value.validate()
-	  .then(async (valid) => {  
-	    if (valid) {  
-			formData.value.subject_id = picker.value.columns[0].find(item => item.label === formData.value.subject_id).id
-			const time = timeToTimestamp(formData.value.study_time+' T00:00:00Z')
-			const params = {
-				subject_id: formData.value.subject_id,
-				study_time: timeToTimestamp(formData.value.study_time),
-				spend_time: Number(formData.value.spend_time),
-				plan_name: formData.value.plan_name,
-				note: formData.value.note,
-				add_time: Math.floor(Date.now() / 1000)
-			}
-			console.log(params)
-			await addPlanAPI(params)
-			.then((res)=>{
-				if(res.msg === "success"){
-					uni.$u.toast('添加成功')
-					uni.reLaunch({
-						url: '/pages/plan/index'
-					})
-				}
-			})
-			.catch((err)=>{
-				console.log(err)
-			})
-	    }
-	  })
-	  .catch(() => {
-	  });  
-	} 
 	
 	const toBack = ()=>{
 		uni.navigateBack()
