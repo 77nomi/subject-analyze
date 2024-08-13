@@ -13,23 +13,22 @@
 		<view class="planData">
 			<view class="title">今日学习记录</view>
 			<view class="planList">
-				<view class="planBox">
+				<view @click="addPlan(1)" class="planBox">
 					<up-avatar
 						text=" "
 						randomBgColor
 						size="10"
 					></up-avatar>
 					<span class="plan-title">JAVA</span>
-					<span class="plan-time">1小时</span>
-				</view>
-				<view class="planBox">
-					<up-avatar
-						text=" "
-						randomBgColor
-						size="10"
-					></up-avatar>
-					<span class="plan-title">python</span>
-					<span class="plan-time">1.5小时</span>
+					<view class="plan-time-tags">
+						<span class="plan-time">1小时</span>
+						<view class="tagsList">
+							<view class="tagBox">哈哈</view>
+							<view class="tagBox">哈哈</view>
+							<view class="tagBox">哈哈</view>
+						</view>
+					</view>
+					<up-icon name="arrow-right" color="#ac0404" size="20"></up-icon>
 				</view>
 				<view class="checkMore">
 					<span>查看更多</span>
@@ -181,7 +180,7 @@
 				margin: 10rpx auto 0;
 				background-color: white;
 				border-radius: 10rpx;
-				padding-top: 10rpx;
+				padding: 10rpx 0;
 				.planBox{
 					width: 90%;
 					display: flex;
@@ -190,16 +189,29 @@
 					margin: 10rpx auto 0;
 					padding: 10rpx 5rpx;
 					.plan-title{
-						width: 70%;
+						width: 15%;
 						white-space: nowrap;
 						overflow: hidden;
 						text-overflow: ellipsis;
 						text-align: left;
 					}
-					.plan-time{
-						width: 20%;
+					.plan-time-tags{
+						width: 66%;
 						text-align: right;
 						font-size: 26rpx;
+						.tagsList{
+							display: flex;
+							flex-wrap: wrap;
+							justify-content: flex-end;
+							.tagBox{
+								background-color: #2C2C2C;
+								padding: 2rpx 7rpx;
+								border-radius: 15rpx;
+								color: #fff;
+								font-size: 20rpx;
+								margin: 5rpx 0 0 5rpx;
+							}
+						}
 					}
 				}
 				.checkMore{

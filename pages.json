@@ -55,6 +55,12 @@
 			"style": {
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/plan/allPlan",
+			"style": {
+				"navigationStyle": "custom"
+			}
 		}
 	],
 

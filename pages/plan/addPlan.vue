@@ -1,6 +1,6 @@
 <template>
 	<view class="header">
-		<up-navbar height="80rpx" :title="plan_id===0?'添加记录':'编辑记录'" :placeholder="true" >
+		<up-navbar height="80rpx" :title="plan_id==0?'添加记录':'编辑记录'" :placeholder="true" >
 			<template #left>
 				<up-image @click="toBack" src="/assets/icon/icon_top_bar_back.png" width="50rpx" height="50rpx"></up-image>	
 			</template>
@@ -49,7 +49,11 @@
 						@click="showCalendar" 
 						type="select" 
 						:select-open="calendar.show"
-					></up-input>
+					>
+						<template #suffix>
+							<up-icon name="calendar" size="24"></up-icon>
+						</template>
+					</up-input>
 				</up-form-item>
 				<up-form-item
 					label="时长"
@@ -70,8 +74,14 @@
 						maxlength="200">
 					</up-textarea>
 				</up-form-item>
+				<up-form-item
+					label="标签"
+					prop="tags"
+				>
+					<uni-data-checkbox mode="tag" multiple v-model="formData.tags" :localdata="tags" selectedColor="#2C2C2C"></uni-data-checkbox>
+				</up-form-item>
 			</up-form>
-			<up-button @click="submit" class="btn font-red" shape="circle" text="添加"></up-button>
+			<up-button @click="submit" class="btn font-red" shape="circle" :text="plan_id==0?'添加':'保存'"></up-button>
 		</view>
 	</view>
 	<up-calendar 
@@ -104,8 +114,8 @@
 	import { timeToTimestamp } from '/utils/time.js'
 
 	onMounted( async () => {
-		// const options = getCurrentInstance()
-		// plan_id.value = options.attrs.plan_id
+		const options = getCurrentInstance()
+		plan_id.value = options.attrs.plan_id
 		setTimeLimit()
 		initForm()
 	})
@@ -115,7 +125,8 @@
 		subject_id: '',
 		study_time: '',
 		spend_time: '',
-		note: ''
+		note: '',
+		tags: []
 	})
 	const rules = {   
 		'plan_name': [
@@ -162,7 +173,24 @@
 			}
 		]
 	}
-	
+	const tags = ref([
+		{
+			text: 'Java',
+			value: 'Java'
+		},
+		{
+			text: 'Python',
+			value: 'Python'
+		},
+		{
+			text: 'C++',
+			value: 'C++'
+		},
+		{
+			text: 'html',
+			value: 'html'
+		},
+	])
 	
 	const calendar = ref({
 		show: false,
@@ -332,7 +360,7 @@
 		flex-direction: column;
 		align-items: center;
 		.form{
-			margin-top: 250rpx;
+			margin-top: 150rpx;
 			width: 75%;
 			.u-input--square{
 				background-color: #ffffff;
