@@ -142,11 +142,6 @@
 			console.log(newsList.value)
 		})
 		.catch((err)=>{
-			if(err.statusCode===401){
-				uni.reLaunch({
-					url: '/pages/user/login/index'
-				})
-			}
 			console.log(err)
 		})
 	}

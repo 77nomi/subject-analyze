@@ -65,7 +65,7 @@
 					共{{subjectNum}}个学科
 				</view>
 				<view class="content">
-					<UniChart :option="option" />
+					<UniChart ref="echart" />
 				</view>
 			</view>
 		</view>
@@ -94,45 +94,12 @@
 	const timeChoose = ref('本周')
 	const averageTime = ref(0)
 	const subjectNum = ref(0)
-	const option = ref({
-		dataset: {
-			source: [
-				["type", "2012", "2013", "2014", "2015", "2016"],
-				["Forest", 320, 332, 301, 334, 390],
-				["Steppe", 220, 182, 191, 234, 290],
-				["Desert", 150, 232, 201, 154, 190],
-				["Wetland", 98, 77, 101, 99, 40]
-			]
-		},
-		legend: {
-			bottom: 0
-		},
-		xAxis: {
-			type: "category",
-			axisTick: {
-				show: false
-			}
-		},
-		yAxis: {},
-		series: [{
-			type: "line",
-			seriesLayoutBy: "row"
-		}, {
-			type: "line",
-			seriesLayoutBy: "row"
-		}, {
-			type: "line",
-			seriesLayoutBy: "row"
-		}, {
-			type: "line",
-			seriesLayoutBy: "row"
-		}]
-	})
+	const echart = ref(null)
 	
 	const allMajorList = ref([])
 	
 	/**
-	 * 获取学习记录
+	 * 获取学习记录并更新折线图
 	 */
 	const getPlan = async()=>{
 		const formatData = (data)=>{
@@ -154,7 +121,7 @@
 				yAxis: {},
 				series: []
 			}
-			let typeList = ["type"]
+			let typeList = ["date"]
 			data.xAxis.forEach((item) =>{
 				typeList.push(item)
 			})
@@ -172,14 +139,11 @@
 					seriesLayoutBy: "row"
 				})
 			})
-			option.value = optionData
-			console.log(option)
+			echart.value.setOption(optionData)
 		}
-		
 		
 		await getPlanAPI()
 		.then((res)=>{
-			console.log(res)
 			formatData(res)
 		})
 		.catch((err)=>{

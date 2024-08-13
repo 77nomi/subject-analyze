@@ -2,7 +2,7 @@ import Request from 'luch-request'
 
 // 创建实例
 const http = new Request({
-	baseURL: 'http://175.178.24.103:8231', // 基地址
+	baseURL: 'http://8.138.115.27:8886', // 基地址
 	timeout: 1500 // 超时时间
 })
 
@@ -34,7 +34,7 @@ http.interceptors.response.use((response) => {
 	if (response.statusCode === 401) {
 		// 重定向至登录页
 		uni.redirectTo({
-			url: '/pages/Login/index'
+			url: '/pages/user/login/index'
 		})
 	} else if (response.statusCode === 404) {
 		// 404错误处理
