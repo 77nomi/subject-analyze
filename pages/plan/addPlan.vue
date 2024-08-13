@@ -75,7 +75,7 @@
 		</view>
 	</view>
 	<up-calendar 
-		:showTitle="false" 
+		title="选择日期"
 		:show="calendar.show" 
 		color="#AC0404" 
 		:closeOnClickOverlay="true"
@@ -87,6 +87,7 @@
 	</up-calendar>
 	<up-loading-page loadingText="" :loading="calendar.loading"></up-loading-page>
 	<up-picker 
+		title="选择学科"
 		:show="picker.show" 
 		:closeOnClickOverlay="true"
 		:columns="picker.columns" 
