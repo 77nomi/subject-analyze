@@ -1,7 +1,7 @@
 // 时间戳转换
 
 /**
- * 时间戳转换为时间
+ * 时间戳转换为时间：YY-MM-DD hh-mm-ss
  */
 const timestampToTime = (timestamp) => {
 	timestamp = timestamp ? timestamp : null;
@@ -16,6 +16,18 @@ const timestampToTime = (timestamp) => {
 }
 
 /**
+ * 时间戳转换为时间：YY-MM-DD hh-mm-ss
+ */
+const timestampToDate = (timestamp) => {
+	timestamp = timestamp ? timestamp : null;
+	const date = new Date(timestamp*1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+	const Y = date.getFullYear() + '-';
+	const M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+	const D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate());
+	return Y + M + D
+}
+
+/**
  * 时间转换为时间戳
  */
 const timeToTimestamp = (time)=>{
@@ -26,5 +38,6 @@ const timeToTimestamp = (time)=>{
 
 export {
 	timestampToTime,
-	timeToTimestamp
+	timeToTimestamp,
+	timestampToDate
 }

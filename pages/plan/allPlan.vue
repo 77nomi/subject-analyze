@@ -10,43 +10,46 @@
 		</up-navbar>
 	</view>
 	<view class="container">
-		<view class="title">
-			<span>全部学习记录</span>
-			<view class="add">
-				<span>添加记录</span>
-				<view @click="addPlan(0)" class="addBtn">
-					<up-image src="/assets/icon/icon_plan_add.png" width="40rpx" height="40rpx"></up-image>	
+		<scroll-view :scroll-y="true" class="scrollBox" @scrolltolower="getPlanList()">
+			<view class="title">
+				<span>全部学习记录</span>
+				<view class="add">
+					<span>添加记录</span>
+					<view @click="ToAddPlan(0)" class="addBtn">
+						<up-image src="/assets/icon/icon_plan_add.png" width="40rpx" height="40rpx"></up-image>	
+					</view>
 				</view>
 			</view>
-		</view>
-		<view class="planData">
-			<view class="planList">
-				<view v-for="(item,index) in recordList" :key="index" class="dateList">
-					<view class="top" :style="index==0?'border-top-right-radius: 10rpx;border-top-left-radius: 10rpx;':''" >
-						<span>{{item.date}}</span>
-						<span>共{{item.allTime}}小时</span>
-					</view>
-					<view v-for="(data,dataIndex) in item.dataList" :key="dataIndex" @click="addPlan(data.plan_id)" class="planBox">
-						<up-avatar
-							text=" "
-							randomBgColor
-							size="10"
-						></up-avatar>
-						<span class="plan-title">{{data.subject}}</span>
-						<view class="plan-time-tags">
-							<span class="plan-time">{{data.spend_time}}小时</span>
-							<view class="tagsList">
-								<view v-for="(tags,tagIndex) in data.tags" :key="tagIndex" class="tagBox">{{tags}}</view>
-							</view>
+			<view class="planData">
+				<view class="planList">
+					<view v-for="(item,index) in recordList" :key="index" class="dateList">
+						<view class="top" :style="index==0?'border-top-right-radius: 10rpx;border-top-left-radius: 10rpx;':''" >
+							<span>{{item.date}}</span>
+							<span>共{{item.allTime}}小时</span>
 						</view>
-						<up-icon name="arrow-right" color="#ac0404" size="20"></up-icon>
+						<view v-for="(data,dataIndex) in item.dataList" :key="dataIndex" @click="ToAddPlan(data.plan_id)" class="planBox">
+							<up-avatar
+								text=" "
+								randomBgColor
+								size="10"
+							></up-avatar>
+							<span class="plan-title">{{data.subject}}</span>
+							<view class="plan-time-tags">
+								<span class="plan-time">{{data.spend_time}}小时</span>
+								<view class="tagsList">
+									<view v-for="(tags,tagIndex) in data.tags" :key="tagIndex" class="tagBox">{{tags}}</view>
+								</view>
+							</view>
+							<up-icon name="arrow-right" color="#ac0404" size="20"></up-icon>
+						</view>
 					</view>
 				</view>
+				<view class="add">
+				</view>
 			</view>
-			<view class="add">
-			</view>
-		</view>
-	</view>
+		</scroll-view>
+	</view>	
+	<u-loadmore style="padding-bottom: 20rpx;" :status="status" />
 </template>
 
 <script setup>
@@ -55,12 +58,12 @@
 
 	onMounted( async () => {
 		await getPlanList()
-		await getPlanList()
 	})
 	
+	const status = ref('loadmore')
 	const pageInfo = ref({
 		page: 1,
-		pagesize: 4
+		pagesize: 15
 	})
 	const tags = ref([
 		{
@@ -114,6 +117,10 @@
 						if(tag==0){
 							flag = 0
 						}else{
+							if(tag>tags.value.length){
+								flag=0
+								return
+							}
 							tagList.push(tags.value[tag-1].text)
 						}
 					})
@@ -121,18 +128,18 @@
 				})
 				item.allTime=allTime
 				if(recordList.value.length && item.date==recordList.value[recordList.value.length-1].date){
-					console.log(item)
 					recordList.value[recordList.value.length-1].allTime+=item.allTime
-					console.log(item.dataList)
 					recordList.value[recordList.value.length-1].dataList.push(...item.dataList)
 				}else{
 					recordList.value.push(item)
 				}
 			})
-			console.log(recordList.value)
 			pageInfo.value.page++
 		}
 		
+		if(status.value=='nomore')
+			return
+		status.value = 'loading'
 		const params ={
 			page: pageInfo.value.page,
 			pagesize: pageInfo.value.pagesize
@@ -140,14 +147,19 @@
 		await GetPlanListAPI(params)
 		.then((res)=>{
 			console.log(res)
-			buildList(res)
+			if(Object.keys(res).length === 0){
+				status.value = 'nomore'
+			}else{
+				buildList(res)
+				status.value = 'loadmore'
+			}
 		})
 		.catch((err)=>{
 			console.log(err)
 		})
 	}
 	
-	const addPlan = (plan_id)=>{
+	const ToAddPlan = (plan_id)=>{
 		uni.navigateTo({
 			url: '/pages/plan/addPlan?plan_id=' + plan_id
 		})
@@ -160,6 +172,9 @@
 </script>
 
 <style lang="scss">
+	page{
+		height: 100%;
+	}
 	.header{
 		z-index: 999;
 		height: 80rpx;
@@ -167,6 +182,11 @@
 	}
 	.container{
 		width: 100%;
+		height: 100%;
+		display: flex;
+		.scrollBox{
+			flex-grow: 1;
+		}
 		.title{
 			width: 94%;
 			margin: 20rpx auto 0;

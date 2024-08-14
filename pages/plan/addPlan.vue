@@ -13,7 +13,7 @@
 		<view class="form">
 			<up-form
 				:model="formData"
-				ref="formData"
+				ref="formRef"
 				labelWidth="140rpx"
 				:rules="rules"
 			>
@@ -110,16 +110,17 @@
 
 <script setup>
 	import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
-	import { addPlanAPI, GetPlanDetailAPI } from '@/api/plan.js'
-	import { timeToTimestamp } from '/utils/time.js'
+	import { addPlanAPI, GetPlanDetailAPI, ChangePlanAPI } from '@/api/plan.js'
+	import { timeToTimestamp, timestampToDate } from '/utils/time.js'
 	onMounted( async () => {
-		// const options = getCurrentInstance()
-		// plan_id.value = options.attrs.plan_id
-		plan_id.value = 29
+		const options = getCurrentInstance()
+		plan_id.value = options.attrs.plan_id
+		// plan_id.value = 33
 		setTimeLimit()
 		await initForm()
 	})
 	const plan_id = ref(0)
+	const formRef = ref(null)
 	const formData = ref({
 		plan_name: '',
 		subject_id: '',
@@ -310,15 +311,15 @@
 	 */
 	const initForm = async()=>{
 		function setData(data) {
+			const subject_label = picker.value.columns[0].find(item => item.id == data.subject_id).label
 			formData.value = {
 				plan_name: data.plan_name,
-				subject_id: data.subject_id,
-				study_time: data.study_time,
-				spend_time: data.spend_time,
+				subject_id: subject_label,
+				study_time: timestampToDate(data.study_time),
+				spend_time: String(data.spend_time),
 				note: data.note,
 				tags: data.tags
 			}
-			console.log(formData.value)
 		}
 		if(plan_id.value!=0){
 			const query = "plan_id="+plan_id.value
@@ -329,8 +330,6 @@
 			})
 			.catch((err)=>{
 				console.log(err)
-				// formData.value.spend_time=12
-				// console.log(formData.value.spend_time)
 			})
 		}
 	}
@@ -340,38 +339,53 @@
 	 * 提交表单
 	 */
 	const submit = ()=>{  
-	  formData.value.validate()
-	  .then(async (valid) => {  
-	    if (valid) {  
-			formData.value.subject_id = picker.value.columns[0].find(item => item.label === formData.value.subject_id).id
-			const time = timeToTimestamp(formData.value.study_time+' T00:00:00Z')
-			const params = {
-				subject_id: formData.value.subject_id,
-				study_time: timeToTimestamp(formData.value.study_time),
-				spend_time: Number(formData.value.spend_time),
-				plan_name: formData.value.plan_name,
-				note: formData.value.note,
-				addtime: Math.floor(Date.now() / 1000),
-				tags: formData.value.tags
-			}
-			console.log(params)
-			console.log(typeof(params.spend_time))
-			await addPlanAPI(params)
-			.then((res)=>{
-				if(res.msg === "success"){
-					uni.$u.toast('添加成功')
-					uni.reLaunch({
-						url: '/pages/plan/index'
+		console.log(formData.value)
+		formRef.value.validate()
+		.then(async (valid) => {  
+			if (valid) {  
+				formData.value.subject_id = picker.value.columns[0].find(item => item.label === formData.value.subject_id).id
+				const time = timeToTimestamp(formData.value.study_time+' T00:00:00Z')
+				const params = {
+					subject_id: formData.value.subject_id,
+					study_time: timeToTimestamp(formData.value.study_time),
+					spend_time: Number(formData.value.spend_time),
+					plan_name: formData.value.plan_name,
+					note: formData.value.note,
+					addtime: Math.floor(Date.now() / 1000),
+					tags: formData.value.tags
+				}
+				if(plan_id.value==0){
+					await addPlanAPI(params)
+					.then((res)=>{
+						if(res.msg === "success"){
+							uni.$u.toast('添加成功')
+							uni.reLaunch({
+								url: '/pages/plan/index'
+							})
+						}
+					})
+					.catch((err)=>{
+						console.log(err)
+					})
+				}else{
+					params.plan_id = plan_id.value
+					await ChangePlanAPI(params)
+					.then((res)=>{
+						if(res.msg === "success"){
+							uni.$u.toast('修改成功')
+							uni.reLaunch({
+								url: '/pages/plan/index'
+							})
+						}
+					})
+					.catch((err)=>{
+						console.log(err)
 					})
 				}
-			})
-			.catch((err)=>{
-				console.log(err)
-			})
-	    }
-	  })
-	  .catch(() => {
-	  });  
+			}
+		})
+		.catch(() => {
+		});  
 	} 
 	
 	const toBack = ()=>{

@@ -16,6 +16,17 @@ export const addPlanAPI = (params) => {
 }
 
 /**
+ * 修改计划
+ * @return
+ */
+export const ChangePlanAPI = (params) => {
+	return http.request({
+		url: '/study/change-plan',
+		method: 'POST',
+		data: params
+	})
+}
+/**
  * 获取折线图记录
  * @return
  */
