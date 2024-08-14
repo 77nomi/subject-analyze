@@ -10,9 +10,6 @@ import {
 export const getNewsListAPI = () => {
 	return http.request({
 		url: '/news/get-list',
-		method: 'GET',
-		header: {
-			Authorization: uni.getStorageSync('token')
-		}
+		method: 'GET'
 	})
 }

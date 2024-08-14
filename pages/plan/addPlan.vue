@@ -78,7 +78,7 @@
 					label="标签"
 					prop="tags"
 				>
-					<uni-data-checkbox mode="tag" multiple v-model="formData.tags" :localdata="tags" selectedColor="#2C2C2C"></uni-data-checkbox>
+					<uni-data-checkbox max="3" mode="tag" multiple v-model="formData.tags" :localdata="tags" selectedColor="#2C2C2C"></uni-data-checkbox>
 				</up-form-item>
 			</up-form>
 			<up-button @click="submit" class="btn font-red" shape="circle" :text="plan_id==0?'添加':'保存'"></up-button>
@@ -110,14 +110,14 @@
 
 <script setup>
 	import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
-	import { addPlanAPI } from '@/api/plan.js'
+	import { addPlanAPI, GetPlanDetailAPI } from '@/api/plan.js'
 	import { timeToTimestamp } from '/utils/time.js'
-
 	onMounted( async () => {
-		const options = getCurrentInstance()
-		plan_id.value = options.attrs.plan_id
+		// const options = getCurrentInstance()
+		// plan_id.value = options.attrs.plan_id
+		plan_id.value = 29
 		setTimeLimit()
-		initForm()
+		await initForm()
 	})
 	const plan_id = ref(0)
 	const formData = ref({
@@ -175,20 +175,28 @@
 	}
 	const tags = ref([
 		{
-			text: 'Java',
-			value: 'Java'
+			text: '有问题',
+			value: 1
 		},
 		{
-			text: 'Python',
-			value: 'Python'
+			text: '新知识',
+			value: 2
 		},
 		{
-			text: 'C++',
-			value: 'C++'
+			text: '待总结',
+			value: 3
 		},
 		{
-			text: 'html',
-			value: 'html'
+			text: '没看懂',
+			value: 4
+		},
+		{
+			text: '有点问题',
+			value: 5
+		},
+		{
+			text: '其他',
+			value: 6
 		},
 	])
 	
@@ -301,8 +309,29 @@
 	 * 编辑时候的初始化表单
 	 */
 	const initForm = async()=>{
-		if(plan_id!==0){
-			// 获取plan
+		function setData(data) {
+			formData.value = {
+				plan_name: data.plan_name,
+				subject_id: data.subject_id,
+				study_time: data.study_time,
+				spend_time: data.spend_time,
+				note: data.note,
+				tags: data.tags
+			}
+			console.log(formData.value)
+		}
+		if(plan_id.value!=0){
+			const query = "plan_id="+plan_id.value
+			await GetPlanDetailAPI(query)
+			.then((res)=>{
+				console.log(res)
+				setData(res)
+			})
+			.catch((err)=>{
+				console.log(err)
+				// formData.value.spend_time=12
+				// console.log(formData.value.spend_time)
+			})
 		}
 	}
 	
@@ -322,7 +351,8 @@
 				spend_time: Number(formData.value.spend_time),
 				plan_name: formData.value.plan_name,
 				note: formData.value.note,
-				add_time: Math.floor(Date.now() / 1000)
+				addtime: Math.floor(Date.now() / 1000),
+				tags: formData.value.tags
 			}
 			console.log(params)
 			console.log(typeof(params.spend_time))
@@ -350,6 +380,9 @@
 </script>
 
 <style lang="scss">
+	.is--tag{
+		margin-right: 7rpx !important;
+	}
 	.header{
 		z-index: 999;
 		height: 80rpx;

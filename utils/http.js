@@ -12,10 +12,10 @@ http.interceptors.request.use((config) => { // 可使用async await 做异步操
 	const defaultHeader = {}
 
 	// 添加token至请求头的Authorization
-	// const token = userStore.token
-	// if (token) {
-	// 	defaultHeader.Authorization = token
-	// }
+	const token = uni.getStorageSync('token')
+	if (token) {
+		defaultHeader.Authorization = token
+	}
 	config.header = {
 		...defaultHeader,
 		...config.header

@@ -10,10 +10,7 @@ import {
 export const getMajorListAPI = () => {
 	return http.request({
 		url: '/major/get-list',
-		method: 'GET',
-		header: {
-			Authorization: uni.getStorageSync('token')
-		}
+		method: 'GET'
 	})
 }
 
@@ -24,9 +21,6 @@ export const getMajorListAPI = () => {
 export const getMajorDetailAPI = (query) => {
 	return http.request({
 		url: '/major/get-detail?' + query,
-		method: 'GET',
-		header: {
-			Authorization: uni.getStorageSync('token')
-		}
+		method: 'GET'
 	})
 }

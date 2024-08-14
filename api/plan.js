@@ -11,23 +11,40 @@ export const addPlanAPI = (params) => {
 	return http.request({
 		url: '/study/add-plan',
 		method: 'POST',
-		header: {
-			Authorization: uni.getStorageSync('token')
-		},
 		data: params
 	})
 }
 
 /**
- * 获取记录
+ * 获取折线图记录
  * @return
  */
-export const getPlanAPI = (params) => {
+export const getPlanAPI = () => {
 	return http.request({
 		url: '/study/get-data',
+		method: 'GET'
+	})
+}
+
+/**
+ * 获取学习记录列表
+ * @return
+ */
+export const GetPlanListAPI = (params) => {
+	return http.request({
+		url: '/study/get-plan-list',
 		method: 'GET',
-		header: {
-			Authorization: uni.getStorageSync('token')
-		}
+		data: params
+	})
+}
+
+/**
+ * 获取详细学习记录
+ * @return
+ */
+export const GetPlanDetailAPI = (query) => {
+	return http.request({
+		url: '/study/get-plan-detail?'+query,
+		method: 'GET'
 	})
 }
