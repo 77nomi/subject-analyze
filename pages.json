@@ -73,6 +73,12 @@
 			"style": {
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/analyze/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
 		}
 	],
 
