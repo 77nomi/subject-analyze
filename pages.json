@@ -61,6 +61,18 @@
 			"style": {
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/news/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/news/detail",
+			"style": {
+				"navigationStyle": "custom"
+			}
 		}
 	],
 
