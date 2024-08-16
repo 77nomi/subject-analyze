@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:54
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-16 10:19:56
+ * @LastEditTime: 2024-08-16 10:52:06
 -->
 <template>
 	<view class="header">
@@ -75,7 +75,7 @@
 				</up-col>
 			</up-row>
 			<view class="line-box">
-				<view class="line-content">
+				<view class="line-content" @click="toNews">
 					<view class="line-item-top">
 						<up-image :show-loading="true" src="/assets/icon/icon_main_news.png" width="46rpx" height="40rpx"></up-image>
 					</view>
@@ -104,7 +104,7 @@
 		<view class="news-container">
 			<span class="title">最新消息
 			</span>
-			<view v-for="(item,index) in newsList" :key="index" class="new-box">
+			<view v-for="(item,index) in newsList" :key="index" class="new-box" @click="toNewsDetail(item.news_id)">
 				<view class="img">
 					<up-image radius="20rpx" :show-loading="true" :src="item.icon_url" width="260rpx" height="180rpx" mode="scaleToFill"></up-image>
 				</view>
@@ -168,6 +168,18 @@
 	const toPlan = ()=>{
 		uni.navigateTo({
 			url: '/pages/plan/index'
+		})
+	}
+	
+	const toNews = ()=>{
+		uni.navigateTo({
+			url: '/pages/news/index'
+		})
+	}
+	
+	const toNewsDetail = (news_id)=>{
+		uni.navigateTo({
+			url: '/pages/news/detail?news_id=' + news_id
 		})
 	}
 	

@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:00
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-16 10:20:05
+ * @LastEditTime: 2024-08-16 10:50:16
 -->
 <template>
 	<view class="header">
@@ -42,19 +42,18 @@
 	import { timestampToDate } from '../../utils/time.js'
 
 	onMounted( async () => {
-		// const options = getCurrentInstance()
-		// news_id.value = options.attrs.news_id
+		const options = getCurrentInstance()
+		news_id.value = options.attrs.news_id
 		getnewsDetail()
 	})
-	const news_id = ref()
+	const news_id = ref(1)
 	const news_info = ref({})
 	
 	/**
 	 * 获取详细新闻信息
 	 */
 	const getnewsDetail = async ()=>{
-		const query = "news_id=1"
-		// const query = "news_id=" + news_id.value
+		const query = "news_id=" + news_id.value
 		console.log(query)
 		await getNewsDetailAPI(query)
 		.then((res)=>{
