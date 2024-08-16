@@ -1,3 +1,10 @@
+<!--
+ * @Description: 所有学习记录页面
+ * @Author: yuennchan@163.com
+ * @Date: 2024-08-16 10:20:21
+ * @LastEditor: yuennchan@163.com
+ * @LastEditTime: 2024-08-16 10:20:28
+-->
 <template>
 	<view class="header">
 		<up-navbar height="80rpx" title="全部记录" :placeholder="true" >

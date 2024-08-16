@@ -1,3 +1,10 @@
+<!--
+ * @Description: 就业规划详细页面
+ * @Author: yuennchan@163.com
+ * @Date: 2024-08-16 10:19:13
+ * @LastEditor: yuennchan@163.com
+ * @LastEditTime: 2024-08-16 10:19:42
+-->
 <template>
 	<view class="header">
 		<up-navbar height="80rpx" :title="'就业规划-'+major_info.name" :placeholder="true" >

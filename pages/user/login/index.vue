@@ -1,3 +1,10 @@
+<!--
+ * @Description: 登录
+ * @Author: yuennchan@163.com
+ * @Date: 2024-08-16 10:20:58
+ * @LastEditor: yuennchan@163.com
+ * @LastEditTime: 2024-08-16 10:20:59
+-->
 <template>
 	<view class="header">
 		<up-navbar height="80rpx" title="登录" :placeholder="true" >

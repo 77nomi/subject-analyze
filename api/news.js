@@ -1,4 +1,10 @@
-// 新闻接口文件
+/**
+ * @Description: 新闻接口文件
+ * @Author: yuennchan@163.com
+ * @Date: 2024-08-16 10:18:15
+ * @LastEditor: yuennchan@163.com
+ * @LastEditTime: 2024-08-16 10:18:19
+ */
 import {
 	http
 } from '@/utils/http.js'

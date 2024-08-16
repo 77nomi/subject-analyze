@@ -1,3 +1,10 @@
+<!--
+ * @Description: 新闻详细页面
+ * @Author: yuennchan@163.com
+ * @Date: 2024-08-16 10:20:00
+ * @LastEditor: yuennchan@163.com
+ * @LastEditTime: 2024-08-16 10:20:05
+-->
 <template>
 	<view class="header">
 		<up-navbar height="80rpx" title="新闻" :placeholder="true" >

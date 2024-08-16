@@ -1,3 +1,10 @@
+<!--
+ * @Description: 数据分析详细页面
+ * @Author: yuennchan@163.com
+ * @Date: 2024-08-16 10:16:59
+ * @LastEditor: yuennchan@163.com
+ * @LastEditTime: 2024-08-16 10:19:07
+-->
 <template>
 	<view class="header">
 		<up-navbar height="80rpx" title="数据分析 " :placeholder="true" >

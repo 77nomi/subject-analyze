@@ -1,3 +1,10 @@
+<!--
+ * @Description: 添加、编辑、查看记录页面
+ * @Author: yuennchan@163.com
+ * @Date: 2024-08-16 10:20:12
+ * @LastEditor: yuennchan@163.com
+ * @LastEditTime: 2024-08-16 10:20:32
+-->
 <template>
 	<view class="header">
 		<up-navbar height="80rpx" :title="plan_id==0?'添加记录':'编辑记录'" :placeholder="true" >

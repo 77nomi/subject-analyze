@@ -1,3 +1,10 @@
+<!--
+ * @Description: 注册
+ * @Author: yuennchan@163.com
+ * @Date: 2024-08-16 10:21:02
+ * @LastEditor: yuennchan@163.com
+ * @LastEditTime: 2024-08-16 10:21:04
+-->
 <template>
 	<view class="header">
 		<up-navbar height="80rpx" title="注册" :placeholder="true" >

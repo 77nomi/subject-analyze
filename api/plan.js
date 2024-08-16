@@ -1,4 +1,10 @@
-// 学习计划的接口文件
+/**
+ * @Description: 学习计划的接口文件
+ * @Author: yuennchan@163.com
+ * @Date: 2024-08-16 10:18:21
+ * @LastEditor: yuennchan@163.com
+ * @LastEditTime: 2024-08-16 10:18:24
+ */
 import {
 	http
 } from '@/utils/http.js'

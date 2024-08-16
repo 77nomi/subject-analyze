@@ -1,4 +1,10 @@
-// 与用户相关的接口文件
+/**
+ * @Description: 与用户相关的接口文件
+ * @Author: yuennchan@163.com
+ * @Date: 2024-08-16 10:18:27
+ * @LastEditor: yuennchan@163.com
+ * @LastEditTime: 2024-08-16 10:18:31
+ */
 import {
 	http
 } from '@/utils/http.js'

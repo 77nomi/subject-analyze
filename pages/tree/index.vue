@@ -1,3 +1,10 @@
+<!--
+ * @Description: 技能树
+ * @Author: yuennchan@163.com
+ * @Date: 2024-08-16 10:20:51
+ * @LastEditor: yuennchan@163.com
+ * @LastEditTime: 2024-08-16 10:20:53
+-->
 <template>
 	<view class="header">
 		<up-navbar height="80rpx" title="学习路线&技能树" :placeholder="true" >

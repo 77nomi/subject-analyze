@@ -1,3 +1,10 @@
+<!--
+ * @Description: 主页
+ * @Author: yuennchan@163.com
+ * @Date: 2024-08-16 10:19:54
+ * @LastEditor: yuennchan@163.com
+ * @LastEditTime: 2024-08-16 10:19:56
+-->
 <template>
 	<view class="header">
 		<up-row
