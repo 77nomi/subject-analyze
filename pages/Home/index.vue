@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:54
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-16 10:52:06
+ * @LastEditTime: 2024-08-19 10:01:53
 -->
 <template>
 	<view class="header">
@@ -66,7 +66,7 @@
 					</view>
 				</up-col>
 				<up-col span="4">
-					<view class="grid-layout">
+					<view @click="toAnalyze" class="grid-layout">
 						<up-image :show-loading="true" src="/assets/icon/icon_main_data_analyze.png" width="25px" height="25px"></up-image>
 						<view>
 							数据<br><span class="font-red">分析</span>
@@ -180,6 +180,11 @@
 	const toNewsDetail = (news_id)=>{
 		uni.navigateTo({
 			url: '/pages/news/detail?news_id=' + news_id
+		})
+	}
+	const toAnalyze = ()=>{
+		uni.navigateTo({
+			url: '/pages/analyze/index'
 		})
 	}
 	
