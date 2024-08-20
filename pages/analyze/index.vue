@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-19 10:51:12
+ * @LastEditTime: 2024-08-20 17:56:11
 -->
 <template>
 	<view class="header">
@@ -35,18 +35,18 @@
 			</view>
 			<view class="analyzeBox">
 				<view class="num">
-					记录的数据条数：10000条
+					记录的数据条数：{{majorData.data_rows}}条
 				</view>
 				<view class="most">
-					需求最高的技术：C
+					需求最高的技术：{{majorData.expand_skill}}
 				</view>
 				<view class="updateTime">
-					数据更新时间：2024-08-13
+					数据更新时间：{{majorData.last_update}}
 				</view>
 				<view class="analyzeDetail">
 					<p>分析：</p>
 					<view class="detail">
-						哈哈哈哈哈
+						{{majorData.main_skill}}
 					</view>
 				</view>
 			</view>
@@ -58,8 +58,10 @@
 <script setup>
 	import { ref, onMounted } from 'vue'
 	import { getPlanAPI } from '@/api/plan.js'
-	import UniChart from '@/node_modules/uniapp-echarts/components/uni-chart/uni-chart';
+	import UniChart from '@/node_modules/uniapp-echarts/components/uni-chart/uni-chart'
 	import { getMajorListAPI } from '@/api/career.js'
+	import { getDetailAPI } from '@/api/analyze.js'
+	
 
 	onMounted( async () => {
 		await getMajorList()
@@ -72,6 +74,7 @@
 	const showPicker = ref(true);
 	const uPickerRef = ref(null)
 	const nowChoose = ref(null)
+	const majorData = ref({})
 	
 	
 	/**
@@ -167,18 +170,9 @@
 	 * @return
 	 */
 	const getChartData = async()=>{
-		const formatData = (data)=>{
-			let optionD = {
+		const formatData = (dataList)=>{
+			let option = {
 				dataset: [
-				  {
-				    dimensions: ['name', 'value'],
-				    source: [
-				      ['Hannah Krause', 1048],
-				      ['Zhao Qian', 120],
-				      ['Jasmin Krause ', 580],
-				      ['Li Lei', 484]
-				    ]
-				  },
 				  {
 				    transform: {
 				      type: 'sort',
@@ -188,11 +182,6 @@
 				],
 				tooltip: {
 					trigger: 'item'
-				},
-				legend: {
-					orient: 'horizontal',
-					bottom: 'bottom',
-					width: '80%'
 				},
 				series: [
 					{
@@ -210,41 +199,26 @@
 				]
 			}
 			
-			let option = {
-			  dataset: [
-			    {
-			      dimensions: ['name', 'value'],
-			      source: [
-			        ['Hannah Krause', 41],
-			        ['Zhao Qian', 20],
-			        ['Jasmin Krause ', 52],
-			        ['Li Lei', 37]
-			      ]
-			    },
-			    {
-			      transform: {
-			        type: 'sort',
-			        config: { dimension: 'value', order: 'desc' }
-			      }
-			    }
-			  ],
-			  xAxis: {
-			    type: 'category',
-					axisLabel: { interval: 0, rotate: 20 }
-			  },
-			  yAxis: {},
-			  series: {
-			    type: 'bar',
-			    encode: { x: 'name', y: 'value' },
-					datasetIndex: 1
-			  }
-			};
-			echart.value.setOption(optionD)
+			let datasetItem = {
+				dimensions: ['name', 'value'],
+				source: []
+			}
+			dataList.forEach((item)=>{
+				datasetItem.source.push([item.subject_name,item.value])
+			})
+			option.dataset.unshift(datasetItem)
+			echart.value.setOption(option)
 		}
 		
-		await getPlanAPI()
+		const query = 'major_id=' + nowChoose.value.major_id
+		await getDetailAPI(query)
 		.then((res)=>{
-			formatData(res)
+			majorData.value.data_rows = res.data_rows
+			const date = new Date(res.last_update);
+			majorData.value.expand_skill = res.expand_skill
+			majorData.value.last_update = date.toISOString().split('T')[0];
+			majorData.value.main_skill = res.main_skill
+			formatData(res.subject_value)
 		})
 		.catch((err)=>{
 			console.log(err)
