@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-20 17:56:11
+ * @LastEditTime: 2024-08-21 16:32:29
 -->
 <template>
 	<view class="header">
@@ -26,28 +26,34 @@
 				</view>
 			</view>
 			<view class="intro">
-				{{nowChoose.major_name}}专业就业岗位技术需求
+				<span class="font-red">{{nowChoose.major_name}}</span>就业岗位技术需求
 			</view>
 		</view>
 		<template v-if="nowChoose!==null">
 			<view class="dataChartBox">
 				<UniChart ref="echart" />
 			</view>
+			<view class="bottomTitle">
+				数据分析：
+			</view>
 			<view class="analyzeBox">
-				<view class="num">
+				<view class="big">
 					记录的数据条数：{{majorData.data_rows}}条
 				</view>
-				<view class="most">
-					需求最高的技术：{{majorData.expand_skill}}
-				</view>
-				<view class="updateTime">
+				<view class="big">
 					数据更新时间：{{majorData.last_update}}
 				</view>
-				<view class="analyzeDetail">
-					<p>分析：</p>
-					<view class="detail">
-						{{majorData.main_skill}}
-					</view>
+				<view class="samll">
+					掌握以下技能：
+						<ul class=detail>
+							<li v-for="(item,index) in majorData.main_skill" :key="index">{{item}}</li>
+						</ul>
+				</view>
+				<view class="samll">
+					拓展技术栈：
+						<ul class=detail>
+							<li v-for="(item,index) in majorData.expand_skill" :key="index">{{item}}</li>
+						</ul>
 				</view>
 			</view>
 		</template>
@@ -57,10 +63,10 @@
 
 <script setup>
 	import { ref, onMounted } from 'vue'
-	import { getPlanAPI } from '@/api/plan.js'
 	import UniChart from '@/node_modules/uniapp-echarts/components/uni-chart/uni-chart'
 	import { getMajorListAPI } from '@/api/career.js'
 	import { getDetailAPI } from '@/api/analyze.js'
+	import { timestampToDate } from '@/utils/time.js'
 	
 
 	onMounted( async () => {
@@ -213,11 +219,11 @@
 		const query = 'major_id=' + nowChoose.value.major_id
 		await getDetailAPI(query)
 		.then((res)=>{
+			console.log(res)
 			majorData.value.data_rows = res.data_rows
-			const date = new Date(res.last_update);
-			majorData.value.expand_skill = res.expand_skill
-			majorData.value.last_update = date.toISOString().split('T')[0];
-			majorData.value.main_skill = res.main_skill
+			majorData.value.expand_skill = res.expand_skill.split('\\n')
+			majorData.value.last_update = timestampToDate(res.last_update)
+			majorData.value.main_skill = res.main_skill.split('\\n')
 			formatData(res.subject_value)
 		})
 		.catch((err)=>{
@@ -244,6 +250,7 @@
 	}
 	.container{
 		width: 100%;
+		padding-bottom: 20rpx;
 		.topBox{
 			width: 96%;
 			margin: 20rpx auto;
@@ -264,6 +271,7 @@
 			.intro{
 				margin-left: 6rpx;
 				font-size: 30rpx;
+				font-weight: 600;
 			}
 		}
 		.dataChartBox{
@@ -274,19 +282,36 @@
 			background-color: #fff;
 			border-radius: 10rpx;
 		}
-		.analyzeBox{
+		.bottomTitle{
 			width: 90%;
 			margin: 20rpx auto;
+			font-size: 34rpx;
+			font-weight:600;
+		}
+		.analyzeBox{
+			width: 90%;
+			margin: 10rpx auto;
 			background-color: #fff;
 			border-radius: 10rpx;
 			padding: 10rpx;
 			view{
 				margin-left: 10rpx;
-				margin-top: 10rpx;
+				margin-top: 15rpx;
 				font-size: 30rpx;
+			}
+			.big{
+				font-weight: 600;
+			}
+			.samll{
+				font-size: 28rpx;
 				.detail{
-					margin-left: 5rpx;
-					font-size: 28rpx;
+					display: inline-block;
+					font-size: 26rpx;
+					padding-left: 6%;
+				}
+				pre{
+					white-space: pre-wrap;
+					word-wrap: break-word;
 				}
 			}
 		}

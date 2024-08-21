@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:00
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-16 10:50:16
+ * @LastEditTime: 2024-08-21 15:29:41
 -->
 <template>
 	<view class="header">
@@ -54,7 +54,6 @@
 	 */
 	const getnewsDetail = async ()=>{
 		const query = "news_id=" + news_id.value
-		console.log(query)
 		await getNewsDetailAPI(query)
 		.then((res)=>{
 			console.log(res)
