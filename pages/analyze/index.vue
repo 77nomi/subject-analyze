@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-21 16:32:29
+ * @LastEditTime: 2024-08-21 17:25:24
 -->
 <template>
 	<view class="header">
@@ -187,22 +187,31 @@
 				  }
 				],
 				tooltip: {
-					trigger: 'item'
+					show: 'true',
+					trigger: 'item',
+					triggerOn: 'mousemove|click'
 				},
 				series: [
 					{
 						name: 'Access From',
 						type: 'pie',
-						radius: '50%',
+						radius: '70%',
 						emphasis: {
 							itemStyle: {
 								shadowBlur: 10,
 								shadowOffsetX: 0,
 								shadowColor: 'rgba(0, 0, 0, 0.5)'
 							}
+						},
+						label: {
+							formatter: params => {
+								return `${params.name.replace(/\+/g, '\n')}`
+							},
+							color: 'inherit',
+							fontSize: '13'
 						}
 					}
-				]
+				],
 			}
 			
 			let datasetItem = {
