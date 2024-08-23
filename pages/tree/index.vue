@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:51
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-16 10:20:53
+ * @LastEditTime: 2024-08-23 17:28:41
 -->
 <template>
 	<view class="header">
@@ -47,82 +47,86 @@
 
 <script setup>
 	import { ref, onMounted } from 'vue'
-	import { getMajorListAPI } from '@/api/career.js'
+	import { GetMyTreeAPI } from '@/api/tree.js'
+	import { GetSubjectMapAPI } from '@/api/plan.js'
 
 	onMounted( async () => {
+		await GetMyTreeData()
 	})
 	
 	const isAll = ref(false)
 	const skillTree = ref([{
 		id: 1,
-		label: 'root',
-		children:[
-			{
-				id: 2,
-				label: 'father1',
-				children: [
-					{
-						id: 3,
-						label: 'leaf1',
-						children: []
-					},
-					{
-						id: 4,
-						label: 'leaf2',
-						children: []
-					},
-				]
-			},
-			{
-				id: 5,
-				label: 'father2',
-				children: [
-					{
-						id: 6,
-						label: 'leaf3',
-						children: []
-					},
-					{
-						id: 7,
-						label: 'father3',
-						children: [
-							{
-								id: 8,
-								label: 'leaf4',
-								children: []
-							},
-						]
-					},
-				]
-			},
-		]
+		label: '全部',
+		children:[]
 	},])
+	const allTreeList = ref([])
+	const myTreeList = ref([])
 		
 	const change = (e)=>{
-		console.log(e);
+		if(e){
+			getAllTreeData()
+		}else{
+			GetMyTreeData()
+		}
 	}
 
-	const allMajorList = ref([])
-	
 	/**
-	 * 获取学科列表
+	 * @description: 构建树结构
+	 * @param {*} dataList
+	 * @return
 	 */
-	const getMajorList = async()=>{
-		let majorMap = {}
-		const buildTree = (dataList)=>{
-			dataList.forEach((item)=>{
-				if(item.major_type in majorMap){
-					majorMap[item.major_type].push({'major_id':item.major_id, 'major_name': item.major_name})
-				}else{
-					majorMap[item.major_type] = [{'major_id':item.major_id, 'major_name': item.major_name}]
+	const buildTree = (dataList=null)=>{
+		skillTree.value[0].children = []
+		let children = []
+		// 从接口获取数据
+		if(dataList){
+			let id = 2
+			for(const key in dataList){
+				let secondTree = {
+					id: id,
+					label: key,
+					children: []
 				}
-			})
-			for(const item in majorMap) {
-				allMajorList.value.push({'major_type':item, 'majorList': majorMap[item]})
+				id++
+				const item = dataList[key]
+				for(const secondKey in item){
+					let thirdTree = {
+						id: id,
+						label: secondKey,
+						children: []
+					}
+					id++
+					const thirdList = item[secondKey]
+					thirdList.forEach((third)=>{
+						thirdTree.children.push({
+							id: id,
+							label: third,
+							children: []
+						})
+						id++
+					})
+					secondTree.children.push(thirdTree)
+				}
+				children.push(secondTree)
+				skillTree.value[0].children.push(secondTree)
 			}
 		}
-		
-		await getMajorListAPI()
+		// 从已有数据里面获取数据
+		else{
+			console.log('exist')
+			return 
+		}
+		allTreeList.value = children
+	}
+	
+	
+	/**
+	 * @description: 获取全部的技能树
+	 * @return
+	 */
+	const getAllTreeData = async()=>{
+		await GetSubjectMapAPI()
 		.then((res)=>{
 			buildTree(res)
 		})
@@ -130,6 +134,21 @@
 			console.log(err)
 		})
 	}
+	
+	/**
+	 * @description: 获取我学习了的技能树
+	 * @return
+	 */
+	const GetMyTreeData = async()=>{
+		await GetMyTreeAPI()
+		.then((res)=>{
+			buildTree(res)
+		})
+		.catch((err)=>{
+			console.log(err)
+		})
+	}
+	
 	
 	const toBack = ()=>{
 		uni.navigateBack()
@@ -145,6 +164,7 @@
 	}
 	.container{
 		width: 100%;
+		padding-bottom: 20rpx;
 		.top{
 			height: 80rpx;
 			width: 95%;
