@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:18:21
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-16 10:18:24
+ * @LastEditTime: 2024-08-23 14:56:17
  */
 import {
 	http
@@ -62,6 +62,17 @@ export const GetPlanListAPI = (params) => {
 export const GetPlanDetailAPI = (query) => {
 	return http.request({
 		url: '/study/get-plan-detail?'+query,
+		method: 'GET'
+	})
+}
+
+/**
+ * @description: 获取科目表
+ * @return
+ */
+export const GetSubjectMapAPI = () => {
+	return http.request({
+		url: '/study/get-subject-map',
 		method: 'GET'
 	})
 }

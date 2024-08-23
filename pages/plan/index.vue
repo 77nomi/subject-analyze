@@ -183,6 +183,7 @@
 		
 		await getPlanAPI()
 		.then((res)=>{
+			console.log(res)
 			formatData(res)
 		})
 		.catch((err)=>{

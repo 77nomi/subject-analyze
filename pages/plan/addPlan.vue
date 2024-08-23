@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:12
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-16 10:20:32
+ * @LastEditTime: 2024-08-23 16:38:41
 -->
 <template>
 	<view class="header">
@@ -34,15 +34,15 @@
 				</up-form-item>
 				<up-form-item
 					label="学科"
-					prop="subject_id"
+					prop="choosedSubject"
 					required
 				>
 					<up-input
-						v-model="formData.subject_id"
+						v-model="formData.choosedSubject"
 						disabled
-						@click="showPicker" 
+						@click="openPicker" 
 						type="select" 
-						:select-open="picker.show"
+						:select-open="showPicker"
 					></up-input>
 				</up-form-item>
 				<up-form-item
@@ -103,34 +103,25 @@
 		@close="calendarClose">
 	</up-calendar>
 	<up-loading-page loadingText="" :loading="calendar.loading"></up-loading-page>
-	<up-picker 
-		title="选择学科"
-		:show="picker.show" 
-		:closeOnClickOverlay="true"
-		:columns="picker.columns" 
-		keyName="label"
-		@confirm="pickerConfirm"
-		@close="PickerClose"
-		@cancel="PickerClose">
-	</up-picker>
+	<up-picker title="选择学科" :show="showPicker" ref="uPickerRef" :columns="columns" @confirm="confirm" @change="changeHandler" @cancel="closePicker"></up-picker>
 </template>
 
 <script setup>
 	import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
-	import { addPlanAPI, GetPlanDetailAPI, ChangePlanAPI } from '@/api/plan.js'
+	import { addPlanAPI, GetPlanDetailAPI, ChangePlanAPI, GetSubjectMapAPI } from '@/api/plan.js'
 	import { timeToTimestamp, timestampToDate } from '/utils/time.js'
 	onMounted( async () => {
 		const options = getCurrentInstance()
 		plan_id.value = options.attrs.plan_id
-		// plan_id.value = 33
 		setTimeLimit()
 		await initForm()
+		await getMajorList()
 	})
 	const plan_id = ref(0)
 	const formRef = ref(null)
 	const formData = ref({
 		plan_name: '',
-		subject_id: '',
+		choosedSubject: '',
 		study_time: '',
 		spend_time: '',
 		note: '',
@@ -144,7 +135,7 @@
 				trigger: ['blur', 'change'],  
 			}
 		],
-		'subject_id': [
+		'choosedSubject': [
 			{  
 				type: 'string',  
 				required: true,  
@@ -271,57 +262,129 @@
 	}
 	
 	
-	const picker = ref({
-		show: false,
-		columns:[[
-			{
-				label: 'Java',
-				id: 1
-			},
-			{
-				label: 'C语言',
-				id: 2
-			},
-			{
-				label: 'Python',
-				id: 3
-			},
-			{
-				label: 'C++',
-				id: 4
-			},
-		]]
-	})
+	const allMajorList = ref([])
+	const columns = ref([]);
+	const showPicker = ref(false);
+	const uPickerRef = ref(null)
+	const nowChoose = ref(null)
+	const majorData = ref({})
+	const subject_cat_key = ref('')
+  const subject_sub_key = ref('')
+  const subject_key = ref('')
+	
+	
 	/**
-	 * 打开学科选择
+	 * @description: 更改选择
+	 * @param {*} e
+	 * @return
 	 */
-	const showPicker = ()=>{
-		picker.value.show = true
-	}
+	const changeHandler = (e) => {
+		const {
+			columnIndex,
+			value,
+			values,
+			index,
+			indexs,
+		} = e;
+	
+		if (columnIndex === 0) {
+			uPickerRef.value.setColumnValues(1, allMajorList.value[index].secondColumn);
+			uPickerRef.value.setColumnValues(2, allMajorList.value[index].childList[0].thirdColumn);
+		}else if (columnIndex === 1){
+			uPickerRef.value.setColumnValues(2, allMajorList.value[indexs[0]].childList[indexs[1]].thirdColumn);
+		}
+	};
+	
 	/**
-	 * 关闭学科选择
+	 * @description: 确认选择
+	 * @param {*} e
+	 * @return
 	 */
-	const PickerClose = ()=>{
-		picker.value.show=false
-	}
+	const confirm = (e) => {
+		console.log(e)
+		const first = e.indexs[0]
+		const second = e.indexs[1]
+		const third = e.indexs[2]
+		subject_cat_key.value = e.value[0]
+		subject_sub_key.value = e.value[1]
+		subject_key.value = e.value[2]
+		formData.value.choosedSubject = e.value[2]
+		showPicker.value = false;
+	};
+	
 	/**
-	 * 确认学科
+	 * @description: 关闭选择器
+	 * @return
 	 */
-	const pickerConfirm = (e)=>{
-		console.log(e.value[0].label)
-		formData.value.subject_id = e.value[0].label
-		picker.value.show=false
+	const closePicker = ()=>{
+		showPicker.value = false;
 	}
+	
+	/**
+	 * @description: 打开选择器
+	 * @return
+	 */
+	const openPicker = ()=>{
+		showPicker.value=true
+	}
+	
+	/**
+	 * @description: 获取学科列表
+	 * @return
+	 */
+	const getMajorList = async()=>{
+		let majorList = []
+		let firstColumn = []
+		const buildTree = (dataList)=>{
+			for(const key in dataList){
+				let stmpTree = {
+					label: key
+				}
+				firstColumn.push(key)
+				let secondColumn = []
+				const item = dataList[key]
+				let childTreeList = []
+				for(const secondKey in item){
+					let secondTree = {
+						label: secondKey,
+						thirdColumn: item[secondKey]
+					}
+					secondColumn.push(secondKey)
+					childTreeList.push(secondTree)
+				}
+				stmpTree.childList = childTreeList
+				stmpTree.secondColumn = secondColumn
+				majorList.push(stmpTree)
+			}
+			columns.value.push(firstColumn)
+			columns.value.push(majorList[0].secondColumn)
+			columns.value.push(majorList[0].childList[0].thirdColumn)
+			allMajorList.value = majorList
+		}
+		
+		await GetSubjectMapAPI()
+		.then((res)=>{
+			buildTree(res)
+		})
+		.catch((err)=>{
+			console.log(err)
+		})
+	}
+	
 
 	/**
 	 * 编辑时候的初始化表单
 	 */
 	const initForm = async()=>{
 		function setData(data) {
-			const subject_label = picker.value.columns[0].find(item => item.id == data.subject_id).label
+			subject_cat_key.value = data.subject_cat_key
+			subject_sub_key.value = data.subject_sub_key
+			subject_key.value = data.subject_key
+			
+			// const choosedSubject = [subject_cat_key.value,subject_sub_key.value,subject_key.value].join(', ')
 			formData.value = {
 				plan_name: data.plan_name,
-				subject_id: subject_label,
+				choosedSubject: subject_key.value,
 				study_time: timestampToDate(data.study_time),
 				spend_time: String(data.spend_time),
 				note: data.note,
@@ -332,7 +395,6 @@
 			const query = "plan_id="+plan_id.value
 			await GetPlanDetailAPI(query)
 			.then((res)=>{
-				console.log(res)
 				setData(res)
 			})
 			.catch((err)=>{
@@ -350,17 +412,19 @@
 		formRef.value.validate()
 		.then(async (valid) => {  
 			if (valid) {  
-				formData.value.subject_id = picker.value.columns[0].find(item => item.label === formData.value.subject_id).id
 				const time = timeToTimestamp(formData.value.study_time+' T00:00:00Z')
 				const params = {
-					subject_id: formData.value.subject_id,
+					plan_name: formData.value.plan_name,
+					subject_cat_key: subject_cat_key.value,
+					subject_sub_key: subject_sub_key.value,
+					subject_key: subject_key.value,
 					study_time: timeToTimestamp(formData.value.study_time),
 					spend_time: Number(formData.value.spend_time),
-					plan_name: formData.value.plan_name,
+					add_time: Math.floor(Date.now() / 1000),
 					note: formData.value.note,
-					addtime: Math.floor(Date.now() / 1000),
-					tags: formData.value.tags
+					tags: formData.value.tags,
 				}
+				console.log(params)
 				if(plan_id.value==0){
 					await addPlanAPI(params)
 					.then((res)=>{
