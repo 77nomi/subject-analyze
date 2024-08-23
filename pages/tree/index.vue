@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:51
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-23 17:28:41
+ * @LastEditTime: 2024-08-23 17:41:36
 -->
 <template>
 	<view class="header">
@@ -76,7 +76,7 @@
 	 * @param {*} dataList
 	 * @return
 	 */
-	const buildTree = (dataList=null)=>{
+	const buildTree = (dataList,type)=>{
 		skillTree.value[0].children = []
 		let children = []
 		// 从接口获取数据
@@ -109,15 +109,26 @@
 					secondTree.children.push(thirdTree)
 				}
 				children.push(secondTree)
-				skillTree.value[0].children.push(secondTree)
+				// skillTree.value[0].children.push(secondTree)
+			}
+			if(type==0){
+				allTreeList.value = children
+			}else{
+				myTreeList.value = children
 			}
 		}
 		// 从已有数据里面获取数据
 		else{
 			console.log('exist')
-			return 
+			if(type==0){
+				children = allTreeList.value
+			}else{
+				children = myTreeList.value
+			}
 		}
-		allTreeList.value = children
+		children.forEach((item)=>{
+			skillTree.value[0].children.push(item)
+		})
 	}
 	
 	
@@ -126,13 +137,17 @@
 	 * @return
 	 */
 	const getAllTreeData = async()=>{
-		await GetSubjectMapAPI()
-		.then((res)=>{
-			buildTree(res)
-		})
-		.catch((err)=>{
-			console.log(err)
-		})
+		if(allTreeList.value.length===0){
+			await GetSubjectMapAPI()
+			.then((res)=>{
+				buildTree(res, 0)
+			})
+			.catch((err)=>{
+				console.log(err)
+			})
+		} else {
+				buildTree(null, 0)
+		}
 	}
 	
 	/**
@@ -140,13 +155,17 @@
 	 * @return
 	 */
 	const GetMyTreeData = async()=>{
-		await GetMyTreeAPI()
-		.then((res)=>{
-			buildTree(res)
-		})
-		.catch((err)=>{
-			console.log(err)
-		})
+		if(myTreeList.value.length===0){
+			await GetMyTreeAPI()
+			.then((res)=>{
+				buildTree(res, 1)
+			})
+			.catch((err)=>{
+				console.log(err)
+			})
+		} else {
+				buildTree(null, 1)
+		}
 	}
 	
 	
