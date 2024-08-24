@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:00
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-24 18:56:09
+ * @LastEditTime: 2024-08-24 19:41:29
 -->
 <template>
 	<view class="header">
@@ -26,7 +26,7 @@
 				<span class="font-red">NEWS {{news_info.date}}</span>
 			</view>
 			<view class="starImg">
-				<up-image src="/assets/icon/icon_major_detail_star.png" width="70rpx" height="70rpx"></up-image>	
+				<image src="/assets/icon/icon_major_detail_star.png" style="width: 70rpx; height: 70rpx;"></image>	
 				收藏
 			</view>
 		</view>

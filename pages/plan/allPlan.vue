@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:21
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-24 18:56:55
+ * @LastEditTime: 2024-08-24 19:41:59
 -->
 <template>
 	<view class="header">
@@ -23,7 +23,7 @@
 				<view class="add">
 					<span>添加记录</span>
 					<view @click="ToAddPlan(0)" class="addBtn">
-						<up-image src="/assets/icon/icon_plan_add.png" width="40rpx" height="40rpx"></up-image>	
+						<image src="/assets/icon/icon_plan_add.png" style="width: 40rpx; height: 40rpx;"></image>	
 					</view>
 				</view>
 			</view>

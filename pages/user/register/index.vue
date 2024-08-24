@@ -3,16 +3,16 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:21:02
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-16 10:21:04
+ * @LastEditTime: 2024-08-24 19:43:02
 -->
 <template>
 	<view class="header">
-		<up-navbar height="80rpx" title="注册" :placeholder="true" >
+		<up-navbar height="80rpx" title="" :placeholder="true" >
 			<template #left>
-				<up-image src="/assets/icon/icon_top_bar_back.png" width="50rpx" height="50rpx"></up-image>	
+				<image @click="toBack" src="/assets/icon/icon_top_bar_back.png" style="width: 50rpx; height: 50rpx"></image>	
 			</template>
 			<template #right>
-				<up-image src="/assets/icon/icon_top_bar_list.png" width="50rpx" height="50rpx"></up-image>	
+				<image src="/assets/icon/icon_top_bar_list.png" style="width: 50rpx; height: 50rpx"></image>
 			</template>
 		</up-navbar>
 	</view>
@@ -78,7 +78,7 @@
 						class="codeBox"
 					>
 						<template #suffix>
-							<up-image @click="updateCode" src="/assets/icon/icon_register_reload.png" height="32rpx" width="32rpx"></up-image>
+							<image @click="updateCode" src="/assets/icon/icon_register_reload.png" style="height: 32rpx; width: 32rpx;"></image>
 						</template>
 					</up-input>
 					<up-image class="codeImg" :src="codeImgSrc" height="66rpx" width="150rpx" mode="aspectFit"></up-image>
@@ -278,6 +278,9 @@
 	  .catch(() => {
 	  });  
 	} 
+	const toBack = ()=>{
+		uni.navigateBack()
+	}
 </script>
 
 <style lang="scss">
