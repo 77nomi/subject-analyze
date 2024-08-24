@@ -1,0 +1,4 @@
+#Sat Aug 24 11:36:45 CST 2024
+base.0=D\:\\Android-SDK@4.24.82145_20240723\\HBuilder-Integrate-AS\\simpleDemo\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
