@@ -49,7 +49,7 @@
 					</up-input>
 				</up-form-item>
 			</up-form>
-			<view class="tips">
+			<view class="tips" @click="toRegister()">
 				没有账号？
 				<span style="color: #6a6b6b;">注册</span>
 				<!-- <span class="forget" style="color: #6a6b6b;">忘记密码</span> -->
@@ -100,6 +100,12 @@
 				trigger: ['blur', 'change'], 
 			},
 		]
+	}
+	
+	const toRegister = ()=>{
+		uni.navigateTo({
+			url: '/pages/user/register/index'
+		})
 	}
 	
 	const showPSW = ref(true)
