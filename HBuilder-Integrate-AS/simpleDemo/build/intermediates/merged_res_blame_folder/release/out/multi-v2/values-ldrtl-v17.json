@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Android-SDK@4.24.82145_20240723\\HBuilder-Integrate-AS\\simpleDemo\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-ldrtl-v17\\values-ldrtl-v17.xml",
+            "outputFile": "D:\\subject-analyze\\HBuilder-Integrate-AS\\simpleDemo\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-ldrtl-v17\\values-ldrtl-v17.xml",
             "map": [
                 {
-                    "source": "D:\\gradle-8.7\\GradleRepository\\.gradle\\caches\\transforms-2\\files-2.1\\a37d85a72ebe1cb2a7aa5954c64fb50b\\jetified-uniapp-v8-release\\res\\values-ldrtl-v17\\values-ldrtl-v17.xml",
+                    "source": "D:\\androidStudio\\Android\\.gradle\\caches\\transforms-2\\files-2.1\\a37d85a72ebe1cb2a7aa5954c64fb50b\\jetified-uniapp-v8-release\\res\\values-ldrtl-v17\\values-ldrtl-v17.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
