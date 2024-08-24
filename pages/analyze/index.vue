@@ -3,16 +3,16 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-21 17:25:24
+ * @LastEditTime: 2024-08-24 18:54:18
 -->
 <template>
 	<view class="header">
 		<up-navbar height="80rpx" title="数据分析 " :placeholder="true" >
 			<template #left>
-				<up-image @click="toBack" src="/assets/icon/icon_top_bar_back.png" width="50rpx" height="50rpx"></up-image>	
+				<image @click="toBack" src="/assets/icon/icon_top_bar_back.png" style="width: 50rpx; height: 50rpx"></image>	
 			</template>
 			<template #right>
-				<up-image src="/assets/icon/icon_top_bar_list.png" width="50rpx" height="50rpx"></up-image>	
+				<image src="/assets/icon/icon_top_bar_list.png" style="width: 50rpx; height: 50rpx"></image>
 			</template>
 		</up-navbar>
 	</view>
@@ -26,12 +26,16 @@
 				</view>
 			</view>
 			<view class="intro">
-				<span class="font-red">{{nowChoose.major_name}}</span>就业岗位技术需求
+				<span class="font-red">{{nowChoose?nowChoose.major_name:''}}</span>就业岗位技术需求
 			</view>
 		</view>
 		<template v-if="nowChoose!==null">
 			<view class="dataChartBox">
-				<UniChart ref="echart" />
+				<qiun-data-charts 
+				      type="pie"
+				      :opts="opts"
+				      :chartData="chartData"
+				    />
 			</view>
 			<view class="bottomTitle">
 				数据分析：
@@ -63,7 +67,6 @@
 
 <script setup>
 	import { ref, onMounted } from 'vue'
-	import UniChart from '@/node_modules/uniapp-echarts/components/uni-chart/uni-chart'
 	import { getMajorListAPI } from '@/api/career.js'
 	import { getDetailAPI } from '@/api/analyze.js'
 	import { timestampToDate } from '@/utils/time.js'
@@ -73,7 +76,6 @@
 		await getMajorList()
 	})
 	
-	const echart = ref(null)
 	const allMajorList = ref([])
 	const columns = ref([]);
 	const columnData = ref([]);
@@ -81,6 +83,29 @@
 	const uPickerRef = ref(null)
 	const nowChoose = ref(null)
 	const majorData = ref({})
+	const chartData = ref()
+	const opts = ref(
+		{
+			color: ["#1890FF","#91CB74","#FAC858","#EE6666","#73C0DE","#3CA272","#FC8452","#9A60B4","#ea7ccc"],
+			padding: [0,5,-10,5],
+			enableScroll: false,
+			extra: {
+				pie: {
+					activeOpacity: 0.5,
+					activeRadius: 10,
+					offsetAngle: 0,
+					labelWidth: 15,
+					border: true,
+					borderWidth: 3,
+					borderColor: "#FFFFFF",
+					linearType: "custom"
+				}
+			},
+			legend: {
+				margin: 5
+			}
+		}	
+	)
 	
 	
 	/**
@@ -106,12 +131,12 @@
 	 * @param {*} e
 	 * @return
 	 */
-	const confirm = (e) => {
+	const confirm = async (e) => {
 		const first = e.indexs[0]
 		const second = e.indexs[1]
 		nowChoose.value = allMajorList.value[first].majorList[second]
 		showPicker.value = false;
-		getChartData()
+		await getChartData()
 	};
 	
 	/**
@@ -177,52 +202,15 @@
 	 */
 	const getChartData = async()=>{
 		const formatData = (dataList)=>{
-			let option = {
-				dataset: [
-				  {
-				    transform: {
-				      type: 'sort',
-				      config: { dimension: 'value', order: 'desc' }
-				    }
-				  }
-				],
-				tooltip: {
-					show: 'true',
-					trigger: 'item',
-					triggerOn: 'mousemove|click'
-				},
-				series: [
-					{
-						name: 'Access From',
-						type: 'pie',
-						radius: '70%',
-						emphasis: {
-							itemStyle: {
-								shadowBlur: 10,
-								shadowOffsetX: 0,
-								shadowColor: 'rgba(0, 0, 0, 0.5)'
-							}
-						},
-						label: {
-							formatter: params => {
-								return `${params.name.replace(/\+/g, '\n')}`
-							},
-							color: 'inherit',
-							fontSize: '13'
-						}
-					}
-				],
+			let finData = {
+				series: []
 			}
-			
-			let datasetItem = {
-				dimensions: ['name', 'value'],
-				source: []
-			}
+			let data = []
 			dataList.forEach((item)=>{
-				datasetItem.source.push([item.subject_name,item.value])
+				data.push({name:item.subject_name,value:item.value,labelText:item.subject_name})
 			})
-			option.dataset.unshift(datasetItem)
-			echart.value.setOption(option)
+			finData.series.push({data})
+			chartData.value = JSON.parse(JSON.stringify(finData));
 		}
 		
 		const query = 'major_id=' + nowChoose.value.major_id
@@ -285,7 +273,7 @@
 		}
 		.dataChartBox{
 			width: 90%;
-			height: 550rpx;
+			height: 600rpx;
 			margin: 0 auto;
 			padding: 10rpx;
 			background-color: #fff;

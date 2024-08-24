@@ -3,16 +3,16 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:51
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-23 17:41:36
+ * @LastEditTime: 2024-08-24 19:18:55
 -->
 <template>
 	<view class="header">
 		<up-navbar height="80rpx" title="学习路线&技能树" :placeholder="true" >
 			<template #left>
-				<up-image @click="toBack" src="/assets/icon/icon_top_bar_back.png" width="50rpx" height="50rpx"></up-image>	
+				<image @click="toBack" src="/assets/icon/icon_top_bar_back.png" style="width: 50rpx; height: 50rpx"></image>	
 			</template>
 			<template #right>
-				<up-image src="/assets/icon/icon_top_bar_list.png" width="50rpx" height="50rpx"></up-image>	
+				<image src="/assets/icon/icon_top_bar_list.png" style="width: 50rpx; height: 50rpx"></image>
 			</template>
 		</up-navbar>
 	</view>

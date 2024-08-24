@@ -3,16 +3,16 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:36
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-16 10:20:47
+ * @LastEditTime: 2024-08-24 19:10:21
 -->
 <template>
 	<view class="header">
 		<up-navbar height="80rpx" title="学习记录" :placeholder="true" >
 			<template #left>
-				<up-image @click="toBack" src="/assets/icon/icon_top_bar_back.png" width="50rpx" height="50rpx"></up-image>	
+				<image @click="toBack" src="/assets/icon/icon_top_bar_back.png" style="width: 50rpx; height: 50rpx"></image>	
 			</template>
 			<template #right>
-				<up-image src="/assets/icon/icon_top_bar_list.png" width="50rpx" height="50rpx"></up-image>	
+				<image src="/assets/icon/icon_top_bar_list.png" style="width: 50rpx; height: 50rpx"></image>
 			</template>
 		</up-navbar>
 	</view>
@@ -48,7 +48,7 @@
 			<view class="add">
 				<span>添加记录</span>
 				<view @click="addPlan(0)" class="addBtn">
-					<up-image src="/assets/icon/icon_plan_add.png" width="40rpx" height="40rpx"></up-image>	
+					<image src="/assets/icon/icon_plan_add.png" style="width: 40rpx; height: 40rpx;"></image>	
 				</view>
 			</view>
 		</view>
@@ -72,7 +72,11 @@
 					共{{subjectNum}}个学科
 				</view>
 				<view class="content">
-					<UniChart ref="echart" />
+					<qiun-data-charts 
+					      type="line"
+					      :opts="opts"
+					      :chartData="chartData"
+					    />
 				</view>
 			</view>
 		</view>
@@ -82,13 +86,35 @@
 <script setup>
 	import { ref, onMounted } from 'vue'
 	import { getPlanAPI, GetPlanListAPI } from '@/api/plan.js'
-	import UniChart from '@/node_modules/uniapp-echarts/components/uni-chart/uni-chart';
 
 	onMounted( async () => {
-		getChartData()
-		getPlanList()
+		await getChartData()
+		await getPlanList()
 	})
 	
+	const chartData = ref()
+	const opts=ref( 
+		{
+			color: ["#1890FF","#91CB74","#FAC858","#EE6666","#73C0DE","#3CA272","#FC8452","#9A60B4","#ea7ccc"],
+			padding: [15,10,0,15],
+			enableScroll: false,
+			legend: {},
+			xAxis: {
+				disableGrid: true
+			},
+			yAxis: {
+				gridType: "dash",
+				dashLength: 2
+			},
+			extra: {
+				line: {
+					type: "straight",
+					width: 2,
+					activeType: "hollow"
+				}
+			}
+		}
+	)
 	const pageInfo = ref({
 		page: 1,
 		pagesize: 3
@@ -106,7 +132,7 @@
 	const timeChoose = ref('本周')
 	const averageTime = ref(0)
 	const subjectNum = ref(0)
-	const echart = ref(null)
+	const echart = ref()
 	const recordList = ref([])
 	const tags = ref([
 		{
@@ -144,41 +170,16 @@
 		const formatData = (data)=>{
 			averageTime.value=data.average_time
 			subjectNum.value=data.subjects_info.length
-			let optionData = {
-				dataset: {
-					source: []
-				},
-				legend: {
-					bottom: 0
-				},
-				xAxis: {
-					type: "category",
-					axisTick: {
-						show: false
-					}
-				},
-				yAxis: {},
-				series: []
+			console.log(data)
+			let finData = {
+				categories: data.xAxis
 			}
-			let typeList = ["date"]
-			data.xAxis.forEach((item) =>{
-				typeList.push(item)
-			})
-			optionData.dataset.source.push(typeList)
-			
+			let series = []
 			data.subjects_info.forEach((item)=>{
-				let dataList = []
-				dataList.push(item.subject_name)
-				item.data.forEach((itemData)=>{
-					dataList.push(itemData)
-				})
-				optionData.dataset.source.push(dataList)
-				optionData.series.push({
-					type: "line",
-					seriesLayoutBy: "row"
-				})
+				series.push({name:item.subject_name,data:item.data})
 			})
-			echart.value.setOption(optionData)
+			finData.series = series
+			chartData.value = JSON.parse(JSON.stringify(finData));
 		}
 		
 		await getPlanAPI()
@@ -331,7 +332,7 @@
 					justify-content: center;
 					align-items: center;
 					padding: 10rpx;
-					font-size: 16rpx;
+					font-size: 24rpx;
 				}
 			}
 			.add{
@@ -362,6 +363,7 @@
 				margin: 10rpx auto;
 				padding: 20rpx;
 				width: 90%;
+				height: 100%;
 				background-color: #fff;
 				border-radius: 10rpx;
 				.top{

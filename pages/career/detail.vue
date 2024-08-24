@@ -3,16 +3,16 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:13
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-16 10:19:42
+ * @LastEditTime: 2024-08-24 19:22:45
 -->
 <template>
 	<view class="header">
 		<up-navbar height="80rpx" :title="'就业规划-'+major_info.name" :placeholder="true" >
 			<template #left>
-				<up-image @click="toBack" src="/assets/icon/icon_top_bar_back.png" width="50rpx" height="50rpx"></up-image>	
+				<image @click="toBack" src="/assets/icon/icon_top_bar_back.png" style="width: 50rpx; height: 50rpx"></image>	
 			</template>
 			<template #right>
-				<up-image src="/assets/icon/icon_top_bar_list.png" width="50rpx" height="50rpx"></up-image>	
+				<image src="/assets/icon/icon_top_bar_list.png" style="width: 50rpx; height: 50rpx"></image>
 			</template>
 		</up-navbar>
 	</view>
@@ -25,7 +25,7 @@
 				{{major_info.intro}}
 			</view>
 			<view class="starImg">
-				<up-image src="/assets/icon/icon_major_detail_star.png" width="70rpx" height="70rpx"></up-image>	
+				<image src="/assets/icon/icon_major_detail_star.png" style="width: 70rpx; height: 70rpx;"></image>	
 				收藏
 			</view>
 		</view>
@@ -66,8 +66,11 @@
 	import { getMajorDetailAPI } from '@/api/career.js'
 
 	onMounted( async () => {
-		// const options = getCurrentInstance()
-		// major_id.value = options.attrs.major_id
+		const options = getCurrentInstance()
+		if(options.attrs.major_id)
+			major_id.value = options.attrs.major_id
+		else if(options.attrs.__pageInstance)
+			major_id.value = options.attrs.__pageInstance.options.major_id
 		getMajorDetail()
 	})
 	const major_id = ref()
@@ -78,8 +81,8 @@
 	 * 获取详细信息以及评论
 	 */
 	const getMajorDetail = async ()=>{
-		const query = "major_id=1"
-		// const query = "major_id=" + major_id.value
+		// const query = "major_id=1"
+		const query = "major_id=" + major_id.value
 		console.log(query)
 		await getMajorDetailAPI(query)
 		.then((res)=>{

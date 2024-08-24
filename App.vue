@@ -23,4 +23,12 @@ export default {
 	.font-red{
 		color: #AC0404 !important;
 	}
+	.status_bar{
+		height: calc(var(--status-bar-height) + 80rpx); 
+		width: 100%;
+		background-color: #fff;
+	}
+	.container{
+		margin-top: 80rpx;
+	}
 </style>

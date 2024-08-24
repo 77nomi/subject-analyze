@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:54
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-19 10:01:53
+ * @LastEditTime: 2024-08-24 18:55:20
 -->
 <template>
 	<view class="header">
@@ -23,25 +23,26 @@
 					</view>
 				</view>
 			</up-col>
-			<up-col span="7">
-				<view class="nav-layout" style="margin-right: 10rpx;margin-left:-16rpx;">
+			<up-col span="6">
+				<view class="nav-layout">
 					<up-search v-model="search" :showAction="false" bgColor="#D4D4D4" height="55rpx"></up-search>
 				</view>
 			</up-col>
-			<up-col span="1">
+			<up-col span="2" style="padding: 0;">
 				<view class="nav-layout">
-					<up-image src="/assets/icon/icon_main_setting.png" width="46rpx" height="40rpx" style="margin-right: 16rpx;"></up-image>		
+					<image src="/assets/icon/icon_main_setting.png" mode="aspectFit" style=" width:40rpx; height: 40rpx;"></image>	
 				</view>
 			</up-col>
 		</up-row>
 	</view>
 
 	<view class="container">
+		<view class="status_bar"></view>
 		<view class="top-grid">
 			<up-row justify="space-between" gutter="10" >
 				<up-col span="4">
 					<view @click="toPlan" class="grid-layout">
-						<up-image :show-loading="true" src="/assets/icon/icon_main_study_plan.png" width="25px" height="25px"></up-image>
+						<image src="/assets/icon/icon_main_study_plan.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
 						<view>
 							学习<br><span class="font-red">记录</span>
 						</view>
@@ -49,7 +50,7 @@
 				</up-col>
 				<up-col span="8">
 					<view @click="toTree" class="grid-layout big-grid-layout">
-						<up-image :show-loading="true" src="/assets/icon/icon_main_study_route.png" width="25px" height="25px"></up-image>
+						<image src="/assets/icon/icon_main_study_route.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
 						<view>
 							学习路线<br><span class="font-red">技能树</span>
 						</view>
@@ -59,7 +60,7 @@
 			<up-row justify="space-between" gutter="10" >
 				<up-col span="8">
 					<view @click="toCareer" class="grid-layout big-grid-layout">
-						<up-image :show-loading="true" src="/assets/icon/icon_main_work_plan.png" width="28px" height="25px"></up-image>
+						<image src="/assets/icon/icon_main_work_plan.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
 						<view>
 							专业介绍<br><span class="font-red">就业规划</span>
 						</view>
@@ -67,7 +68,7 @@
 				</up-col>
 				<up-col span="4">
 					<view @click="toAnalyze" class="grid-layout">
-						<up-image :show-loading="true" src="/assets/icon/icon_main_data_analyze.png" width="25px" height="25px"></up-image>
+						<image src="/assets/icon/icon_main_data_analyze.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
 						<view>
 							数据<br><span class="font-red">分析</span>
 						</view>
@@ -77,25 +78,25 @@
 			<view class="line-box">
 				<view class="line-content" @click="toNews">
 					<view class="line-item-top">
-						<up-image :show-loading="true" src="/assets/icon/icon_main_news.png" width="46rpx" height="40rpx"></up-image>
+						<image src="/assets/icon/icon_main_news.png" mode="aspectFit" style=" width:46rpx; height: 40rpx;"></image>
 					</view>
 					<span>新闻</span>
 				</view>
 				<view class="line-content">
 					<view class="line-item-top">
-						<up-image :show-loading="true" src="/assets/icon/icon_main_pay.png" width="40rpx" height="44rpx"></up-image>
+						<image src="/assets/icon/icon_main_pay.png" mode="aspectFit" style=" width:46rpx; height: 40rpx;"></image>
 					</view>
 					<span>薪资</span>
 				</view>
 				<view class="line-content">
 					<view class="line-item-top">
-						<up-image :show-loading="true" src="/assets/icon/icon_main_star.png" width="46rpx" height="40rpx"></up-image>
+						<image src="/assets/icon/icon_main_star.png" mode="aspectFit" style=" width:46rpx; height: 40rpx;"></image>
 					</view>
 					<span>收藏</span>
 				</view>
 				<view class="line-content">
 					<view class="line-item-top">
-						<up-image :show-loading="true" src="/assets/icon/icon_main_custom.png" width="44rpx" height="44rpx"></up-image>
+						<image src="/assets/icon/icon_main_custom.png" mode="aspectFit" style=" width:46rpx; height: 40rpx;"></image>
 					</view>
 					<span>客服</span>
 				</view>
@@ -193,7 +194,7 @@
 <style lang="scss">
 	.header{
 		position: fixed;
-		top: 0;
+		top: var(--status-bar-height);
 		z-index: 999;
 		height: 80rpx;
 		width:100%;
@@ -225,7 +226,12 @@
 
 	.container{
 		width: 100%;
-		margin-top: 100rpx;
+		margin-top: 0 !important;
+		.status_bar{
+			height: calc(var(--status-bar-height) + 80rpx); 
+			width: 100%;
+			background-color: #fff;
+		}
 		.top-grid{
 			.u-row{
 				margin-top: 20rpx;
@@ -248,6 +254,7 @@
 				width: 460rpx;
 				display: flex;
 				align-items: flex-start;
+				padding-left: 20rpx;
 				justify-content: left;
 				view{
 					margin-left: 20rpx;
