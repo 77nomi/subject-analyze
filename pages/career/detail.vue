@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:13
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-24 19:22:45
+ * @LastEditTime: 2024-08-25 15:16:31
 -->
 <template>
 	<view class="header">
@@ -17,52 +17,63 @@
 		</up-navbar>
 	</view>
 	<view class="container">
-		<view class="imgBox">
-			<up-image :src="major_info.pic_url" width="100%" height="320rpx"></up-image>	
-		</view>
-		<view class="introBox">
-			<view class="intro">
-				{{major_info.intro}}
+		<template v-if="comment_list!==null">
+			<view class="imgBox">
+				<up-image :src="major_info.pic_url" width="100%" height="320rpx"></up-image>	
 			</view>
-			<view class="starImg">
-				<image src="/assets/icon/icon_major_detail_star.png" style="width: 70rpx; height: 70rpx;"></image>	
-				收藏
-			</view>
-		</view>
-		<view class="commentList">
-			<view class="commentBox" v-for="(item,index) in comment_list" :key=index>
-				<view class="top">
-					<view class="left">
-						<up-avatar
-								text="头"
-								fontSize="32rpx"
-								randomBgColor
-								size="64rpx"
-						></up-avatar>
-					</view>
-					<view class="center">
-						{{item.user}}
-						<up-rate size="28rpx" count="5" v-model="item.star" gutter="0" readonly></up-rate>
-					</view>
-					<view class="right font-red">
-						2021-01-01
-					</view>
+			<view class="introBox">
+				<view class="intro">
+					{{major_info.intro}}
 				</view>
-				<view class="bottom">
-					<view class="title">
-						{{item.title}}
-					</view>
-					<view class="content">
-						{{item.body}}
-					</view>
+				<view class="starImg">
+					<image src="/assets/icon/icon_major_detail_star.png" style="width: 70rpx; height: 70rpx;"></image>	
+					收藏
 				</view>
 			</view>
-		</view>
+			<view class="commentList">
+				<view class="commentBox" v-for="(item,index) in comment_list" :key=index>
+					<view class="top">
+						<view class="left">
+							<up-avatar
+									text="头"
+									fontSize="32rpx"
+									randomBgColor
+									size="64rpx"
+							></up-avatar>
+						</view>
+						<view class="center">
+							{{item.user}}
+							<up-rate size="28rpx" count="5" v-model="item.star" gutter="0" readonly></up-rate>
+						</view>
+						<view class="right font-red">
+							2021-01-01
+						</view>
+					</view>
+					<view class="bottom">
+						<view class="title">
+							{{item.title}}
+						</view>
+						<view class="content">
+							{{item.body}}
+						</view>
+					</view>
+				</view>
+			</view>
+		</template>
+		<up-empty
+			mode="data"
+			icon="http://cdn.uviewui.com/uview/empty/data.png"
+			text="该学科暂无数据,请重新选择"
+			textColor="#4f4f4f"
+			textSize="20"
+			:show="comment_list===null"
+		>
+		</up-empty>
 	</view>
 </template>
 
 <script setup>
-	import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
+	import { ref, onMounted, getCurrentInstance } from 'vue'
 	import { getMajorDetailAPI } from '@/api/career.js'
 
 	onMounted( async () => {
@@ -71,11 +82,11 @@
 			major_id.value = options.attrs.major_id
 		else if(options.attrs.__pageInstance)
 			major_id.value = options.attrs.__pageInstance.options.major_id
-		getMajorDetail()
+		await getMajorDetail()
 	})
 	const major_id = ref()
-	const major_info = ref({})
-	const comment_list = ref({})
+	const major_info = ref(null)
+	const comment_list = ref(null)
 	
 	/**
 	 * 获取详细信息以及评论
@@ -88,7 +99,9 @@
 		.then((res)=>{
 			console.log(res)
 			major_info.value=res.major_info
-			comment_list.value = res.commen_list
+			if(res.commen_list!==null){
+				comment_list.value = res.commen_list
+			}
 		})
 		.catch((err)=>{
 			console.log(err)

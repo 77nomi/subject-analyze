@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:54
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-24 18:55:20
+ * @LastEditTime: 2024-08-25 15:07:58
 -->
 <template>
 	<view class="header">
@@ -12,7 +12,7 @@
 			gutter="10"
 		>
 			<up-col span="4">
-				<view class="nav-layout nav-left">
+				<view class="nav-layout nav-left" @click="toLogin">
 					<up-avatar 
 						src="https://xtionai-storage-test.oss-cn-shenzhen.aliyuncs.com/20240315/ai_photo/2eb1714d5d914510b10df7d443110be2.png"
 						size='30'
@@ -189,12 +189,18 @@
 		})
 	}
 	
+	const toLogin = ()=>{
+		uni.navigateTo({
+			url: '/pages/user/login/index'
+		})
+	}
+	
 </script>
 
 <style lang="scss">
 	.header{
 		position: fixed;
-		top: var(--status-bar-height);
+		padding-top: var(--status-bar-height);
 		z-index: 999;
 		height: 80rpx;
 		width:100%;

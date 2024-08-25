@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-24 18:54:18
+ * @LastEditTime: 2024-08-25 15:09:17
 -->
 <template>
 	<view class="header">
@@ -17,52 +17,72 @@
 		</up-navbar>
 	</view>
 	<view class="container">
-		<view class="topBox">
-			<view class="title">
-				行业招聘需求
-				<view @click="openPicker" class="right">
-					<span>更换专业</span>
-					<up-icon name="arrow-right" color="#ac0404" size="16"></up-icon>
-				</view>
-			</view>
-			<view class="intro">
-				<span class="font-red">{{nowChoose?nowChoose.major_name:''}}</span>就业岗位技术需求
-			</view>
-		</view>
 		<template v-if="nowChoose!==null">
-			<view class="dataChartBox">
-				<qiun-data-charts 
-				      type="pie"
-				      :opts="opts"
-				      :chartData="chartData"
-				    />
-			</view>
-			<view class="bottomTitle">
-				数据分析：
-			</view>
-			<view class="analyzeBox">
-				<view class="big">
-					记录的数据条数：{{majorData.data_rows}}条
+			<view class="topBox">
+				<view class="title">
+					行业招聘需求
+					<view @click="openPicker" class="right">
+						<span>更换专业</span>
+						<up-icon name="arrow-right" color="#ac0404" size="16"></up-icon>
+					</view>
 				</view>
-				<view class="big">
-					数据更新时间：{{majorData.last_update}}
-				</view>
-				<view class="samll">
-					掌握以下技能：
-						<ul class=detail>
-							<li v-for="(item,index) in majorData.main_skill" :key="index">{{item}}</li>
-						</ul>
-				</view>
-				<view class="samll">
-					拓展技术栈：
-						<ul class=detail>
-							<li v-for="(item,index) in majorData.expand_skill" :key="index">{{item}}</li>
-						</ul>
+				<view class="intro">
+					<span class="font-red">{{nowChoose?nowChoose.major_name:''}}</span>就业岗位技术需求
 				</view>
 			</view>
+			<template v-if="chartData!==null">
+				<view class="dataChartBox">
+					<qiun-data-charts 
+						type="pie"
+						:opts="opts"
+						:chartData="chartData"
+					/>
+				</view>
+				<view class="bottomTitle">
+					数据分析：
+				</view>
+				<view class="analyzeBox">
+					<view class="big">
+						记录的数据条数：{{majorData.data_rows}}条
+					</view>
+					<view class="big">
+						数据更新时间：{{majorData.last_update}}
+					</view>
+					<view class="samll">
+						掌握以下技能：
+							<ul class=detail>
+								<li v-for="(item,index) in majorData.main_skill" :key="index">{{item}}</li>
+							</ul>
+					</view>
+					<view class="samll">
+						拓展技术栈：
+							<ul class=detail>
+								<li v-for="(item,index) in majorData.expand_skill" :key="index">{{item}}</li>
+							</ul>
+					</view>
+				</view>
+			</template>
 		</template>
+		<up-empty
+			mode="data"
+			icon="http://cdn.uviewui.com/uview/empty/data.png"
+			text="请先选择需要查看的学科"
+			textColor="#4f4f4f"
+			textSize="20"
+			:show="nowChoose===null"
+		>
+		</up-empty>
+		<up-empty
+			mode="data"
+			icon="http://cdn.uviewui.com/uview/empty/data.png"
+			text="该学科暂无数据,请重新选择"
+			textColor="#4f4f4f"
+			textSize="20"
+			:show="chartData===null"
+		>
+		</up-empty>
 	</view>
-	<up-picker :show="showPicker" ref="uPickerRef" :columns="columns" @confirm="confirm" @change="changeHandler" @cancel="closePicker"></up-picker>
+	<up-picker title="选择学科" :show="showPicker" ref="uPickerRef" :columns="columns" @confirm="confirm" @change="changeHandler" @cancel="closePicker"></up-picker>
 </template>
 
 <script setup>
@@ -116,8 +136,6 @@
 	const changeHandler = (e) => {
 		const {
 			columnIndex,
-			value,
-			values,
 			index,
 		} = e;
 
@@ -136,6 +154,7 @@
 		const second = e.indexs[1]
 		nowChoose.value = allMajorList.value[first].majorList[second]
 		showPicker.value = false;
+		chartData.value = null
 		await getChartData()
 	};
 	
@@ -146,7 +165,9 @@
 	const closePicker = ()=>{
     if (nowChoose.value !== null) {
         showPicker.value = false;
-    }
+    } else {
+			uni.navigateBack()
+		}
 	}
 	
 	/**
@@ -217,11 +238,13 @@
 		await getDetailAPI(query)
 		.then((res)=>{
 			console.log(res)
-			majorData.value.data_rows = res.data_rows
-			majorData.value.expand_skill = res.expand_skill.split('\\n')
-			majorData.value.last_update = timestampToDate(res.last_update)
-			majorData.value.main_skill = res.main_skill.split('\\n')
-			formatData(res.subject_value)
+			if(res.data_rows !== 0){
+				majorData.value.data_rows = res.data_rows
+				majorData.value.expand_skill = res.expand_skill.split('\\n')
+				majorData.value.last_update = timestampToDate(res.last_update)
+				majorData.value.main_skill = res.main_skill.split('\\n')
+				formatData(res.subject_value)
+			}
 		})
 		.catch((err)=>{
 			console.log(err)
