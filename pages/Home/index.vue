@@ -14,12 +14,12 @@
 			<up-col span="4">
 				<view class="nav-layout nav-left" @click="toLogin">
 					<up-avatar 
-						src="https://xtionai-storage-test.oss-cn-shenzhen.aliyuncs.com/20240315/ai_photo/2eb1714d5d914510b10df7d443110be2.png"
+						src="http://8.138.115.27:8886/uploads/fin@qq.com.jpg"
 						size='30'
 					></up-avatar>
 					<view class="right">
 						<span class="font-red">WELCOME!</span>
-						<span>用户名</span>
+						<span>{{username}}</span>
 					</view>
 				</view>
 			</up-col>
@@ -38,6 +38,7 @@
 
 	<view class="container">
 		<view class="status_bar"></view>
+		<img src="http://8.138.115.27:8886/uploads/fin@qq.com.jpg" style="width: 100px; height: 100px;" alt="" />
 		<view class="top-grid">
 			<up-row justify="space-between" gutter="10" >
 				<up-col span="4">
@@ -132,9 +133,13 @@
 	
 	const search = ref('')
 	const newsList = ref([])
+	const username = ref('')
+	const avatar = ref('')
 	
 	onMounted( async () => {
 		await getNewsList()
+		username.value = uni.getStorageSync('username')
+		avatar.value = 'http://8.138.115.27:8886'+uni.getStorageSync('avatar')
 	})
 	
 	/**

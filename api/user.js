@@ -3,11 +3,12 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:18:27
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-16 10:18:31
+ * @LastEditTime: 2024-08-26 20:56:44
  */
 import {
 	http
 } from '@/utils/http.js'
+
 
 /**
  * 获取验证码id
@@ -41,7 +42,8 @@ export const registerAPI = (params) => {
 	return http.request({
 		url: `/signup`,
 		method: 'POST',
-		data: params
+		data: params,
+		headers: { 'Content-Type': 'multipart/form-data' }
 	})
 }
 

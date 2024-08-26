@@ -9,6 +9,7 @@ const http = new Request({
 // 请求拦截器
 http.interceptors.request.use((config) => { // 可使用async await 做异步操作
 	// 默认请求头(用个对象,方便后续扩展、如果有需要的话)
+	console.log(config)
 	const defaultHeader = {}
 
 	// 添加token至请求头的Authorization

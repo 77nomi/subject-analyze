@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:21:02
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-24 19:43:02
+ * @LastEditTime: 2024-08-26 21:56:30
 -->
 <template>
 	<view class="header">
@@ -27,6 +27,19 @@
 				labelWidth="140rpx"
 				:rules="rules"
 			>
+				<up-form-item
+					label="头像"
+					prop="avatar"
+				>
+					<up-upload
+						:fileList="avatar"
+						@afterRead="afterRead"
+						@delete="deletePic"
+						name="1"
+						multiple
+						:maxCount="1"
+					></up-upload>
+				</up-form-item>
 				<up-form-item
 					label="邮箱"
 					prop="email"
@@ -92,6 +105,7 @@
 <script setup>
 	import { ref, reactive, onMounted } from 'vue'
 	import { getCodeIdAPI, getCodeImgAPI, registerAPI } from '@/api/user.js'
+	import Upload from 'luch-request'
 
 	onMounted( async () => {
 		await updateCode()
@@ -104,13 +118,35 @@
 		password: '',
 		confirmPSW: '',
 		value: '',
-		captchaId: ''
+		captchaId: '',
+		avatar: ''
 	})
+	const avatar = ref([])
+	const afterRead = async (event) => {
+	  let lists = [].concat(event.file);
+	  lists.map((item) => {
+	    avatar.value.push({
+	      ...item,
+	    });
+	  });
+		formData.value.avatar = avatar.value
+	};
+	
+	// 删除图片
+	const deletePic = (event) => {
+	  avatar.value.splice(event.index, 1);
+	};
 	
 	const showPSW = ref(true)
 	const showComfirmPSW = ref(true)
 	
 	const rules = {  
+		'avatar': [
+			{  
+				required: true,  
+				message: '请上传头像', 
+			},  
+		],
 		'email': [
 			{  
 				type: 'string',  
@@ -173,8 +209,6 @@
 			},
 			{
 				validator:  (rule, value, callback) => {
-					console.log(formData.value.password)
-					console.log(value)
 				  if (value !== formData.value.password) {
 					 callback(new Error())
 				  } else {
@@ -245,34 +279,46 @@
 	 */
 	const submit = ()=>{  
 	  formData.value.validate()
+		console.log(avatar.value[0])
 	  .then(async (valid) => {  
-	    if (valid) {  
-			const params = {
-				email: formData.value.email,
-				username: formData.value.username,
-				password: formData.value.password,
-				value: formData.value.value,
-				captchaId: formData.value.captchaId
-			}
-			await registerAPI(params)
-			.then((res)=>{
-				if(res.session_token){
-					uni.setStorageSync('token', res.session_token);
-					uni.reLaunch({
-						url:'/pages/home/index'
-					})
-				}else{
-					console.log(res.error)
-					if(res.error==="Username already exists")
-						uni.$u.toast('用户名已存在')
-					else
-						uni.$u.toast('注册失败')
+	    if (valid) {
+				const params = {
+						email: formData.value.email,
+						username: formData.value.username,
+						password: formData.value.password,
+						value: formData.value.value,
+						captchaId: formData.value.captchaId
 				}
-			})
-			.catch((err)=>{
-				console.log(err)
-				uni.$u.toast('注册失败')
-			})
+				uni.uploadFile({
+					url: 'http://8.138.115.27:8886/signup',
+					files: avatar.value[0],
+					name: 'avatar',
+					formData: params,
+					success: (res) => {
+						console.log(res)
+						res.data = JSON.parse(res.data)
+						if(res.data.message === "User signup successfully"){
+							uni.setStorageSync('token', res.data.session_token);
+							uni.setStorageSync('avatar', res.data.avatar);
+							uni.setStorageSync('username', res.data.username);
+							uni.reLaunch({
+								url:'/pages/home/index'
+							})
+						}else{
+							console.log(res.data.error)
+							if(res.data.error==="Email already exists")
+								uni.$u.toast('邮箱已存在')
+							else if (res.data.error === "Invalid captcha")
+								uni.$u.toast('验证码无效')
+							else
+								uni.$u.toast('注册失败')
+						}
+					},
+					fail: (err)=>{
+						console.log(err)
+						uni.$u.toast('注册失败')
+					}
+				});
 	    }
 	  })
 	  .catch(() => {

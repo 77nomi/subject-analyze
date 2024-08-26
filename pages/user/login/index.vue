@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:58
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-24 19:39:36
+ * @LastEditTime: 2024-08-26 21:38:21
 -->
 <template>
 	<view class="header">
@@ -28,11 +28,11 @@
 				:rules="rules"
 			>
 				<up-form-item
-					label="用户名"
-					prop="username"
+					label="邮箱"
+					prop="email"
 				>
 					<up-input
-						v-model="formData.username"
+						v-model="formData.email"
 					></up-input>
 				</up-form-item>
 				<up-form-item
@@ -64,25 +64,22 @@
 	import { loginAPI } from '@/api/user.js'
 	
 	const formData = ref({
-		username: '',
+		email: '',
 		password: ''
 	})
 	const rules = {
-		'username': [
+		'email': [
 			{  
 				type: 'string',  
 				required: true,  
-				message: '请输入用户名',  
+				message: '请输入邮箱',  
 				trigger: ['blur', 'change'],  
-			},
+			},  
 			{
-				pattern: /^[0-9a-zA-Z]*$/g,
-				transform(value) {
-					return String(value);
-				},
-				message: '只能包含字母或数字',
-				trigger: ['blur', 'change']
-			},
+				pattern:/^([a-zA-Z0-9]+[-_\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/,
+				message: '请输入正确的邮箱格式',  
+				trigger: ['blur', 'change'],  
+			}
 		],
 		'password': [
 			{
@@ -124,7 +121,7 @@
 		.then(async (valid) => {  
 			if (valid) {
 				const params = {
-					username: formData.value.username,
+					email: formData.value.email,
 					password: formData.value.password
 				}
 				await loginAPI(params)
@@ -135,9 +132,9 @@
 							url:'/pages/home/index'
 						})
 					}else{
-						if(res.error==="Username does not exist")
+						if(res.error==="email does not exist")
 							uni.$u.toast('用户名不存在')
-						else if(res.error==="Username and password do not match")
+						else if(res.error==="email and password do not match")
 							uni.$u.toast('密码错误')
 						else
 							uni.$u.toast('登录失败')
