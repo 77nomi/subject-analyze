@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:51
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-24 19:18:55
+ * @LastEditTime: 2024-08-27 23:20:20
 -->
 <template>
 	<view class="header">
@@ -27,19 +27,24 @@
 			</view>
 		</view>
 		<view class="tree-box">
-			<next-tree 
-				ref="nextTreeRef" 
-				:treeData="skillTree"
-				uiMode="page"
-				funcMode="display"
-				:ifSearch="false"
-			>
-				<template #label="{data: {label}}">
-					<view class="line-block">
-						{{label}}
-					</view>
-				</template>
-			</next-tree>
+			<template v-if="skillTree[0].children.length!==0">
+				<next-tree 
+					ref="nextTreeRef" 
+					:treeData="skillTree"
+					uiMode="page"
+					funcMode="display"
+					:ifSearch="false"
+				>
+					<template #label="{data: {label}}">
+						<view class="line-block">
+							{{label}}
+						</view>
+					</template>
+				</next-tree>
+			</template>
+			<template v-else>
+				<div style="text-align: center; color: #a8a8a8; padding: 15rpx 0;">暂无已学习的技能数据，快去学习新技能吧！</div>
+			</template>
 					
 		</view>
 	</view>
@@ -119,7 +124,6 @@
 		}
 		// 从已有数据里面获取数据
 		else{
-			console.log('exist')
 			if(type==0){
 				children = allTreeList.value
 			}else{
@@ -138,12 +142,19 @@
 	 */
 	const getAllTreeData = async()=>{
 		if(allTreeList.value.length===0){
+			uni.showLoading({
+				title: '加载中',
+				mask: true
+			});
 			await GetSubjectMapAPI()
 			.then((res)=>{
 				buildTree(res, 0)
 			})
 			.catch((err)=>{
 				console.log(err)
+			})
+			.finally(()=>{
+				uni.hideLoading();
 			})
 		} else {
 				buildTree(null, 0)

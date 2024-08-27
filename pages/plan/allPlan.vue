@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:21
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-24 19:41:59
+ * @LastEditTime: 2024-08-27 23:06:58
 -->
 <template>
 	<view class="header">
@@ -29,6 +29,7 @@
 			</view>
 			<view class="planData">
 				<view class="planList">
+					<div style="text-align: center; color: #a8a8a8; padding: 10rpx 0;" v-if="recordList.length===0">暂无学习数据，快去学习吧！</div>
 					<view v-for="(item,index) in recordList" :key="index" class="dateList">
 						<view class="top" :style="index==0?'border-top-right-radius: 10rpx;border-top-left-radius: 10rpx;':''" >
 							<span>{{item.date}}</span>

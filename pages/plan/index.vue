@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:36
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-24 19:10:21
+ * @LastEditTime: 2024-08-27 23:21:19
 -->
 <template>
 	<view class="header">
@@ -20,7 +20,7 @@
 		<view class="planData">
 			<view class="title">今日学习记录</view>
 			<view class="planList">
-				<view v-if="haveData">
+				<view v-if="todayData">
 					<view v-for="(data,dataIndex) in recordList.dataList" :key="dataIndex" @click="addPlan(data.plan_id)" class="planBox">
 						<up-avatar
 							text=" "
@@ -71,12 +71,15 @@
 				<view class="num">
 					共{{subjectNum}}个学科
 				</view>
-				<view class="content">
+				<view v-if="weekData" class="content">
 					<qiun-data-charts 
 					      type="line"
 					      :opts="opts"
 					      :chartData="chartData"
 					    />
+				</view>
+				<view v-else class="noWeekData content">
+					近一周暂无学习数据，快去学习吧!
 				</view>
 			</view>
 		</view>
@@ -132,7 +135,6 @@
 	const timeChoose = ref('本周')
 	const averageTime = ref(0)
 	const subjectNum = ref(0)
-	const echart = ref()
 	const recordList = ref([])
 	const tags = ref([
 		{
@@ -160,8 +162,8 @@
 			value: 6
 		},
 	])
-	const allMajorList = ref([])
-	const haveData = ref(false)
+	const todayData = ref(false)
+	const weekData = ref(false)
 	
 	/**
 	 * 获取折线图数据并更新折线图
@@ -181,14 +183,24 @@
 			finData.series = series
 			chartData.value = JSON.parse(JSON.stringify(finData));
 		}
-		
+	
+		uni.showLoading({
+			title: '加载中',
+			mask: true
+		});
 		await getPlanAPI()
 		.then((res)=>{
 			console.log(res)
-			formatData(res)
+			if(res.subjects_info.length!==0){
+				weekData.value = true
+				formatData(res)
+			}
 		})
 		.catch((err)=>{
 			console.log(err)
+		})
+		.finally(()=>{
+			uni.hideLoading()
 		})
 	}
 	
@@ -208,7 +220,6 @@
 				
 			recordList.value.forEach((item)=>{
 				item.dataList.forEach((dataDetail)=>{
-					let flag = 1
 					let tagList = []
 					dataDetail.tags.forEach((tag)=>{
 						if(tag==0){
@@ -230,7 +241,7 @@
 			// 判断年月日是否相同
 			const areDatesEqual = nowDateStr === valueDateStr;
 			if (areDatesEqual) {
-				haveData.value = true
+				todayData.value = true
 			}
 			
 			console.log(recordList.value)
@@ -240,12 +251,22 @@
 			page: pageInfo.value.page,
 			pagesize: pageInfo.value.pagesize
 		}
+		uni.showLoading({
+			title: '加载中',
+			mask: true
+		});
 		await GetPlanListAPI(params)
 		.then((res)=>{
-			buildList(res)
+			console.log(res)
+			if(!Object.keys(res).length === 0){
+				buildList(res)
+			}
 		})
 		.catch((err)=>{
 			console.log(err)
+		})
+		.finally(()=>{
+			uni.hideLoading()
 		})
 	}
 	
@@ -393,6 +414,11 @@
 				.content{
 					width: 100%;
 					height: 500rpx;
+				}
+				.noWeekData{
+					line-height: 500rpx;
+					text-align: center;
+					color: #a8a8a8;
 				}
 			}
 		}
