@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:58
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-26 21:38:21
+ * @LastEditTime: 2024-08-27 20:26:18
 -->
 <template>
 	<view class="header">
@@ -126,8 +126,11 @@
 				}
 				await loginAPI(params)
 				.then((res)=>{
+					console.log(res)
 					if(res.session_token){
 						uni.setStorageSync('token', res.session_token);
+						uni.setStorageSync('avatar', res.avatar);
+						uni.setStorageSync('username', res.username);
 						uni.reLaunch({
 							url:'/pages/home/index'
 						})

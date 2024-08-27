@@ -3,11 +3,11 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:13
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-25 15:16:31
+ * @LastEditTime: 2024-08-27 20:31:09
 -->
 <template>
 	<view class="header">
-		<up-navbar height="80rpx" :title="'就业规划-'+major_info.name" :placeholder="true" >
+		<up-navbar height="80rpx" :title="'就业规划-'+major_info?.name" :placeholder="true" >
 			<template #left>
 				<image @click="toBack" src="/assets/icon/icon_top_bar_back.png" style="width: 50rpx; height: 50rpx"></image>	
 			</template>
@@ -46,7 +46,7 @@
 							<up-rate size="28rpx" count="5" v-model="item.star" gutter="0" readonly></up-rate>
 						</view>
 						<view class="right font-red">
-							2021-01-01
+							{{timestampToDate(item.addtime)}}
 						</view>
 					</view>
 					<view class="bottom">
@@ -75,6 +75,7 @@
 <script setup>
 	import { ref, onMounted, getCurrentInstance } from 'vue'
 	import { getMajorDetailAPI } from '@/api/career.js'
+	import { timestampToDate } from '../../utils/time.js'
 
 	onMounted( async () => {
 		const options = getCurrentInstance()
@@ -94,7 +95,6 @@
 	const getMajorDetail = async ()=>{
 		// const query = "major_id=1"
 		const query = "major_id=" + major_id.value
-		console.log(query)
 		await getMajorDetailAPI(query)
 		.then((res)=>{
 			console.log(res)
