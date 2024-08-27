@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:21:02
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-26 21:56:30
+ * @LastEditTime: 2024-08-27 11:37:36
 -->
 <template>
 	<view class="header">
@@ -22,8 +22,8 @@
 		</view>
 		<view class="form">
 			<up-form
-				:model="formData"
-				ref="formData"
+				:model="inputFormData"
+				ref="inputFormData"
 				labelWidth="140rpx"
 				:rules="rules"
 			>
@@ -45,7 +45,7 @@
 					prop="email"
 				>
 					<up-input
-						v-model="formData.email"
+						v-model="inputFormData.email"
 					></up-input>
 				</up-form-item>
 				<up-form-item
@@ -53,7 +53,7 @@
 					prop="username"
 				>
 					<up-input
-						v-model="formData.username"
+						v-model="inputFormData.username"
 					></up-input>
 				</up-form-item>
 				<up-form-item
@@ -61,7 +61,7 @@
 					prop="password"
 				>
 					<up-input
-						v-model="formData.password"
+						v-model="inputFormData.password"
 						:password="showPSW"
 					>
 						<template #suffix>
@@ -74,7 +74,7 @@
 					prop="confirmPSW"
 				>
 					<up-input
-						v-model="formData.confirmPSW"
+						v-model="inputFormData.confirmPSW"
 						:password="showComfirmPSW"
 					>
 						<template #suffix>
@@ -87,7 +87,7 @@
 					prop="value"
 				>
 					<up-input 
-						v-model="formData.value"
+						v-model="inputFormData.value"
 						class="codeBox"
 					>
 						<template #suffix>
@@ -112,7 +112,7 @@
 	})
 	
 	const codeImgSrc = ref('')
-	const formData = ref({
+	const inputFormData = ref({
 		email: '',
 		username: '',
 		password: '',
@@ -129,7 +129,7 @@
 	      ...item,
 	    });
 	  });
-		formData.value.avatar = avatar.value
+		inputFormData.value.avatar = avatar.value
 	};
 	
 	// 删除图片
@@ -209,7 +209,7 @@
 			},
 			{
 				validator:  (rule, value, callback) => {
-				  if (value !== formData.value.password) {
+				  if (value !== inputFormData.value.password) {
 					 callback(new Error())
 				  } else {
 					 callback()
@@ -238,7 +238,7 @@
 		const getCodeID = async ()=>{
 			await getCodeIdAPI()
 			.then((res)=>{
-				formData.value.captchaId = res.captchaId
+				inputFormData.value.captchaId = res.captchaId
 			})
 			.catch((err)=>{
 				console.log(err)
@@ -248,7 +248,7 @@
 		 * 获取验证码图片
 		 */
 		const getCodeImg = async ()=>{
-			await getCodeImgAPI(formData.value.captchaId)
+			await getCodeImgAPI(inputFormData.value.captchaId)
 			.then((res)=>{
 				const arrayBuffer = new Uint8Array(res)
 				const base64 = "data:image/png;base64," + uni.arrayBufferToBase64(arrayBuffer) //这里需要添加前缀
@@ -278,21 +278,20 @@
 	 * 提交注册
 	 */
 	const submit = ()=>{  
-	  formData.value.validate()
-		console.log(avatar.value[0])
+	  inputFormData.value.validate()
 	  .then(async (valid) => {  
 	    if (valid) {
 				const params = {
-						email: formData.value.email,
-						username: formData.value.username,
-						password: formData.value.password,
-						value: formData.value.value,
-						captchaId: formData.value.captchaId
+						email: inputFormData.value.email,
+						username: inputFormData.value.username,
+						password: inputFormData.value.password,
+						value: inputFormData.value.value,
+						captchaId: inputFormData.value.captchaId,
 				}
 				uni.uploadFile({
 					url: 'http://8.138.115.27:8886/signup',
-					files: avatar.value[0],
-					name: 'avatar',
+					filePath: avatar.value[0].url,
+					name: 'files',
 					formData: params,
 					success: (res) => {
 						console.log(res)

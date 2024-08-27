@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:54
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-25 15:07:58
+ * @LastEditTime: 2024-08-27 11:40:15
 -->
 <template>
 	<view class="header">
@@ -14,7 +14,7 @@
 			<up-col span="4">
 				<view class="nav-layout nav-left" @click="toLogin">
 					<up-avatar 
-						src="http://8.138.115.27:8886/uploads/fin@qq.com.jpg"
+						:src="avatar"
 						size='30'
 					></up-avatar>
 					<view class="right">
@@ -38,7 +38,6 @@
 
 	<view class="container">
 		<view class="status_bar"></view>
-		<img src="http://8.138.115.27:8886/uploads/fin@qq.com.jpg" style="width: 100px; height: 100px;" alt="" />
 		<view class="top-grid">
 			<up-row justify="space-between" gutter="10" >
 				<up-col span="4">
