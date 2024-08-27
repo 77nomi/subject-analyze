@@ -17,7 +17,7 @@
 		</up-navbar>
 	</view>
 	<view class="container">
-		<template v-if="nowChoose!==null">
+		<template v-if="firstChoose!==null">
 			<view class="topBox">
 				<view class="title">
 					行业招聘需求
@@ -27,7 +27,7 @@
 					</view>
 				</view>
 				<view class="intro">
-					<span class="font-red">{{nowChoose?nowChoose.major_name:''}}</span>就业岗位技术需求
+					<span class="font-red">{{firstChoose?firstChoose.major_name:''}}</span>就业岗位技术需求
 				</view>
 			</view>
 			<template v-if="chartData!==null">
@@ -69,7 +69,7 @@
 			text="请先选择需要查看的学科"
 			textColor="#4f4f4f"
 			textSize="20"
-			:show="nowChoose===null"
+			:show="firstChoose===null"
 		>
 		</up-empty>
 		<up-empty
@@ -82,7 +82,22 @@
 		>
 		</up-empty>
 	</view>
-	<up-picker title="选择学科" :show="showPicker" ref="uPickerRef" :columns="columns" @confirm="confirm" @change="changeHandler" @cancel="closePicker"></up-picker>
+	<!-- https://uniapp.dcloud.net.cn/component/uniui/uni-popup.html#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95 -->
+	<!-- https://uniapp.dcloud.net.cn/component/picker-view.html -->
+	<uni-popup :is-mask-click="false" ref="uPickerRef" type="bottom" style="z-index: 9999999;"  background-color="#fff">
+		<view style="width:92%; display:flex; justify-content: space-between;margin: 10rpx auto 0;">
+			<span style="padding: 20rpx;" @click="closePicker()">取消</span>
+			<span style="padding: 20rpx;" @click="confirm()">确定</span>
+		</view>
+		<picker-view class="picker-view" mask-style="display:none;" :indicator-style="indicatorStyle" :value="chooseData" @change="changeHandler">
+				<picker-view-column>
+						<view class="item" v-for="(item,index) in showColumns[0]" :key="index">{{item}}</view>
+				</picker-view-column>
+				<picker-view-column>
+						<view class="item" v-for="(item,index) in showColumns[1]" :key="index">{{item}}</view>
+				</picker-view-column>
+		</picker-view>
+	</uni-popup>
 </template>
 
 <script setup>
@@ -94,14 +109,17 @@
 
 	onMounted( async () => {
 		await getMajorList()
+		openPicker()
 	})
 	
+	const chooseData = ref([0,0])
+	const indicatorStyle = ref('height: 80rpx;background-color:rgba(0, 0, 0, 0.1);border-top: 1rpx solid #1e1e1e;border-bottom: 1rpx solid #1e1e1e;')
+	
 	const allMajorList = ref([])
-	const columns = ref([]);
-	const columnData = ref([]);
-	const showPicker = ref(true);
+	const showColumns = ref([]);
+	const secondColumns = ref([]);
 	const uPickerRef = ref(null)
-	const nowChoose = ref(null)
+	const firstChoose = ref(null)
 	const majorData = ref({})
 	const chartData = ref()
 	const opts = ref(
@@ -127,21 +145,14 @@
 		}	
 	)
 	
-	
 	/**
 	 * @description: 更改选择
 	 * @param {*} e
 	 * @return
 	 */
 	const changeHandler = (e) => {
-		const {
-			columnIndex,
-			index,
-		} = e;
-
-		if (columnIndex === 0) {
-			uPickerRef.value.setColumnValues(1, columnData.value[index]);
-		}
+		chooseData.value = e.detail.value
+		showColumns.value[1]=secondColumns.value[e.detail.value[0]]
 	};
 
 	/**
@@ -149,11 +160,9 @@
 	 * @param {*} e
 	 * @return
 	 */
-	const confirm = async (e) => {
-		const first = e.indexs[0]
-		const second = e.indexs[1]
-		nowChoose.value = allMajorList.value[first].majorList[second]
-		showPicker.value = false;
+	const confirm = async () => {
+		firstChoose.value = allMajorList.value[chooseData.value[0]].majorList[chooseData.value[1]]
+		uPickerRef.value.close()
 		chartData.value = null
 		await getChartData()
 	};
@@ -163,8 +172,8 @@
 	 * @return
 	 */
 	const closePicker = ()=>{
-    if (nowChoose.value !== null) {
-        showPicker.value = false;
+    if (firstChoose.value !== null) {
+			uPickerRef.value.close()
     } else {
 			uni.navigateBack()
 		}
@@ -175,7 +184,7 @@
 	 * @return
 	 */
 	const openPicker = ()=>{
-		showPicker.value=true
+		uPickerRef.value.open()
 	}
 	
 	/**
@@ -203,9 +212,9 @@
 				})
 				secondColumn.push(typeMajorList)
 			}
-			columns.value.push(firstColumn)
-			columns.value.push(secondColumn[0])
-			columnData.value = secondColumn
+			showColumns.value.push(firstColumn)
+			showColumns.value.push(secondColumn[0])
+			secondColumns.value = secondColumn
 		}
 		
 		await getMajorListAPI()
@@ -234,7 +243,7 @@
 			chartData.value = JSON.parse(JSON.stringify(finData));
 		}
 		
-		const query = 'major_id=' + nowChoose.value.major_id
+		const query = 'major_id=' + firstChoose.value.major_id
 		await getDetailAPI(query)
 		.then((res)=>{
 			console.log(res)
@@ -335,5 +344,13 @@
 				}
 			}
 		}
+	}
+	.picker-view {
+		width: 100%;
+		height: 600rpx;
+	}
+	.item {
+		line-height: 80rpx;
+		text-align: center;
 	}
 </style>
