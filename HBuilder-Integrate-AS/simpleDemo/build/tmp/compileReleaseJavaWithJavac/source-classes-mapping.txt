@@ -1,2 +1,0 @@
-com/test/analyze/BuildConfig.java
- com.test.analyze.BuildConfig
