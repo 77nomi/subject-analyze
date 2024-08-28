@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:12
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-24 19:20:32
+ * @LastEditTime: 2024-08-28 17:50:46
 -->
 <template>
 	<view class="header">
@@ -42,7 +42,6 @@
 						disabled
 						@click="openPicker" 
 						type="select" 
-						:select-open="showPicker"
 					></up-input>
 				</up-form-item>
 				<up-form-item
@@ -102,8 +101,24 @@
 		@confirm="timeConfirm"
 		@close="calendarClose">
 	</up-calendar>
-	<up-loading-page loadingText="" :loading="calendar.loading"></up-loading-page>
-	<up-picker title="选择学科" :show="showPicker" ref="uPickerRef" :columns="columns" @confirm="confirm" @change="changeHandler" @cancel="closePicker"></up-picker>
+	<uni-popup ref="uPickerRef" type="bottom" style="z-index: 9999999;"  background-color="#fff">
+		<view style="width:92%; display:flex; justify-content: space-between;margin: 10rpx auto 0;">
+			<span style="padding: 10rpx; color: #585858;" @click="closePicker()">取消</span>
+			<span style="padding: 10rpx;">选择学科</span>
+			<span style="padding: 10rpx; color: #00aaff;" @click="confirm()">确定</span>
+		</view>
+		<picker-view class="picker-view" mask-style="display:none;" :indicator-style="indicatorStyle" :value="chooseData" @change="changeHandler">
+				<picker-view-column>
+						<view class="item" v-for="(item,index) in showColumns[0]" :key="index">{{item}}</view>
+				</picker-view-column>
+				<picker-view-column>
+						<view class="item" v-for="(item,index) in showColumns[1]" :key="index">{{item}}</view>
+				</picker-view-column>
+				<picker-view-column>
+						<view class="item" v-for="(item,index) in showColumns[2]" :key="index">{{item}}</view>
+				</picker-view-column>
+		</picker-view>
+	</uni-popup>
 </template>
 
 <script setup>
@@ -208,7 +223,6 @@
 		maxDate: '',
 		defaultDate: '',
 		monthNum: 7,
-		loading: false
 	})
 	/**
 	 * 打开日期选择器
@@ -265,12 +279,12 @@
 	}
 	
 	
+	const chooseData = ref([0,0,0])
+	const indicatorStyle = ref('height: 80rpx;background-color:rgba(226, 226, 226, 0.1);border-top: 1rpx solid #cfcfcf;border-bottom: 1rpx solid #cfcfcf;')
+	
 	const allMajorList = ref([])
-	const columns = ref([]);
-	const showPicker = ref(false);
+	const showColumns = ref([]);
 	const uPickerRef = ref(null)
-	const nowChoose = ref(null)
-	const majorData = ref({})
 	const subject_cat_key = ref('')
   const subject_sub_key = ref('')
   const subject_key = ref('')
@@ -282,20 +296,11 @@
 	 * @return
 	 */
 	const changeHandler = (e) => {
-		const {
-			columnIndex,
-			value,
-			values,
-			index,
-			indexs,
-		} = e;
-	
-		if (columnIndex === 0) {
-			uPickerRef.value.setColumnValues(1, allMajorList.value[index].secondColumn);
-			uPickerRef.value.setColumnValues(2, allMajorList.value[index].childList[0].thirdColumn);
-		}else if (columnIndex === 1){
-			uPickerRef.value.setColumnValues(2, allMajorList.value[indexs[0]].childList[indexs[1]].thirdColumn);
-		}
+		const firstIndex = e.detail.value[0]
+		const secondIndex = e.detail.value[1]
+		showColumns.value[1] = allMajorList.value[firstIndex].secondColumn
+		showColumns.value[2] = allMajorList.value[firstIndex].childList[secondIndex].childList
+		chooseData.value = e.detail.value
 	};
 	
 	/**
@@ -303,16 +308,15 @@
 	 * @param {*} e
 	 * @return
 	 */
-	const confirm = (e) => {
-		console.log(e)
-		const first = e.indexs[0]
-		const second = e.indexs[1]
-		const third = e.indexs[2]
-		subject_cat_key.value = e.value[0]
-		subject_sub_key.value = e.value[1]
-		subject_key.value = e.value[2]
-		formData.value.choosedSubject = e.value[2]
-		showPicker.value = false;
+	const confirm = () => {
+		const firstIndex = chooseData.value[0]
+		const secondIndex = chooseData.value[1]
+		const thirdIndex = chooseData.value[2]
+		subject_cat_key.value = allMajorList.value[firstIndex].label
+		subject_sub_key.value = allMajorList.value[firstIndex].childList[secondIndex].label
+		subject_key.value = allMajorList.value[firstIndex].childList[secondIndex].childList[thirdIndex]
+		formData.value.choosedSubject = subject_key.value
+		uPickerRef.value.close()
 	};
 	
 	/**
@@ -320,7 +324,7 @@
 	 * @return
 	 */
 	const closePicker = ()=>{
-		showPicker.value = false;
+			uPickerRef.value.close()
 	}
 	
 	/**
@@ -328,7 +332,7 @@
 	 * @return
 	 */
 	const openPicker = ()=>{
-		showPicker.value=true
+		uPickerRef.value.open()
 	}
 	
 	/**
@@ -350,7 +354,7 @@
 				for(const secondKey in item){
 					let secondTree = {
 						label: secondKey,
-						thirdColumn: item[secondKey]
+						childList: item[secondKey]
 					}
 					secondColumn.push(secondKey)
 					childTreeList.push(secondTree)
@@ -359,9 +363,9 @@
 				stmpTree.secondColumn = secondColumn
 				majorList.push(stmpTree)
 			}
-			columns.value.push(firstColumn)
-			columns.value.push(majorList[0].secondColumn)
-			columns.value.push(majorList[0].childList[0].thirdColumn)
+			showColumns.value.push(firstColumn)
+			showColumns.value.push(majorList[0].secondColumn)
+			showColumns.value.push(majorList[0].childList[0].childList)
 			allMajorList.value = majorList
 		}
 		
@@ -505,5 +509,13 @@
 				width: 200rpx;
 			}
 		}
+	}
+	.picker-view {
+		width: 100%;
+		height: 600rpx;
+	}
+	.item {
+		line-height: 80rpx;
+		text-align: center;
 	}
 </style>
