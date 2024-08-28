@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:12
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-28 17:12:19
+ * @LastEditTime: 2024-08-28 17:50:46
 -->
 <template>
 	<view class="header">
@@ -314,7 +314,7 @@
 		const thirdIndex = chooseData.value[2]
 		subject_cat_key.value = allMajorList.value[firstIndex].label
 		subject_sub_key.value = allMajorList.value[firstIndex].childList[secondIndex].label
-		subject_key.value = allMajorList.value[firstIndex].childList[secondIndex].childList[secondIndex]
+		subject_key.value = allMajorList.value[firstIndex].childList[secondIndex].childList[thirdIndex]
 		formData.value.choosedSubject = subject_key.value
 		uPickerRef.value.close()
 	};
