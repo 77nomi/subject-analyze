@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-25 15:09:17
+ * @LastEditTime: 2024-08-28 16:48:26
 -->
 <template>
 	<view class="header">
@@ -82,12 +82,11 @@
 		>
 		</up-empty>
 	</view>
-	<!-- https://uniapp.dcloud.net.cn/component/uniui/uni-popup.html#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95 -->
-	<!-- https://uniapp.dcloud.net.cn/component/picker-view.html -->
 	<uni-popup :is-mask-click="false" ref="uPickerRef" type="bottom" style="z-index: 9999999;"  background-color="#fff">
 		<view style="width:92%; display:flex; justify-content: space-between;margin: 10rpx auto 0;">
-			<span style="padding: 20rpx;" @click="closePicker()">取消</span>
-			<span style="padding: 20rpx;" @click="confirm()">确定</span>
+			<span style="padding: 10rpx; color: #585858;" @click="closePicker()">取消</span>
+			<span style="padding: 10rpx;">选择学科</span>
+			<span style="padding: 10rpx; color: #00aaff;" @click="confirm()">确定</span>
 		</view>
 		<picker-view class="picker-view" mask-style="display:none;" :indicator-style="indicatorStyle" :value="chooseData" @change="changeHandler">
 				<picker-view-column>
@@ -113,7 +112,7 @@
 	})
 	
 	const chooseData = ref([0,0])
-	const indicatorStyle = ref('height: 80rpx;background-color:rgba(0, 0, 0, 0.1);border-top: 1rpx solid #1e1e1e;border-bottom: 1rpx solid #1e1e1e;')
+	const indicatorStyle = ref('height: 80rpx;background-color:rgba(226, 226, 226, 0.1);border-top: 1rpx solid #cfcfcf;border-bottom: 1rpx solid #cfcfcf;')
 	
 	const allMajorList = ref([])
 	const showColumns = ref([]);
