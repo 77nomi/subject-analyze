@@ -71,6 +71,11 @@ const cfu = {
         return series[index].name+'：'+series[index].data+'元'
       }
     },
+		"formatter-analyze":function(item){
+			const percent = (item.value * 100).toFixed(2); // 计算百分数并格式化
+			const result = `${percent}%`;       // 拼接百分号
+			return item.name+': '+result
+		}
   },
   //这里演示了自定义您的图表类型的option，可以随意命名，之后在组件上 type="demotype" 后，组件会调用这个花括号里的option，如果组件上还存在opts参数，会将demotype与opts中option合并后渲染图表。
   "demotype":{

@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:54
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-27 11:40:15
+ * @LastEditTime: 2024-08-29 09:28:15
 -->
 <template>
 	<view class="header">
@@ -41,13 +41,23 @@
 		<view class="top-grid">
 			<up-row justify="space-between" gutter="10" >
 				<up-col span="4">
-					<view @click="toPlan" class="grid-layout">
-						<image src="/assets/icon/icon_main_study_plan.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
+					<view @click="toAnalyze" class="grid-layout">
+						<image src="/assets/icon/icon_main_data_analyze.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
 						<view>
-							学习<br><span class="font-red">记录</span>
+							数据<br><span class="font-red">分析</span>
 						</view>
 					</view>
 				</up-col>
+				<up-col span="8">
+					<view @click="toCareer" class="grid-layout big-grid-layout">
+						<image src="/assets/icon/icon_main_work_plan.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
+						<view>
+							专业介绍<br><span class="font-red">专业点评</span>
+						</view>
+					</view>
+				</up-col>
+			</up-row>
+			<up-row justify="space-between" gutter="10" >
 				<up-col span="8">
 					<view @click="toTree" class="grid-layout big-grid-layout">
 						<image src="/assets/icon/icon_main_study_route.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
@@ -56,21 +66,11 @@
 						</view>
 					</view>
 				</up-col>
-			</up-row>
-			<up-row justify="space-between" gutter="10" >
-				<up-col span="8">
-					<view @click="toCareer" class="grid-layout big-grid-layout">
-						<image src="/assets/icon/icon_main_work_plan.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
-						<view>
-							专业介绍<br><span class="font-red">就业规划</span>
-						</view>
-					</view>
-				</up-col>
 				<up-col span="4">
-					<view @click="toAnalyze" class="grid-layout">
-						<image src="/assets/icon/icon_main_data_analyze.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
+					<view @click="toPlan" class="grid-layout">
+						<image src="/assets/icon/icon_main_study_plan.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
 						<view>
-							数据<br><span class="font-red">分析</span>
+							学习<br><span class="font-red">记录</span>
 						</view>
 					</view>
 				</up-col>
