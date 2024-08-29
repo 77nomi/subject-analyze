@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:58
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-27 20:26:18
+ * @LastEditTime: 2024-08-29 09:17:08
 -->
 <template>
 	<view class="header">
@@ -135,9 +135,10 @@
 							url:'/pages/home/index'
 						})
 					}else{
-						if(res.error==="email does not exist")
-							uni.$u.toast('用户名不存在')
-						else if(res.error==="email and password do not match")
+						console.log(res.error)
+						if(res.error==='User does not exist')
+							uni.$u.toast('邮箱不存在')
+						else if(res.error==='Email and password do not match')
 							uni.$u.toast('密码错误')
 						else
 							uni.$u.toast('登录失败')
