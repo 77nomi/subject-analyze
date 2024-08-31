@@ -1,13 +1,13 @@
 <!--
- * @Description: 就业规划详细页面
+ * @Description: 专业点评详细页面
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:13
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-27 20:31:09
+ * @LastEditTime: 2024-08-31 20:38:04
 -->
 <template>
 	<view class="header">
-		<up-navbar height="80rpx" :title="'就业规划-'+major_info?.name" :placeholder="true" >
+		<up-navbar height="80rpx" :title="'专业点评-'+major_info?.name" :placeholder="true" >
 			<template #left>
 				<image @click="toBack" src="/assets/icon/icon_top_bar_back.png" style="width: 50rpx; height: 50rpx"></image>	
 			</template>

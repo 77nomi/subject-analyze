@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:12
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-28 17:50:46
+ * @LastEditTime: 2024-08-31 21:30:16
 -->
 <template>
 	<view class="header">
@@ -388,7 +388,6 @@
 			subject_sub_key.value = data.subject_sub_key
 			subject_key.value = data.subject_key
 			
-			// const choosedSubject = [subject_cat_key.value,subject_sub_key.value,subject_key.value].join(', ')
 			formData.value = {
 				plan_name: data.plan_name,
 				choosedSubject: subject_key.value,
@@ -415,11 +414,9 @@
 	 * 提交表单
 	 */
 	const submit = ()=>{  
-		console.log(formData.value)
 		formRef.value.validate()
 		.then(async (valid) => {  
 			if (valid) {  
-				const time = timeToTimestamp(formData.value.study_time+' T00:00:00Z')
 				const params = {
 					plan_name: formData.value.plan_name,
 					subject_cat_key: subject_cat_key.value,
@@ -431,15 +428,12 @@
 					note: formData.value.note,
 					tags: formData.value.tags,
 				}
-				console.log(params)
 				if(plan_id.value==0){
 					await addPlanAPI(params)
 					.then((res)=>{
 						if(res.msg === "success"){
 							uni.$u.toast('添加成功')
-							uni.reLaunch({
-								url: '/pages/plan/index'
-							})
+							uni.navigateBack()
 						}
 					})
 					.catch((err)=>{
@@ -451,9 +445,7 @@
 					.then((res)=>{
 						if(res.msg === "success"){
 							uni.$u.toast('修改成功')
-							uni.reLaunch({
-								url: '/pages/plan/index'
-							})
+							uni.navigateBack()
 						}
 					})
 					.catch((err)=>{

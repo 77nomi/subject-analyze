@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:36
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-27 23:21:19
+ * @LastEditTime: 2024-08-31 21:39:20
 -->
 <template>
 	<view class="header">
@@ -87,13 +87,15 @@
 </template>
 
 <script setup>
-	import { ref, onMounted } from 'vue'
+	import { ref, onMounted, onActivated } from 'vue'
 	import { getPlanAPI, GetPlanListAPI } from '@/api/plan.js'
-
+	
 	onMounted( async () => {
+		// 埋个问题：app端不触发这个函数。
 		await getChartData()
 		await getPlanList()
 	})
+
 	
 	const chartData = ref()
 	const opts=ref( 
@@ -172,7 +174,6 @@
 		const formatData = (data)=>{
 			averageTime.value=data.average_time
 			subjectNum.value=data.subjects_info.length
-			console.log(data)
 			let finData = {
 				categories: data.xAxis
 			}
@@ -181,6 +182,8 @@
 				series.push({name:item.subject_name,data:item.data})
 			})
 			finData.series = series
+			console.log('chartData:')
+			console.log(finData)
 			chartData.value = JSON.parse(JSON.stringify(finData));
 		}
 	
@@ -190,7 +193,7 @@
 		});
 		await getPlanAPI()
 		.then((res)=>{
-			console.log(res)
+			// console.log(res)
 			if(res.subjects_info.length!==0){
 				weekData.value = true
 				formatData(res)
@@ -222,9 +225,7 @@
 				item.dataList.forEach((dataDetail)=>{
 					let tagList = []
 					dataDetail.tags.forEach((tag)=>{
-						if(tag==0){
-							flag = 0
-						}else{
+						if(tag!==0){
 							tagList.push(tags.value[tag-1].text)
 						}
 					})
@@ -244,6 +245,7 @@
 				todayData.value = true
 			}
 			
+			console.log('recordData:')
 			console.log(recordList.value)
 		}
 		
@@ -257,8 +259,8 @@
 		});
 		await GetPlanListAPI(params)
 		.then((res)=>{
-			console.log(res)
-			if(!Object.keys(res).length === 0){
+			// console.log(res)
+			if(Object.keys(res).length !== 0){
 				buildList(res)
 			}
 		})
@@ -277,7 +279,9 @@
 	}
 	
 	const toBack = ()=>{
-		uni.navigateBack()
+		uni.reLaunch({
+			url: '/pages/home/index'
+		})
 	}
 	
 	const toALl = ()=>{
@@ -285,6 +289,12 @@
 			url: '/pages/plan/allPlan'
 		})
 	}
+	
+	onActivated( async () => {
+		// 埋个问题：app端不触发这个函数。
+		await getChartData()
+		await getPlanList()
+	})
 	
 </script>
 

@@ -1,5 +1,5 @@
 <!--
- * @Description: 就业规划学科分类页面
+ * @Description: 专业点评学科分类页面
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:45
  * @LastEditor: yuennchan@163.com
@@ -7,7 +7,7 @@
 -->
 <template>
 	<view class="header">
-		<up-navbar height="80rpx" title="就业规划-学科分类" :placeholder="true" >
+		<up-navbar height="80rpx" title="专业点评-学科分类" :placeholder="true" >
 			<template #left>
 				<image @click="toBack" src="/assets/icon/icon_top_bar_back.png" style="width: 50rpx; height: 50rpx"></image>	
 			</template>
