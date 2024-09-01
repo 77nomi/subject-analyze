@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:12
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-31 21:30:16
+ * @LastEditTime: 2024-09-01 13:40:30
 -->
 <template>
 	<view class="header">
@@ -36,11 +36,13 @@
 					label="学科"
 					prop="choosedSubject"
 					required
+					@click="openPicker" 
 				>
 					<up-input
 						v-model="formData.choosedSubject"
 						disabled
-						@click="openPicker" 
+						
+						 style="pointer-events: none"
 						type="select" 
 					></up-input>
 				</up-form-item>
@@ -48,12 +50,13 @@
 					label="日期"
 					prop="study_time"
 					required
+						@click="showCalendar" 
 				>
 					<up-input
 						v-model="formData.study_time"
 						disabled
-						@click="showCalendar" 
 						type="select" 
+						 style="pointer-events: none"
 						:select-open="calendar.show"
 					>
 						<template #suffix>
