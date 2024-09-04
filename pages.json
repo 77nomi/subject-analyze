@@ -15,6 +15,12 @@
 			}
 		},
 		{
+			"path": "pages/choose/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/home/index",
 			"style": {
 				"navigationStyle": "custom"
