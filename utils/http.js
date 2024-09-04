@@ -34,7 +34,7 @@ http.interceptors.response.use((response) => {
 	if (response.statusCode === 401) {
 		// 重定向至登录页
 		uni.redirectTo({
-			url: '/pages/user/login/index'
+			url: '/pages/choose/character'
 		})
 	} else if (response.statusCode === 404) {
 		// 404错误处理
