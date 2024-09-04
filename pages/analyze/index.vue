@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-29 09:41:52
+ * @LastEditTime: 2024-09-04 17:36:06
 -->
 <template>
 	<view class="header">
@@ -20,14 +20,14 @@
 		<template v-if="firstChoose!==null">
 			<view class="topBox">
 				<view class="title">
-					行业招聘需求
+					岗位招聘需求
 					<view @click="openPicker" class="right">
-						<span>更换专业</span>
+						<span>更换岗位</span>
 						<up-icon name="arrow-right" color="#ac0404" size="16"></up-icon>
 					</view>
 				</view>
 				<view class="intro">
-					<span class="font-red">{{firstChoose?firstChoose.major_name:''}}</span>就业岗位技术需求
+					<span class="font-red">{{firstChoose?firstChoose.major_name:''}}</span>岗位技术需求
 				</view>
 			</view>
 			<template v-if="chartData!==null">
@@ -67,7 +67,7 @@
 		<up-empty
 			mode="data"
 			icon="http://cdn.uviewui.com/uview/empty/data.png"
-			text="请先选择需要查看的学科"
+			text="请先选择需要查看的岗位"
 			textColor="#4f4f4f"
 			textSize="20"
 			:show="firstChoose===null"
@@ -76,7 +76,7 @@
 		<up-empty
 			mode="data"
 			icon="http://cdn.uviewui.com/uview/empty/data.png"
-			text="该学科暂无数据,请重新选择"
+			text="该岗位暂无数据,请重新选择"
 			textColor="#4f4f4f"
 			textSize="20"
 			:show="chartData===null"
@@ -86,7 +86,7 @@
 	<uni-popup :is-mask-click="false" ref="uPickerRef" type="bottom" style="z-index: 9999999;"  background-color="#fff">
 		<view style="width:92%; display:flex; justify-content: space-between;margin: 10rpx auto 0;">
 			<span style="padding: 10rpx; color: #585858;" @click="closePicker()">取消</span>
-			<span style="padding: 10rpx;">选择学科</span>
+			<span style="padding: 10rpx;">选择岗位</span>
 			<span style="padding: 10rpx; color: #00aaff;" @click="confirm()">确定</span>
 		</view>
 		<picker-view class="picker-view" mask-style="display:none;" :indicator-style="indicatorStyle" :value="chooseData" @change="changeHandler">
@@ -188,7 +188,7 @@
 	}
 	
 	/**
-	 * @description: 获取学科列表
+	 * @description: 获取岗位列表
 	 * @return
 	 */
 	const getMajorList = async()=>{

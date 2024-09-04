@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:54
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-29 09:28:15
+ * @LastEditTime: 2024-09-04 17:30:24
 -->
 <template>
 	<view class="header">
@@ -52,7 +52,7 @@
 					<view @click="toCareer" class="grid-layout big-grid-layout">
 						<image src="/assets/icon/icon_main_work_plan.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
 						<view>
-							专业介绍<br><span class="font-red">专业点评</span>
+							岗位介绍<br><span class="font-red">岗位点评</span>
 						</view>
 					</view>
 				</up-col>

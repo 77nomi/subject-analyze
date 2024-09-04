@@ -1,13 +1,13 @@
 <!--
- * @Description: 专业点评详细页面
+ * @Description: 岗位点评详细页面
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:13
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-31 20:38:04
+ * @LastEditTime: 2024-09-04 17:30:55
 -->
 <template>
 	<view class="header">
-		<up-navbar height="80rpx" :title="'专业点评-'+major_info?.name" :placeholder="true" >
+		<up-navbar height="80rpx" :title="'岗位点评-'+major_info?.name" :placeholder="true" >
 			<template #left>
 				<image @click="toBack" src="/assets/icon/icon_top_bar_back.png" style="width: 50rpx; height: 50rpx"></image>	
 			</template>
