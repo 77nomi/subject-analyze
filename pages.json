@@ -79,6 +79,12 @@
 			"style": {
 				"navigationStyle": "custom"
 			}
+		},
+		{
+			"path": "pages/choose/character",
+			"style": {
+				"navigationStyle": "custom"
+			}
 		}
 	],
 
