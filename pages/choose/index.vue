@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-09-04 16:52:48
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-04 17:13:06
+ * @LastEditTime: 2024-09-05 16:15:43
 -->
 <template>
 	<view class="header">
@@ -31,9 +31,7 @@
 			</view>
 		</template>
 		<template v-if="if_test === 1">
-			<view class="testChoose" @click="handleTestChoose(0)">
-				性格测试
-			</view>
+			<myForm />
 		</template>
 		
 	</view>
@@ -41,6 +39,7 @@
 
 <script setup>
 	import { ref, onMounted } from 'vue'
+	import myForm from './component/myForm.vue'
 	
 	const if_test = ref(-1)
 	
