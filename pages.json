@@ -21,6 +21,12 @@
 			}
 		},
 		{
+			"path": "pages/choose/component/myForm",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/home/index",
 			"style": {
 				"navigationStyle": "custom"

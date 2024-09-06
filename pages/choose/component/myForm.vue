@@ -3,106 +3,81 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-09-05 16:07:07
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-05 16:16:26
+ * @LastEditTime: 2024-09-06 22:06:22
 -->
 <template>
-	<view>
+	<view class="whole">
 		<up-form
 				labelPosition="left"
-				:model="model1"
+				:model="formData"
 				:rules="rules"
-				ref="form1"
+				labelWidth="100%"
+				ref="formRef"
 		>
 			<up-form-item
-					label="姓名"
-					prop="userInfo.name"
-					borderBottom
-					ref="item1"
+				:required="true"
+				label="你喜欢的工作类型是什么"
+				prop="formData.first"
 			>
-				<up-input
-						v-model="model1.userInfo.name"
-						border="none"
-				></up-input>
-			</up-form-item>
-			<up-form-item
-					label="性别"
-					prop="userInfo.sex"
-					borderBottom
-					@click="showSex = true; hideKeyboard()"
-					ref="item1"
-			>
-				<up-input
-					v-model="model1.userInfo.sex"
-					disabled
-					disabledColor="#ffffff"
-					placeholder="请选择性别"
-					border="none"
-				></up-input>
-				<template #right>
-					<up-icon
-						name="arrow-right"
-					></up-icon>
-				</template>
+				<up-radio-group
+					v-model="formData.first"
+					placement="column"
+				>
+					<up-radio
+						v-for="(item) in firstOptions"
+						:key="item.key"
+						:label="item.label"
+						:name="item.key"
+						activeColor="#ac0404"
+						labelColor="#333333"
+					>
+					</up-radio>
+				</up-radio-group>
 			</up-form-item>
 		</up-form>
-		<up-action-sheet
-				:show="showSex"
-				:actions="actions"
-				title="请选择性别"
-				description="如果选择保密会报错"
-				@close="showSex = false"
-				@select="sexSelect"
-		>
-		</up-action-sheet>
 	</view>
 </template>
 <script setup>  
-import { ref, reactive } from 'vue';  
-  
-// 使用 reactive 创建响应式状态  
-const state = reactive({  
-  showSex: false,  
-  model1: {  
-    userInfo: {  
-      name: 'uview-plus UI',  
-      sex: '',  
-    },  
-  },  
-  actions: [  
-    { name: '男' },  
-    { name: '女' },  
-    { name: '保密' },  
-  ],  
-  rules: {  
-    'userInfo.name': {  
-      type: 'string',  
-      required: true,  
-      message: '请填写姓名',  
-      trigger: ['blur', 'change'],  
-    },  
-    'userInfo.sex': {  
-      type: 'string',  
-      max: 1,  
-      required: true,  
-      message: '请选择男或女',  
-      trigger: ['blur', 'change'],  
-    },  
-  },  
-  radio: '',  
-  switchVal: false,  
-});  
-  
-// 使用 ref 创建响应式引用  
-const formRef = ref(null);  
-  
-// 定义方法  
-function sexSelect(e) {  
-  state.model1.userInfo.sex = e.name;  
-  if (formRef.value) {  
-    formRef.value.validateField('userInfo.sex');  
-  }  
-}  
+import { ref, reactive } from 'vue';
+
+	const formData = ref({
+		first: ''
+	})
+	const firstOptions = [
+		{
+			key: 'A',
+			label: '编程'
+		},
+		{
+			key: 'B',
+			label: '数据整理'
+		}
+	]
+	const rules = {
+		'first': [
+			{
+				type: 'string',
+				required: true,
+				message: '请选择',
+				trigger: ['blur', 'change'], 
+			},
+		]
+	}
+		
+	const formRef = ref(null)
+
 </script>
 
 <style lang="scss">
+	.whole{
+		width: 90%;
+		margin: 0 auto;
+		padding: 10rpx 30rpx;
+	}
+	.u-form-item__body__left__content__label{
+		font-size: 34rpx !important;
+	}
+	.u-form-item__body{
+		flex-direction: column !important;
+	}
 </style>
