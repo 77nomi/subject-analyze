@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-09-07 14:32:05
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-07 14:33:49
+ * @LastEditTime: 2024-09-07 15:27:40
  */
 export const options = {
     first: [
@@ -14,8 +14,7 @@ export const options = {
         { key: 'E', label: '网络安全与隐私保护' },
         { key: 'F', label: '物联网（IoT）技术' },
         { key: 'G', label: '嵌入式系统与硬件设计' },
-        { key: 'H', label: '游戏设计与开发' },
-        { key: 'I', label: '无' }
+        { key: 'H', label: '游戏设计与开发' }
     ],
 		second: [
 				{ key: 'A', label: 'Python' },
@@ -26,8 +25,7 @@ export const options = {
 				{ key: 'F', label: 'HTML/CSS/前端框架' },
 				{ key: 'G', label: '机器学习框架（如TensorFlow, PyTorch）' },
 				{ key: 'H', label: '版本控制工具（如Git）' },
-				{ key: 'I', label: '项目管理工具（如Jira, Trello）' },
-				{ key: 'J', label: '无' }
+				{ key: 'I', label: '项目管理工具（如Jira, Trello）' }
 		],
 		third: [
 				{ key: 'A', label: '逻辑分析，逐步推导' },

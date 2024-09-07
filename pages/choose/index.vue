@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-09-04 16:52:48
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-05 16:15:43
+ * @LastEditTime: 2024-09-07 16:12:53
 -->
 <template>
 	<view class="header">
@@ -31,20 +31,25 @@
 			</view>
 		</template>
 		<template v-if="if_test === 1">
-			<myForm />
+			<view style="width: 90%; margin: 0 auto; padding: 20rpx 0;">
+				<myForm @submit="submit" />
+			</view>
 		</template>
 		
 	</view>
 </template>
 
 <script setup>
-	import { ref, onMounted } from 'vue'
+	import { ref } from 'vue'
 	import myForm from './component/myForm.vue'
 	
 	const if_test = ref(-1)
 	
 	const handleTestChoose = (type)=>{
 		if_test.value = type
+	}
+	const submit = (data)=>{
+		console.log(data)
 	}
 </script>
 

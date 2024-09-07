@@ -3,54 +3,50 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-09-07 14:31:46
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-07 14:34:27
+ * @LastEditTime: 2024-09-07 16:32:04
  */
 export const rules = {
 	'first': [
 		{
-			type: 'string',
+			type: 'array',
 			required: true,
-			message: '请选择',
+			message: '您的回答不完整，请检查并选择所有必要的选项。',
 			trigger: ['blur', 'change'], 
 		},
 	],
 	'second': [
 		{
-			type: 'string',
+			type: 'array',
 			required: true,
-			message: '请选择',
+			message: '您的回答不完整，请检查并选择所有必要的选项。',
 			trigger: ['blur', 'change'], 
 		},
 	],
 	'third': [
 		{
-			type: 'string',
 			required: true,
-			message: '请选择',
+			message: '您的回答不完整，请检查并选择所有必要的选项。',
 			trigger: ['blur', 'change'], 
 		},
 	],
 	'forth': [
 		{
-			type: 'string',
 			required: true,
-			message: '请选择',
+			message: '您的回答不完整，请检查并选择所有必要的选项。',
 			trigger: ['blur', 'change'], 
 		},
 	],
 	'fifth': [
 		{
-			type: 'string',
 			required: true,
-			message: '请选择',
+			message: '您的回答不完整，请检查并选择所有必要的选项。',
 			trigger: ['blur', 'change'], 
 		},
 	],
 	'sixth': [
 		{
-			type: 'string',
 			required: true,
-			message: '请选择',
+			message: '您的回答不完整，请检查并选择所有必要的选项。',
 			trigger: ['blur', 'change'], 
 		},
 	],
