@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-09-05 16:07:07
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-07 16:32:37
+ * @LastEditTime: 2024-09-08 14:10:52
 -->
 <template>
 	<view class="whole">
@@ -192,8 +192,25 @@ import { rules } from './rules.js'
 	const submit = ()=>{
 		formRef.value.validate()
 		.then(async (valid) => {
-			if(valid)
-				emit('submit', formData.value)
+			if(valid){
+				const params = {
+					is_test: 1,
+					data:[]
+				}
+				if(formData.value.first[formData.value.first.length-1]==='NONE'){
+					formData.value.first = []
+				}
+				if(formData.value.second[formData.value.second.length-1]==='NONE'){
+					formData.value.second = []
+				}
+				params.data.push(formData.value.first)
+				params.data.push(formData.value.second)
+				params.data.push(formData.value.third)
+				params.data.push(formData.value.forth)
+				params.data.push(formData.value.fifth)
+				params.data.push(formData.value.sixth)
+				emit('submit', params)
+			}
 		})
 		.catch(() => {
 		});  

@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-09-04 16:52:48
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-07 16:12:53
+ * @LastEditTime: 2024-09-08 14:11:02
 -->
 <template>
 	<view class="header">
@@ -48,8 +48,8 @@
 	const handleTestChoose = (type)=>{
 		if_test.value = type
 	}
-	const submit = (data)=>{
-		console.log(data)
+	const submit = (params)=>{
+		console.log(params)
 	}
 </script>
 
