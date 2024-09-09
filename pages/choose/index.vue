@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-09-04 16:52:48
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-08 14:11:02
+ * @LastEditTime: 2024-09-09 17:55:52
 -->
 <template>
 	<view class="header">
@@ -26,8 +26,8 @@
 			</view>
 		</template>
 		<template v-if="if_test === 0">
-			<view class="testChoose" @click="handleTestChoose(0)">
-				选择岗位
+			<view style="width: 90%; margin: 0 auto; padding: 20rpx 0;" @click="handleTestChoose(0)">
+				<job @submit="submit" />
 			</view>
 		</template>
 		<template v-if="if_test === 1">
@@ -42,6 +42,7 @@
 <script setup>
 	import { ref } from 'vue'
 	import myForm from './component/myForm.vue'
+	import job from './component/job.vue'
 	
 	const if_test = ref(-1)
 	

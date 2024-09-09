@@ -27,6 +27,12 @@
 			}
 		},
 		{
+			"path": "pages/choose/component/job",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/home/index",
 			"style": {
 				"navigationStyle": "custom"
