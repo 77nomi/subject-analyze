@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-09-04 15:33:58
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-04 16:43:28
+ * @LastEditTime: 2024-09-11 16:12:51
 -->
 <template>
 	<view class="header">
@@ -37,7 +37,7 @@
 		} else {
 			uni.showToast({
 				icon: 'none',
-				title: '暂未开发，敬请期待!'
+				title: '更多功能正在开发中'
 			})
 		}
 	}

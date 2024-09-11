@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-04 17:36:06
+ * @LastEditTime: 2024-09-11 16:53:48
 -->
 <template>
 	<view class="header">
@@ -27,7 +27,7 @@
 					</view>
 				</view>
 				<view class="intro">
-					<span class="font-red">{{firstChoose?firstChoose.major_name:''}}</span>岗位技术需求
+					<span class="font-red">{{firstChoose?firstChoose.job_name:''}}</span>岗位技术需求
 				</view>
 			</view>
 			<template v-if="chartData!==null">
@@ -44,21 +44,21 @@
 				</view>
 				<view class="analyzeBox">
 					<view class="big">
-						记录的数据条数：{{majorData.data_rows}}条
+						记录的数据条数：{{jobData.data_rows}}条
 					</view>
 					<view class="big">
-						数据更新时间：{{majorData.last_update}}
+						数据更新时间：{{jobData.last_update}}
 					</view>
 					<view class="samll">
 						掌握以下技能：
 							<ul class=detail>
-								<li v-for="(item,index) in majorData.main_skill" :key="index">{{item}}</li>
+								<li v-for="(item,index) in jobData.main_skill" :key="index">{{item}}</li>
 							</ul>
 					</view>
 					<view class="samll">
 						拓展技术栈：
 							<ul class=detail>
-								<li v-for="(item,index) in majorData.expand_skill" :key="index">{{item}}</li>
+								<li v-for="(item,index) in jobData.expand_skill" :key="index">{{item}}</li>
 							</ul>
 					</view>
 				</view>
@@ -102,13 +102,13 @@
 
 <script setup>
 	import { ref, onMounted } from 'vue'
-	import { getMajorListAPI } from '@/api/career.js'
+	import { getJobListAPI } from '@/api/career.js'
 	import { getDetailAPI } from '@/api/analyze.js'
 	import { timestampToDate } from '@/utils/time.js'
 	
 
 	onMounted( async () => {
-		await getMajorList()
+		await getJobList()
 		openPicker()
 	})
 	
@@ -120,7 +120,7 @@
 	const secondColumns = ref([]);
 	const uPickerRef = ref(null)
 	const firstChoose = ref(null)
-	const majorData = ref({})
+	const jobData = ref({})
 	const chartData = ref()
 	const opts = ref(
 		{
@@ -161,7 +161,7 @@
 	 * @return
 	 */
 	const confirm = async () => {
-		firstChoose.value = allMajorList.value[chooseData.value[0]].majorList[chooseData.value[1]]
+		firstChoose.value = allMajorList.value[chooseData.value[0]].jobList[chooseData.value[1]]
 		uPickerRef.value.close()
 		chartData.value = null
 		await getChartData()
@@ -191,24 +191,24 @@
 	 * @description: 获取岗位列表
 	 * @return
 	 */
-	const getMajorList = async()=>{
-		let majorMap = {}
+	const getJobList = async()=>{
+		let jobMap = {}
 		const buildTree = (dataList)=>{
 			dataList.forEach((item)=>{
-				if(item.major_type in majorMap){
-					majorMap[item.major_type].push({'major_id':item.major_id, 'major_name': item.major_name})
+				if(item.job_type in jobMap){
+					jobMap[item.job_type].push({'job_id':item.job_id, 'job_name': item.job_name})
 				}else{
-					majorMap[item.major_type] = [{'major_id':item.major_id, 'major_name': item.major_name}]
+					jobMap[item.job_type] = [{'job_id':item.job_id, 'job_name': item.job_name}]
 				}
 			})
 			let firstColumn = []
 			let secondColumn = []
-			for(const item in majorMap) {
+			for(const item in jobMap) {
 				firstColumn.push(item)
-				allMajorList.value.push({'major_type':item, 'majorList': majorMap[item]})
+				allMajorList.value.push({'job_type':item, 'jobList': jobMap[item]})
 				let typeMajorList = []
-				majorMap[item].forEach((major)=>{
-					typeMajorList.push(major.major_name)
+				jobMap[item].forEach((job)=>{
+					typeMajorList.push(job.job_name)
 				})
 				secondColumn.push(typeMajorList)
 			}
@@ -217,7 +217,7 @@
 			secondColumns.value = secondColumn
 		}
 		
-		await getMajorListAPI()
+		await getJobListAPI()
 		.then((res)=>{
 			buildTree(res)
 		})
@@ -236,22 +236,23 @@
 				series: []
 			}
 			let data = []
-			dataList.forEach((item)=>{
+			dataList = dataList.slice(0,9)
+			dataList.forEach((item,index)=>{
 				data.push({name:item.subject_name,value:item.value,labelText:item.subject_name})
 			})
 			finData.series.push({data})
 			chartData.value = JSON.parse(JSON.stringify(finData));
 		}
 		
-		const query = 'major_id=' + firstChoose.value.major_id
+		const query = 'job_id=' + firstChoose.value.job_id
 		await getDetailAPI(query)
 		.then((res)=>{
 			console.log(res)
 			if(res.data_rows !== 0){
-				majorData.value.data_rows = res.data_rows
-				majorData.value.expand_skill = res.expand_skill.split('\\n')
-				majorData.value.last_update = timestampToDate(res.last_update)
-				majorData.value.main_skill = res.main_skill.split('\\n')
+				jobData.value.data_rows = res.data_rows
+				jobData.value.expand_skill = res.expand_skill.split('\\n')
+				jobData.value.last_update = timestampToDate(res.last_update)
+				jobData.value.main_skill = res.main_skill.split('\\n')
 				formatData(res.subject_value)
 			}
 		})
