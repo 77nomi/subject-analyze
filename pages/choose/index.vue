@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-09-04 16:52:48
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-11 22:33:01
+ * @LastEditTime: 2024-09-11 22:48:30
 -->
 <template>
 	<view class="header">
@@ -84,6 +84,11 @@
 		await getJobAPI()
 		.then((res)=>{
 			console.log(res)
+			if(res.length>0){
+				uni.reLaunch({
+					url: '/pages/home/index'
+				})
+			}
 		})
 		.catch((err)=>{
 			console.log(err)
