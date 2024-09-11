@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:58
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-29 09:17:08
+ * @LastEditTime: 2024-09-11 22:35:12
 -->
 <template>
 	<view class="header">
@@ -131,9 +131,16 @@
 						uni.setStorageSync('token', res.session_token);
 						uni.setStorageSync('avatar', res.avatar);
 						uni.setStorageSync('username', res.username);
-						uni.reLaunch({
-							url:'/pages/home/index'
-						})
+						uni.setStorageSync('is_test', res.is_test);
+						if(res.is_test===2){
+							uni.reLaunch({
+								url:'/pages/choose/index'
+							})
+						}else{
+							uni.reLaunch({
+								url:'/pages/home/index'
+							})
+						}
 					}else{
 						console.log(res.error)
 						if(res.error==='User does not exist')

@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-09-09 17:42:44
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-09 17:52:28
+ * @LastEditTime: 2024-09-11 22:23:30
 -->
 <template>
 	<view class="whole">
@@ -40,9 +40,14 @@
 	</view>
 </template>
 <script setup>  
-import { ref, defineEmits } from 'vue';
-import { options } from './jobOptions.js'
+import { ref, defineEmits, onMounted } from 'vue';
+import { getOptions } from './jobOptions.js'
 import { rules } from './jobRules.js'
+
+	const options = ref()
+	onMounted(async()=>{
+		options.value = await getOptions()
+	})
 
 	const formData = ref({
 		jobs: []
@@ -54,11 +59,15 @@ import { rules } from './jobRules.js'
 		formRef.value.validate()
 		.then(async (valid) => {
 			if(valid){
+				// let data = []
+				// formData.value.jobs.forEach((id)=>{
+				// 	data.push(id)
+				// })
 				const params = {
-					is_test: 0,
+					is_test: 2,
 					data: formData.value.jobs
+					// data: data
 				}
-				console.log(params)
 				emit('submit', params)
 			}
 		})

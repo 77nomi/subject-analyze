@@ -3,11 +3,11 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-09-04 16:52:48
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-09 17:55:52
+ * @LastEditTime: 2024-09-11 22:33:01
 -->
 <template>
 	<view class="header">
-		<up-navbar height="80rpx" :title="if_test===1?'性格测试':'选择岗位'" :placeholder="true" >
+		<up-navbar height="80rpx" :title="showComponent===1?'性格测试':'选择岗位'" :placeholder="true" >
 			<template #left>
 				<span></span>
 			</template>
@@ -17,7 +17,7 @@
 		</up-navbar>
 	</view>
 	<view class="container">
-		<template v-if="if_test === -1">
+		<template v-if="showComponent === -1">
 			<view class="testChoose" @click="handleTestChoose(0)">
 				有心仪岗位，去选择岗位
 			</view>
@@ -25,13 +25,13 @@
 				无心仪岗位，去做性格测试获取推荐岗位
 			</view>
 		</template>
-		<template v-if="if_test === 0">
-			<view style="width: 90%; margin: 0 auto; padding: 20rpx 0;" @click="handleTestChoose(0)">
+		<template v-if="showComponent === 0">
+			<view style="width: 94%; margin: 0 auto; padding: 20rpx 0;" @click="handleTestChoose(0)">
 				<job @submit="submit" />
 			</view>
 		</template>
-		<template v-if="if_test === 1">
-			<view style="width: 90%; margin: 0 auto; padding: 20rpx 0;">
+		<template v-if="showComponent === 1">
+			<view style="width: 94%; margin: 0 auto; padding: 20rpx 0;">
 				<myForm @submit="submit" />
 			</view>
 		</template>
@@ -43,15 +43,53 @@
 	import { ref } from 'vue'
 	import myForm from './component/myForm.vue'
 	import job from './component/job.vue'
+	import { submitAPI, getJobAPI } from '../../api/choose.js'
 	
-	const if_test = ref(-1)
+	const showComponent = ref(-1)
 	
+	/**
+	 * @description: 选择是否测试
+	 * @param {*} type
+	 * @return
+	 */
 	const handleTestChoose = (type)=>{
-		if_test.value = type
+		showComponent.value = type
 	}
-	const submit = (params)=>{
+	
+	/**
+	 * @description: 提交表单
+	 * @param {*} params
+	 * @return
+	 */
+	const submit = async (params)=>{
 		console.log(params)
+		await submitAPI(params)
+		.then((res)=>{
+			console.log(res)
+			if(res.msg==="success"){
+				getJob()
+			}
+		})
+		.catch((err)=>{
+			console.log(err)
+		})
 	}
+	
+	/**
+	 * @description: 获取推荐岗位
+	 * @param {*} params
+	 * @return
+	 */
+	const getJob = async ()=>{
+		await getJobAPI()
+		.then((res)=>{
+			console.log(res)
+		})
+		.catch((err)=>{
+			console.log(err)
+		})
+	}
+	
 </script>
 
 <style lang="scss">
@@ -68,10 +106,11 @@
 		.testChoose{
 			display: flex;
 			align-items: center;
+			justify-content: center;
 			text-align: center;
 			border-radius: 20rpx;
 			height: 300rpx;
-			width: 400rpx;
+			width: 540rpx;
 			background-color: #fff;
 			color: #515151;
 			font-size: 40rpx;
