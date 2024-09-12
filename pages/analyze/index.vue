@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-11 16:53:48
+ * @LastEditTime: 2024-09-12 19:30:45
 -->
 <template>
 	<view class="header">
@@ -39,27 +39,27 @@
 						tooltipFormat="formatter-analyze"
 					/>
 				</view>
-				<view class="bottomTitle">
-					数据分析：
-				</view>
 				<view class="analyzeBox">
-					<view class="big">
-						记录的数据条数：{{jobData.data_rows}}条
-					</view>
-					<view class="big">
-						数据更新时间：{{jobData.last_update}}
-					</view>
-					<view class="samll">
-						掌握以下技能：
-							<ul class=detail>
-								<li v-for="(item,index) in jobData.main_skill" :key="index">{{item}}</li>
-							</ul>
-					</view>
-					<view class="samll">
-						拓展技术栈：
-							<ul class=detail>
-								<li v-for="(item,index) in jobData.expand_skill" :key="index">{{item}}</li>
-							</ul>
+					<up-tabs itemStyle="margin-top:0; height: 80rpx;" :list="tabList" @click="handleTabChange"></up-tabs>
+					<view class="text-container" v-if="tabIndex===0">
+						<view class="big">
+							记录的数据条数：{{jobData.data_rows}}条
+						</view>
+						<view class="big">
+							数据更新时间：{{jobData.last_update}}
+						</view>
+						<view class="samll">
+							掌握以下技能：
+								<ul class=detail>
+									<li v-for="(item,index) in jobData.main_skill" :key="index">{{item}}</li>
+								</ul>
+						</view>
+						<view class="samll">
+							拓展技术栈：
+								<ul class=detail>
+									<li v-for="(item,index) in jobData.expand_skill" :key="index">{{item}}</li>
+								</ul>
+						</view>
 					</view>
 				</view>
 			</template>
@@ -144,6 +144,15 @@
 			}
 		}	
 	)
+	const tabList = ref([
+		{name: '数据分析'},
+		{name: '学习资料'}
+	])
+	const tabIndex = ref(0)
+	
+	const handleTabChange = (e)=>{
+		tabIndex.value = e.index
+	}
 	
 	/**
 	 * @description: 更改选择
@@ -323,11 +332,17 @@
 			margin: 10rpx auto;
 			background-color: #fff;
 			border-radius: 10rpx;
-			padding: 10rpx;
+			padding: 0 10rpx;
+			.u-tabs__wrapper__nav__line{
+				width: 100rpx !important;
+				margin-left: -29rpx !important;
+			}
 			view{
-				margin-left: 10rpx;
-				margin-top: 15rpx;
+				margin-top: 5rpx;
 				font-size: 30rpx;
+			}
+			.text-container{
+				margin-left: 10rpx;
 			}
 			.big{
 				font-weight: 600;
