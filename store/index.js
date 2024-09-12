@@ -1,5 +1,5 @@
-import useStepStore from './modules/step.js'
+import useRecomendJob from './modules/recomendJob.js'
 
 export {
-	useStepStore
+	useRecomendJob
 }

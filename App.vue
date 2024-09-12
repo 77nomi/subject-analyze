@@ -2,6 +2,13 @@
 export default {
 	onLaunch: function () {
 		console.log('App Launch')
+    const is_test = uni.getStorageSync('is_test')
+		console.log(is_test)
+		if(is_test===2){
+			uni.reLaunch({
+				url:'/pages/choose/index'
+			})
+		}
 	},
 	onShow: function () {
 		console.log('App Show')

@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:58
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-12 17:45:50
+ * @LastEditTime: 2024-09-12 23:00:21
 -->
 <template>
 	<view class="header">
@@ -62,6 +62,7 @@
 <script setup>
 	import { ref } from 'vue'
 	import { loginAPI } from '@/api/user.js'
+	import { getJobAPI } from '@/api/choose.js'
 	
 	const formData = ref({
 		email: '',
@@ -138,8 +139,23 @@
 								url:'/pages/choose/index'
 							})
 						}else{
-							uni.reLaunch({
-								url:'/pages/home/index'
+							/**
+							 * @description: 获取推荐岗位
+							 * @param {*} params
+							 * @return
+							 */
+							getJobAPI()
+							.then((res)=>{
+								console.log(res)
+								if(res.length>0){
+									uni.setStorageSync('recomendJob', res.is_new);
+									uni.reLaunch({
+										url: '/pages/home/index'
+									})
+								}
+							})
+							.catch((err)=>{
+								console.log(err)
 							})
 						}
 					}else{
