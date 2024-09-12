@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:58
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-11 22:35:12
+ * @LastEditTime: 2024-09-12 17:45:50
 -->
 <template>
 	<view class="header">
@@ -132,6 +132,7 @@
 						uni.setStorageSync('avatar', res.avatar);
 						uni.setStorageSync('username', res.username);
 						uni.setStorageSync('is_test', res.is_test);
+						uni.setStorageSync('is_new', res.is_new);
 						if(res.is_test===2){
 							uni.reLaunch({
 								url:'/pages/choose/index'
