@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-12 19:30:45
+ * @LastEditTime: 2024-09-17 00:32:12
 -->
 <template>
 	<view class="header">
@@ -60,6 +60,18 @@
 									<li v-for="(item,index) in jobData.expand_skill" :key="index">{{item}}</li>
 								</ul>
 						</view>
+					</view>
+					<view class="table-container" v-else>
+						<uni-table border stripe emptyText="暂无更多数据" >
+							<uni-tr>
+								<uni-th width="50" align="center">技术名称</uni-th>
+								<uni-th align="center">url（点击可复制）</uni-th>
+							</uni-tr>
+							<uni-tr v-for="(item,index) in tableData" :key="index">
+								<uni-td align="center">{{item.name}}</uni-td>
+								<uni-td style="word-break: break-all;" align="center">{{item.url}}</uni-td>
+							</uni-tr>
+						</uni-table>
 					</view>
 				</view>
 			</template>
@@ -149,6 +161,7 @@
 		{name: '学习资料'}
 	])
 	const tabIndex = ref(0)
+	const tableData = ref({})
 	
 	const handleTabChange = (e)=>{
 		tabIndex.value = e.index
@@ -162,6 +175,7 @@
 	const changeHandler = (e) => {
 		chooseData.value = e.detail.value
 		showColumns.value[1]=secondColumns.value[e.detail.value[0]]
+		tabIndex.value = 0
 	};
 
 	/**
@@ -236,11 +250,11 @@
 	}
 	
 	/**
-	 * @description: 获取数据并更新图
+	 * @description: 获取数据
 	 * @return
 	 */
 	const getChartData = async()=>{
-		const formatData = (dataList)=>{
+		const buildChartData = (dataList)=>{
 			let finData = {
 				series: []
 			}
@@ -253,6 +267,17 @@
 			chartData.value = JSON.parse(JSON.stringify(finData));
 		}
 		
+		const buildTableData = (dataList)=>{
+			let data = []
+			dataList.forEach(item=>{
+				if(item.study_url){
+					data.push({name:item.subject_name,url:item.study_url})
+				}
+			})
+			tableData.value = data
+			console.log(tableData.value)
+		}
+		
 		const query = 'job_id=' + firstChoose.value.job_id
 		await getDetailAPI(query)
 		.then((res)=>{
@@ -262,7 +287,8 @@
 				jobData.value.expand_skill = res.expand_skill.split('\\n')
 				jobData.value.last_update = timestampToDate(res.last_update)
 				jobData.value.main_skill = res.main_skill.split('\\n')
-				formatData(res.subject_value)
+				buildChartData(res.subject_value)
+				buildTableData(res.subject_value)
 			}
 		})
 		.catch((err)=>{
@@ -343,6 +369,9 @@
 			}
 			.text-container{
 				margin-left: 10rpx;
+			}
+			.table-container{
+				width: 100%;
 			}
 			.big{
 				font-weight: 600;
