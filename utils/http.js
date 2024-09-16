@@ -2,7 +2,7 @@ import Request from 'luch-request'
 
 // 创建实例
 const http = new Request({
-	baseURL: 'http://careerapi.hithere.fun', // 基地址
+	baseURL: 'https://careerapi.hithere.fun', // 基地址
 	timeout: 1500 // 超时时间
 })
 
