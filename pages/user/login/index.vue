@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:58
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-12 23:00:21
+ * @LastEditTime: 2024-09-18 14:55:43
 -->
 <template>
 	<view class="header">
@@ -126,7 +126,7 @@
 					password: formData.value.password
 				}
 				await loginAPI(params)
-				.then((res)=>{
+				.then( async (res)=>{
 					console.log(res)
 					if(res.session_token){
 						uni.setStorageSync('token', res.session_token);
@@ -139,24 +139,19 @@
 								url:'/pages/choose/index'
 							})
 						}else{
-							/**
-							 * @description: 获取推荐岗位
-							 * @param {*} params
-							 * @return
-							 */
-							getJobAPI()
-							.then((res)=>{
-								console.log(res)
-								if(res.length>0){
-									uni.setStorageSync('recomendJob', res.is_new);
-									uni.reLaunch({
-										url: '/pages/home/index'
-									})
-								}
-							})
-							.catch((err)=>{
-								console.log(err)
-							})
+							await getJobAPI()
+								.then((res)=>{
+									console.log(res)
+									if(res.length>0){
+										uni.setStorageSync('recomendJob', res);
+										uni.reLaunch({
+											url: '/pages/home/index'
+										})
+									}
+								})
+								.catch((err)=>{
+									console.log(err)
+								})
 						}
 					}else{
 						console.log(res.error)

@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-17 00:32:12
+ * @LastEditTime: 2024-09-18 15:30:11
 -->
 <template>
 	<view class="header">
@@ -98,7 +98,12 @@
 	<uni-popup :is-mask-click="false" ref="uPickerRef" type="bottom" style="z-index: 9999999;"  background-color="#fff">
 		<view style="width:92%; display:flex; justify-content: space-between;margin: 10rpx auto 0;">
 			<span style="padding: 10rpx; color: #585858;" @click="closePicker()">取消</span>
-			<span style="padding: 10rpx;">选择岗位</span>
+			<view style="padding: 10rpx; text-align: center;">
+				<p>选择岗位</p>
+				<view style="display: flex; align-items: bottom; font-size: 20rpx; margin-top: 5rpx;">
+					推荐岗位<up-switch size="15" v-model="showAll" @change="changeShowAll"></up-switch>全部岗位
+				</view>
+			</view>
 			<span style="padding: 10rpx; color: #00aaff;" @click="confirm()">确定</span>
 		</view>
 		<picker-view class="picker-view" mask-style="display:none;" :indicator-style="indicatorStyle" :value="chooseData" @change="changeHandler">
@@ -113,7 +118,7 @@
 </template>
 
 <script setup>
-	import { ref, onMounted } from 'vue'
+	import { ref, reactive, onMounted } from 'vue'
 	import { getJobListAPI } from '@/api/career.js'
 	import { getDetailAPI } from '@/api/analyze.js'
 	import { timestampToDate } from '@/utils/time.js'
@@ -121,15 +126,21 @@
 
 	onMounted( async () => {
 		await getJobList()
+		buildOptions(uni.getStorageSync('recomendJob'),'recomend')
 		openPicker()
 	})
 	
 	const chooseData = ref([0,0])
 	const indicatorStyle = ref('height: 80rpx;background-color:rgba(226, 226, 226, 0.1);border-top: 1rpx solid #cfcfcf;border-bottom: 1rpx solid #cfcfcf;')
 	
-	const allMajorList = ref([])
+	const allMajorList = ref()
+	const recomendMajorList = reactive([])
 	const showColumns = ref([]);
-	const secondColumns = ref([]);
+	const firstColumn = ref({
+		all: [],
+		recomend: []
+	})
+	const showAll = ref(false)
 	const uPickerRef = ref(null)
 	const firstChoose = ref(null)
 	const jobData = ref({})
@@ -167,6 +178,16 @@
 		tabIndex.value = e.index
 	}
 	
+	const changeShowAll = (e)=>{
+		if(e){
+			showColumns.value[0] = firstColumn.value.all
+			showColumns.value[1] = allMajorList.value[0].optionsList
+		}else{
+			showColumns.value[0] = firstColumn.value.recomend
+			showColumns.value[1] = recomendMajorList.value[0].optionsList
+		}
+	}
+	
 	/**
 	 * @description: 更改选择
 	 * @param {*} e
@@ -174,7 +195,11 @@
 	 */
 	const changeHandler = (e) => {
 		chooseData.value = e.detail.value
-		showColumns.value[1]=secondColumns.value[e.detail.value[0]]
+		if(showAll.value){
+			showColumns.value[1]=allMajorList.value[e.detail.value[0]].optionsList
+		}else{
+			showColumns.value[1]=recomendMajorList.value[e.detail.value[0]].optionsList
+		}
 		tabIndex.value = 0
 	};
 
@@ -184,7 +209,10 @@
 	 * @return
 	 */
 	const confirm = async () => {
-		firstChoose.value = allMajorList.value[chooseData.value[0]].jobList[chooseData.value[1]]
+		if(showAll.value)
+			firstChoose.value = allMajorList.value[chooseData.value[0]].jobList[chooseData.value[1]]
+		else
+			firstChoose.value = recomendMajorList.value[chooseData.value[0]].jobList[chooseData.value[1]]
 		uPickerRef.value.close()
 		chartData.value = null
 		await getChartData()
@@ -215,38 +243,48 @@
 	 * @return
 	 */
 	const getJobList = async()=>{
-		let jobMap = {}
-		const buildTree = (dataList)=>{
-			dataList.forEach((item)=>{
-				if(item.job_type in jobMap){
-					jobMap[item.job_type].push({'job_id':item.job_id, 'job_name': item.job_name})
-				}else{
-					jobMap[item.job_type] = [{'job_id':item.job_id, 'job_name': item.job_name}]
-				}
-			})
-			let firstColumn = []
-			let secondColumn = []
-			for(const item in jobMap) {
-				firstColumn.push(item)
-				allMajorList.value.push({'job_type':item, 'jobList': jobMap[item]})
-				let typeMajorList = []
-				jobMap[item].forEach((job)=>{
-					typeMajorList.push(job.job_name)
-				})
-				secondColumn.push(typeMajorList)
-			}
-			showColumns.value.push(firstColumn)
-			showColumns.value.push(secondColumn[0])
-			secondColumns.value = secondColumn
-		}
-		
 		await getJobListAPI()
 		.then((res)=>{
-			buildTree(res)
+			buildOptions(res, 'all')
 		})
 		.catch((err)=>{
 			console.log(err)
 		})
+	}
+	
+	/**
+	 * @description: 构造选择器列表结构
+	 * @param {*} dataList
+	 * @return
+	 */
+	const buildOptions = (dataList, type)=>{
+		let jobMap = {}
+		let finList = []
+		dataList.forEach((item)=>{
+			if(item.job_type in jobMap){
+				jobMap[item.job_type].push({'job_id':item.job_id, 'job_name': item.job_name})
+			}else{
+				jobMap[item.job_type] = [{'job_id':item.job_id, 'job_name': item.job_name}]
+			}
+		})
+		let first = []
+		for(const item in jobMap) {
+			first.push(item)
+			let optionsList = []
+			jobMap[item].forEach((job)=>{
+				optionsList.push(job.job_name)
+			})
+			finList.push({'job_type':item, 'jobList': jobMap[item], 'optionsList': optionsList})
+		}
+		if(type==='all'){
+			allMajorList.value = finList
+			firstColumn.value.all = first
+		}else{
+			showColumns.value.push(first)
+			showColumns.value.push(finList[0].optionsList)
+			recomendMajorList.value = finList
+			firstColumn.value.recomend = first
+		}
 	}
 	
 	/**
