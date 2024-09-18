@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:54
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-04 17:30:24
+ * @LastEditTime: 2024-09-18 14:25:31
 -->
 <template>
 	<view class="header">
@@ -52,7 +52,7 @@
 					<view @click="toCareer" class="grid-layout big-grid-layout">
 						<image src="/assets/icon/icon_main_work_plan.png" mode="aspectFit" style=" width:50rpx; height: 50rpx;"></image>	
 						<view>
-							岗位介绍<br><span class="font-red">岗位点评</span>
+							专业介绍<br><span class="font-red">专业点评</span>
 						</view>
 					</view>
 				</up-col>
@@ -123,6 +123,71 @@
 			</view>
 		</view>
 	</view>
+	
+	<up-overlay class="overlay" :show="showOverlay">
+		<view class="overlay-analyze" v-if="step===1">
+			<view class="content">
+				收集了各个岗位的数据进行数据分析，并上传了学习资料以供学习
+			</view>
+			<view class="bottom">
+				<span>(1/4)</span>
+				<span class="next" @click="nextStep">
+					下一步
+				</span>
+				<span class="skip" @click="skipStep">
+					跳过
+				</span>
+			</view>
+		</view>
+		<view class="overlay-carrer" v-if="step===2">
+			<view class="content">
+				介绍不同专业，收集了大众对于不同专业的点评
+			</view>
+			<view class="bottom">
+				<span>(2/4)</span>
+				<span class="last" @click="lastStep">
+					上一步
+				</span>
+				<span class="next" @click="nextStep">
+					下一步
+				</span>
+				<span class="skip" @click="skipStep">
+					跳过
+				</span>
+			</view>
+		</view>
+		<view class="overlay-tree" v-if="step===3">
+			<view class="content">
+				对各种不同的技能进行分类整合，便于查看
+			</view>
+			<view class="bottom">
+				<span>(3/4)</span>
+				<span class="last" @click="lastStep">
+					上一步
+				</span>
+				<span class="next" @click="nextStep">
+					下一步
+				</span>
+				<span class="skip" @click="skipStep">
+					跳过
+				</span>
+			</view>
+		</view>
+		<view class="overlay-record" v-if="step===4">
+			<view class="content">
+				可以添加自己的学习记录，查看自己的历史学习记录
+			</view>
+			<view class="bottom">
+				<span>(4/4)</span>
+				<span class="last" @click="lastStep">
+					上一步
+				</span>
+				<span class="skip" @click="skipStep">
+					关闭
+				</span>
+			</view>
+		</view>
+	</up-overlay>
 </template>
 
 <script setup>
@@ -134,12 +199,30 @@
 	const newsList = ref([])
 	const username = ref('')
 	const avatar = ref('')
+	const showOverlay = ref(false)
+	const step = ref(1)
 	
 	onMounted( async () => {
 		await getNewsList()
 		username.value = uni.getStorageSync('username')
 		avatar.value = 'http://8.138.115.27:8886'+uni.getStorageSync('avatar')
+		if(uni.getStorageSync('is_new'))
+			showOverlay.value = true
 	})
+	
+	const lastStep = ()=>{
+		step.value--
+	}
+	
+	const nextStep = ()=>{
+		step.value++
+		if(step.value>4)
+			showOverlay.value = false
+	}
+	
+	const skipStep = ()=>{
+		showOverlay.value = false
+	}
 	
 	/**
 	 * 获取新闻列表
@@ -329,6 +412,85 @@
 						-webkit-line-clamp: 1;//设置 块元素包含的文本行数
 					}
 				}
+			}
+		}
+	}
+	
+	.overlay{
+		height: 100%;
+		width: 100%;
+		z-index: 9;
+		.content{
+			width: 400rpx;
+			background-color: #fff;
+			font-size: 34rpx;
+			padding: 10rpx;
+			border-radius: 10rpx;
+		}
+		.bottom{
+			color: #fff;
+			font-size: 14rpx;
+			width: 400rpx;
+			text-align: right;
+		}
+		.overlay-analyze{
+			border: solid #fff 4rpx;
+			margin-top: 90rpx;
+			margin-left: 5rpx;
+			width: 210rpx;
+			height: 210rpx;
+			z-index: 99;
+			.content{
+				margin-top: 130rpx;
+				margin-left: 220rpx;
+			}
+			.bottom{
+				margin-left: 220rpx;
+			}
+		}
+		.overlay-carrer{
+			border: solid #fff 4rpx;
+			margin-top: 90rpx;
+			margin-left: 260rpx;
+			width: 480rpx;
+			height: 210rpx;
+			z-index: 99;
+			.content{
+				margin-top: 230rpx;
+				margin-left: -120rpx;
+			}
+			.bottom{
+				margin-left: -120rpx;
+			}
+		}
+		.overlay-tree{
+			border: solid #fff 4rpx;
+			margin-top: 310rpx;
+			margin-left: 5rpx;
+			width: 490rpx;
+			height: 210rpx;
+			z-index: 99;
+			.content{
+				margin-top: 230rpx;
+				margin-left: 120rpx;
+			}
+			.bottom{
+				margin-left: 120rpx;
+			}
+		}
+		.overlay-record{
+			border: solid #fff 4rpx;
+			margin-top: 310rpx;
+			margin-left: 518rpx;
+			width: 210rpx;
+			height: 210rpx;
+			z-index: 99;
+			.content{
+				margin-top: 230rpx;
+				margin-left: -320rpx;
+			}
+			.bottom{
+				margin-left: -320rpx;
 			}
 		}
 	}
