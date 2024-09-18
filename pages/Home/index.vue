@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:54
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-18 15:48:46
+ * @LastEditTime: 2024-09-18 17:05:03
 -->
 <template>
 	<view class="header">
@@ -37,7 +37,6 @@
 	</view>
 
 	<view class="container">
-		<view class="status_bar"></view>
 		<view class="top-grid">
 			<up-row justify="space-between" gutter="10" >
 				<up-col span="4">
@@ -206,7 +205,6 @@
 		await getNewsList()
 		username.value = uni.getStorageSync('username')
 		avatar.value = 'https://careerapi.hithere.fun'+uni.getStorageSync('avatar')
-		console.log(avatar.value)
 		if(uni.getStorageSync('is_new'))
 			showOverlay.value = true
 	})
@@ -285,7 +283,7 @@
 	
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.header{
 		position: fixed;
 		padding-top: var(--status-bar-height);
@@ -320,7 +318,7 @@
 
 	.container{
 		width: 100%;
-		margin-top: 0 !important;
+		padding-top: 80rpx;
 		.status_bar{
 			height: calc(var(--status-bar-height) + 80rpx); 
 			width: 100%;
@@ -345,7 +343,7 @@
 				box-shadow: 0 4rpx 4rpx #a8a8a8;
 			}
 			.big-grid-layout{
-				width: 460rpx;
+				width: 430rpx;
 				display: flex;
 				align-items: flex-start;
 				padding-left: 20rpx;
@@ -453,7 +451,7 @@
 			border: solid #fff 4rpx;
 			margin-top: 90rpx;
 			margin-left: 260rpx;
-			width: 480rpx;
+			width: 465rpx;
 			height: 210rpx;
 			z-index: 99;
 			.content{
@@ -468,7 +466,7 @@
 			border: solid #fff 4rpx;
 			margin-top: 310rpx;
 			margin-left: 5rpx;
-			width: 490rpx;
+			width: 465rpx;
 			height: 210rpx;
 			z-index: 99;
 			.content{

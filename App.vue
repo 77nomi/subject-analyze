@@ -35,7 +35,4 @@ export default {
 		width: 100%;
 		background-color: #fff;
 	}
-	.container{
-		margin-top: 80rpx;
-	}
 </style>

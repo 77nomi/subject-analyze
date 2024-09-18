@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-18 15:30:11
+ * @LastEditTime: 2024-09-18 16:49:35
 -->
 <template>
 	<view class="header">
@@ -100,7 +100,7 @@
 			<span style="padding: 10rpx; color: #585858;" @click="closePicker()">取消</span>
 			<view style="padding: 10rpx; text-align: center;">
 				<p>选择岗位</p>
-				<view style="display: flex; align-items: bottom; font-size: 20rpx; margin-top: 5rpx;">
+				<view style="display: flex; align-items: bottom; font-size: 26rpx; margin-top: 5rpx;">
 					推荐岗位<up-switch size="15" v-model="showAll" @change="changeShowAll"></up-switch>全部岗位
 				</view>
 			</view>
