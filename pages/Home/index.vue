@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:54
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-18 14:25:31
+ * @LastEditTime: 2024-09-18 15:48:46
 -->
 <template>
 	<view class="header">
@@ -205,7 +205,8 @@
 	onMounted( async () => {
 		await getNewsList()
 		username.value = uni.getStorageSync('username')
-		avatar.value = 'http://8.138.115.27:8886'+uni.getStorageSync('avatar')
+		avatar.value = 'https://careerapi.hithere.fun'+uni.getStorageSync('avatar')
+		console.log(avatar.value)
 		if(uni.getStorageSync('is_new'))
 			showOverlay.value = true
 	})
@@ -429,7 +430,7 @@
 		}
 		.bottom{
 			color: #fff;
-			font-size: 14rpx;
+			font-size: 24rpx;
 			width: 400rpx;
 			text-align: right;
 		}
