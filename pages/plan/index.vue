@@ -3,19 +3,10 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:36
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-19 14:56:55
+ * @LastEditTime: 2024-09-19 15:15:17
 -->
 <template>
-	<view class="header">
-		<up-navbar height="80rpx" title="学习记录" :placeholder="true" >
-			<template #left>
-				<image @click="toBack" src="/assets/icon/icon_top_bar_back.png" style="width: 50rpx; height: 50rpx"></image>	
-			</template>
-			<template #right>
-				<image src="/assets/icon/icon_top_bar_list.png" style="width: 50rpx; height: 50rpx"></image>
-			</template>
-		</up-navbar>
-	</view>
+	<headerComponent title="学习记录"></headerComponent>
 	<view class="container">
 		<view class="planData">
 			<view class="title">今日学习记录</view>

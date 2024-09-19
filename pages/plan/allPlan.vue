@@ -3,19 +3,10 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:21
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-27 23:06:58
+ * @LastEditTime: 2024-09-19 15:10:05
 -->
 <template>
-	<view class="header">
-		<up-navbar height="80rpx" title="全部记录" :placeholder="true" >
-			<template #left>
-				<image @click="toBack" src="/assets/icon/icon_top_bar_back.png" style="width: 50rpx; height: 50rpx"></image>	
-			</template>
-			<template #right>
-				<image src="/assets/icon/icon_top_bar_list.png" style="width: 50rpx; height: 50rpx"></image>
-			</template>
-		</up-navbar>
-	</view>
+	<headerComponent title="全部记录" ></headerComponent>
 	<view class="container">
 		<scroll-view :scroll-y="true" class="scrollBox" @scrolltolower="getPlanList()">
 			<view class="title">

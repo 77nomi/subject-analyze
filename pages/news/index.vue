@@ -3,19 +3,10 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:36:58
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-24 18:56:19
+ * @LastEditTime: 2024-09-19 15:14:16
 -->
-<template>
-	<view class="header">
-		<up-navbar height="80rpx" title="新闻" :placeholder="true" >
-			<template #left>
-				<image @click="toBack" src="/assets/icon/icon_top_bar_back.png" style="width: 50rpx; height: 50rpx"></image>	
-			</template>
-			<template #right>
-				<image src="/assets/icon/icon_top_bar_list.png" style="width: 50rpx; height: 50rpx"></image>
-			</template>
-		</up-navbar>
-	</view>
+<template>	
+	<headerComponent title="新闻"></headerComponent>
 	<view class="container">
 		<view class="wholeBox">
 			<view v-for="(item,index) in newsList" :key="index" class="newBox" @click="toDetail(item.news_id)">
