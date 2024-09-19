@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:20:36
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-08-31 21:39:20
+ * @LastEditTime: 2024-09-19 14:56:55
 -->
 <template>
 	<view class="header">
@@ -60,9 +60,9 @@
 				<view class="top">
 					<span>每日平均学习时长</span>
 					<view class="choose">
-						<u-dropdown active-color="#AC0404" title-size="30rpx">
+						<!-- <u-dropdown active-color="#AC0404" title-size="30rpx">
 							<u-dropdown-item v-model="timeChoose" :title="timeChoose" :options="timeOption"></u-dropdown-item>
-						</u-dropdown>
+						</u-dropdown> -->
 					</view>
 				</view>
 				<view class="time font-red">
