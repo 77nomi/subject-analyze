@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:16:59
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-18 16:49:35
+ * @LastEditTime: 2024-09-19 15:51:50
 -->
 <template>
 	<view class="header">
@@ -65,7 +65,7 @@
 						<uni-table border stripe emptyText="暂无更多数据" >
 							<uni-tr>
 								<uni-th width="50" align="center">技术名称</uni-th>
-								<uni-th align="center">url（点击可复制）</uni-th>
+								<uni-th align="center">url</uni-th>
 							</uni-tr>
 							<uni-tr v-for="(item,index) in tableData" :key="index">
 								<uni-td align="center">{{item.name}}</uni-td>
