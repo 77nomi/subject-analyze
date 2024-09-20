@@ -18,7 +18,7 @@ export default {
 	@import 'uview-plus/index.scss';
 	/* ，每个页面的背景色 */
 	page {
-		background-color: #AAC9D7;
+		background-color: #f5f5f5;
 	}
 	.font-red{
 		color: #AC0404 !important;

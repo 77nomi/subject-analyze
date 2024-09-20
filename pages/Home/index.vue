@@ -3,7 +3,7 @@
  * @Author: yuennchan@163.com
  * @Date: 2024-08-16 10:19:54
  * @LastEditor: yuennchan@163.com
- * @LastEditTime: 2024-09-18 17:05:03
+ * @LastEditTime: 2024-09-19 22:24:20
 -->
 <template>
 	<view class="header">
@@ -340,7 +340,7 @@
 				justify-content: space-evenly;
 				font-size: 46rpx;
 				font-weight: 600;
-				box-shadow: 0 4rpx 4rpx #a8a8a8;
+				box-shadow: 6rpx 6rpx 6rpx #c6c6c6;
 			}
 			.big-grid-layout{
 				width: 430rpx;
